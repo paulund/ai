@@ -11,18 +11,57 @@
 | **Error Handling** | Errors caught? Meaningful messages? Logged? |
 | **Documentation** | Public APIs documented? Complex logic explained? |
 
-## Questions to Ask During Code Review
+## Context
 
-- Is the code well structured and modular?
-- Are there any potential bugs or edge cases missed?
-- Does the code adhere to the project's coding standards?
-- Are there any security vulnerabilities?
-- Is the performance of the code optimal?
-- Are there sufficient tests, and do they cover edge cases?
-- Is the naming of variables, functions, and classes clear and consistent?
-- Can the same be achieved with less code or complexity?
-- Is error handling implemented correctly?
-- Is the code adequately documented for future maintainers?
-- Does the code include logging where appropriate?
-- Are there other areas of the codebase that do a similar thing that could be reused?
-- Is this difficult to be deployed or rolled back if needed?
+- [] Understand the purpose and scope of the code change.
+- [] Review related documentation and requirements.
+- [] Read PR description and comments for context.
+
+## Design
+
+- [] Does the code follow established design patterns?
+- [] Is the abstraction level appropriate for the task?
+- [] Are there opportunities for code reuse?
+
+## Logic
+
+- [] Are all edge cases considered and handled?
+- [] Verify error handling and exceptions.
+- [] Review naming conventions for clarity and consistency.
+
+## Security
+
+- [] Check for potential security vulnerabilities.
+- [] Ensure sensitive data is handled securely.
+- [] Validate all inputs and outputs.
+
+## Performance
+
+- [] Check for any performance concerns.
+- [] Identify and eliminate N+1 query issues.
+- [] Suggest caching strategies if applicable.
+
+## Tests
+
+- [] Ensure adequate test coverage for new code.
+- [] Verify tests cover edge cases and failure scenarios.
+- [] Check that mocks and stubs are used appropriately.
+- [] Ensure test names are descriptive and meaningful.
+
+## Naming
+
+- [] Are variable and function names clear and descriptive?
+- [] Ensure naming conventions are consistent throughout the codebase.
+- [] Verify that names reveal the intention behind their use.
+
+## Error Handling
+
+- [] Confirm that errors are caught and handled gracefully.
+- [] Ensure error messages are meaningful and actionable.
+- [] Check that errors are logged appropriately for debugging.
+
+## Documentation
+
+- [] Verify that public APIs are well-documented.
+- [] Ensure complex logic is explained with comments.
+- [] Check for up-to-date documentation reflecting code changes.

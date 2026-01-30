@@ -71,29 +71,21 @@ Load the detailed guidance based on on context:
 
 ### MUST DO
 
-- [Constraint 1]
-- [Constraint 2]
-- [Constraint 3]
-- [Constraint 4]
-- [Constraint 5]
+- Must follow RESTful principles and best practices.
+- Ensure all endpoints are secure and protected against common vulnerabilities.
+- Document all API endpoints clearly using OpenAPI/Swagger.
+- Implement proper error handling and return meaningful status codes.
+- Monitor API performance and set up alerts for downtime or errors.
 
 ### MUST NOT DO
 
-- [Constraint 1]
-- [Constraint 2]
-- [Constraint 3]
-- [Constraint 4]
-- [Constraint 5]
-
-## Output Templates
-
-1. [Output Type 1]
-2. [Output Type 2]
-3. [Output Type 3]
-4. [Output Type 4]
-5. [Output Type 5]
+- Expose sensitive data through the API.
+- Implement breaking changes without proper versioning.
+- Ignore performance optimization opportunities.
+- Overcomplicate API designs; keep them simple and intuitive.
+- Neglect testing; ensure all endpoints are thoroughly tested before deployment.
 
 ## Related Skills
 
-- [Related Skill 1](link)
-- [Related Skill 2](link)
+- PHP Developer
+- Laravel Developer

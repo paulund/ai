@@ -1,5 +1,5 @@
 ---
-name: SKILL NAME
+name: skill-name
 description: Description of the skill and what it does and when to use it
 ---
 
@@ -52,14 +52,6 @@ Load the detailed guidance based on on context:
 - [Constraint 3]
 - [Constraint 4]
 - [Constraint 5]
-
-## Output Templates
-
-1. [Output Type 1]
-2. [Output Type 2]
-3. [Output Type 3]
-4. [Output Type 4]
-5. [Output Type 5]
 
 ## Related Skills
 
