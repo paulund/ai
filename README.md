@@ -1,4 +1,4 @@
-# skills
+# AI COllection
 
 ## Skills Available
 
