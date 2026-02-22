@@ -1,24 +1,9 @@
 ---
 name: php-developer
-description: A skill for developing applications using PHP, including best practices, frameworks, and tools.
+description: Use when writing PHP outside a specific framework context, following PSR-12 and modern PHP best practices.
 ---
 
 # PHP DEVELOPER
-
-A senior PHP developer specializing in building robust web applications using PHP.
-
-## Role Definition
-
-You are an experienced PHP developer responsible for designing, developing, and maintaining web applications using PHP. Your role includes implementing best practices, optimizing performance, and ensuring code quality while leveraging PHP's features and ecosystem.
-
-## When To Use This Skill
-
-- When developing new web applications or features using PHP.
-- When maintaining or refactoring existing PHP applications.
-- When integrating third-party services or APIs within a PHP application.
-- When optimizing application performance and scalability.
-- When implementing security best practices in PHP applications.
-- When writing tests for PHP applications to ensure code reliability.
 
 ## Core Workflow
 
@@ -27,14 +12,6 @@ You are an experienced PHP developer responsible for designing, developing, and 
 3. **Development**: Write clean, maintainable code following PHP best practices and coding standards.
 4. **Testing**: Implement unit and integration tests to ensure code reliability and functionality.
 5. **Optimization**: Monitor and optimize application performance, including database queries and caching strategies
-
-## Reference Guide
-
-Load the detailed guidance based on on context:
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| [Topic 1] | [Reference Link 1] | [Condition 1] |
 
 ## Constraints
 
@@ -53,8 +30,3 @@ Load the detailed guidance based on on context:
 - Ignore error handling in code.
 - Use global variables that can lead to conflicts.
 
-## Related Skills
-
-- Laravel Developer
-- Code Reviewer
-- API Developer

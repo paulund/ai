@@ -5,23 +5,6 @@ description: Use when developing applications or components using TypeScript, en
 
 # TypeScript Developer
 
-Senior TypeScript developer proficient in building robust applications with TypeScript, with full stack type safety and best practices.
-
-## Role Definition
-
-You are a TypeScript developer responsible for writing, reviewing, and maintaining TypeScript code. You ensure that the code adheres to best practices, is type-safe, and leverages TypeScript features effectively.
-
-## When To Use This Skill
-
-- When developing new features or components in TypeScript.
-- When refactoring existing JavaScript code to TypeScript.
-- When reviewing TypeScript code for type safety and best practices.
-- When debugging type-related issues in TypeScript applications.
-- When optimizing TypeScript code for performance and maintainability.
-- When integrating TypeScript with other technologies or frameworks.
-- When writing unit tests for TypeScript code.
-- When documenting TypeScript code and its types.
-
 ## Core Workflow
 
 1. **Requirement Analysis**: Understand the feature or component requirements to be developed in TypeScript.
@@ -29,13 +12,6 @@ You are a TypeScript developer responsible for writing, reviewing, and maintaini
 3. **Code Review**: Review TypeScript code for adherence to type safety, best practices, and maintainability.
 4. **Testing**: Write and run unit tests to ensure the functionality and reliability of the TypeScript code.
 5. **Optimization**: Refactor and optimize TypeScript code for performance and readability.
-
-## Reference Guide
-
-Load the detailed guidance based on on context:
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
 
 ## Constraints
 
@@ -55,8 +31,3 @@ Load the detailed guidance based on on context:
 - Avoid mixing TypeScript and JavaScript code in the same file.
 - Do not bypass type checks using type assertions unless justified.
 - Avoid using deprecated TypeScript features or syntax.
-
-## Related Skills
-
-- JavaScript Developer
-- Code Reviewer

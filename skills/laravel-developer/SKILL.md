@@ -1,29 +1,9 @@
 ---
 name: laravel-developer
-description: A skill for developing applications using the Laravel framework, including best practices, tools, and ecosystem.
+description: Use when building or modifying Laravel applications, including routes, controllers, models, migrations, jobs, and tests.
 ---
 
-# SKILL NAME
-
-A senior PHP developer specializing in building robust web applications using the Laravel framework.
-
-## Role Definition
-
-You are an experienced Laravel developer responsible for designing, developing, and maintaining web applications using the Laravel framework. Your role includes implementing best practices, optimizing performance, and ensuring code quality while leveraging Laravel's features and ecosystem.
-
-## When To Use This Skill
-
-- When developing new web applications or features using Laravel.
-- When maintaining or refactoring existing Laravel applications.
-- When integrating third-party services or APIs within a Laravel application.
-- When optimizing application performance and scalability.
-- When implementing security best practices in Laravel applications.
-- When writing tests for Laravel applications to ensure code reliability.
-- When creating asynchronous jobs and queues using Laravel's built-in tools.
-- When utilizing Laravel's Eloquent ORM for database interactions.
-- When leveraging Laravel's Blade templating engine for front-end development.
-- When managing application configuration and environment settings in Laravel.
-- When managing the backend of inertia.js applications using Laravel.
+# Laravel Developer Skill
 
 ## Core Workflow
 
@@ -37,12 +17,14 @@ You are an experienced Laravel developer responsible for designing, developing, 
 
 Load the detailed guidance based on on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Eloquent ORM | `references/eloquent.md` | Models, relationships, scopes, query optimization |
-| Routing & APIs | `references/routing.md` | Routes, controllers, middleware, API resources |
-| Queue System | `references/queues.md` | Jobs, workers, Horizon, failed jobs, batching |
-| Testing | `references/testing.md` | Feature tests, factories, mocking, Pest PHP |
+| Topic         | Reference                     | Load When                                               |
+| ------------- | ----------------------------- | ------------------------------------------------------- |
+| Eloquent ORM  | `references/eloquent.md`      | Models, relationships, scopes, query optimization       |
+| Configuration | `references/configuration.md` | Config injection, attributes vs helpers, best practices |
+| Current User  | `references/current-user.md`  | Controller authentication, user injection, Auth facade  |
+| Validation    | `references/validation.md`    | Form requests, validation rules, user input handling    |
+| Actions       | `references/actions.md`       | Business logic, record creation, controller structure   |
+| Resources     | `references/resources.md`     | API resources, model transformation, nested entities    |
 
 ## Constraints
 
@@ -66,12 +48,10 @@ Load the detailed guidance based on on context:
 - Ignore error handling and logging best practices.
 - Commit sensitive information (e.g., API keys, passwords) to version control.
 - Mix business logic in controllers; use service classes or model methods instead.
-- Skip validation for user inputs; always validate data before processing.
+- Use inline validation (`$request->validate()`) in controllers; always use Form Request classes.
+- Use `Gate::authorize()` or policy checks directly in controllers; always use Form Request's `authorize()` method.
+- Create, update, or delete records directly in controllers; always use Action classes.
 - Use deprecated Laravel features or functions.
+- Return models directly or use manual mapping in controllers; always use API Resource classes.
+- Expose internal database IDs in API responses; always use `resource_id` (UUID) as `id`.
 
-## Related Skills
-
-- PHP Developer
-- API Developer
-- Frontend Developer
-- Code Reviewer

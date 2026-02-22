@@ -1,28 +1,9 @@
 ---
 name: webhook-developer
-description: Skill for developing outgoing webhooks.
+description: Use when developing outgoing webhooks for applications and services.
 ---
 
 # Webhook Developer
-
-Webhooks developer who specializes in creating, managing, and troubleshooting outgoing webhooks for applications and services.
-
-## Role Definition
-
-You are a senior webhook developer with expertise in designing and implementing outgoing webhooks. Your responsibilities include:
-
-- Designing webhook payloads and event structures to the [Standard Webhooks](https://github.com/standard-webhooks/standard-webhooks) specification.
-- Implementing secure webhook delivery mechanisms, including HMAC signature generation and HTTPS enforcement.
-- Setting up retry logic with exponential backoff for failed webhook deliveries.
-- Documenting webhook event types, payload schemas, and delivery processes for developers.
-- Providing tools for testing webhooks and managing subscriptions.
-
-## When To Use This Skill
-
-- When you need to create a new outgoing webhook for an application.
-- When you want to ensure your webhooks follow industry best practices for security and reliability.
-- When you need to document webhook events and provide testing tools for developers.
-- When you want to implement retry logic and idempotency for webhook deliveries.
 
 ## Core Workflow
 
@@ -36,11 +17,11 @@ You are a senior webhook developer with expertise in designing and implementing 
 
 ## Reference Guide
 
-Load the detailed guidance based on on context:
+Load the detailed guidance based on context:
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
-| Standard Webhooks | [Standard Webhooks](webhook-developer/references/standard-webhooks.md) | When designing or implementing outgoing webhooks for applications and services. |
+| Standard Webhooks | `references/standard-webhooks.md` | When designing or implementing outgoing webhooks for applications and services. |
 
 ## Constraints
 
@@ -68,9 +49,3 @@ Load the detailed guidance based on on context:
 
 - [Specification](https://github.com/standard-webhooks/standard-webhooks/blob/main/spec/standard-webhooks.md)
 - [Website](https://www.standardwebhooks.com/)
-
-## Related Skills
-
-- [API Developer](TBC)
-- [Security Specialist](TBC)
-- [Documentation Writer](TBC)

@@ -1,24 +1,9 @@
 ---
 name: code-reviewer
-description: A skill for reviewing code, providing feedback, and ensuring code quality and best practices.
+description: Use when reviewing code, pull requests, or auditing code quality and best practices.
 ---
 
 # Code Reviewer
-
-Senior engineer conducting thorough, constructive code reviews that improve quality and share knowledge.
-
-## Role Definition
-
-You are a principle engineer responsible for reviewing code submissions. Your role is to ensure code quality, adherence to best practices, and maintainability by providing detailed feedback and suggestions for improvement.
-
-## When To Use This Skill
-
-- When reviewing pull requests or code submissions from other developers.
-- When providing feedback on code quality, style, and architecture.
-- When identifying potential bugs, performance issues, or security vulnerabilities.
-- When ensuring that code adheres to project standards and guidelines.
-- Identifying refactoring opportunities to improve code maintainability.
-- Validating code architecture decisions
 
 ## Core Workflow
 
@@ -32,9 +17,11 @@ You are a principle engineer responsible for reviewing code submissions. Your ro
 
 Load the detailed guidance based on on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
+| Topic            | Reference                             | Load When                     |
+| ---------------- | ------------------------------------- | ----------------------------- |
 | Review Checklist | `references/code-review-checklist.md` | When performing a code review |
+| Frontend Checks  | `references/frontend-checks.md`       | When reviewing frontend code  |
+| Backend Checks   | `references/backend-checks.md`        | When reviewing backend code   |
 
 ## Constraints
 

@@ -7,11 +7,11 @@ Unified format:
 
 ```json
 {
-  "error": {
-    "code": 422,
-    "message": "Validation failed",
-    "details": { "field": ["Issue"] }
-  }
+    "error": {
+        "code": 422,
+        "message": "Validation failed",
+        "details": { "field": ["Issue"] }
+    }
 }
 ```
 

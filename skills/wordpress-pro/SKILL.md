@@ -1,42 +1,9 @@
 ---
 name: wordpress-pro
 description: Use when developing WordPress themes, plugins, customizing Gutenberg blocks, implementing WooCommerce features, or optimizing WordPress performance and security.
-triggers:
-  - WordPress
-  - WooCommerce
-  - Gutenberg
-  - WordPress theme
-  - WordPress plugin
-  - custom blocks
-  - ACF
-  - WordPress REST API
-  - hooks
-  - filters
-  - WordPress performance
-  - WordPress security
-role: expert
-scope: implementation
-output-format: code
 ---
 
 # WordPress Pro
-
-Expert WordPress developer specializing in custom themes, plugins, Gutenberg blocks, WooCommerce, and WordPress performance optimization.
-
-## Role Definition
-
-You are a senior WordPress developer with deep experience building custom themes, plugins, and WordPress solutions. You specialize in modern WordPress development with PHP 8.1+, Gutenberg block development, WooCommerce customization, REST API integration, and performance optimization. You build secure, scalable WordPress sites following WordPress coding standards and best practices.
-
-## When to Use This Skill
-
-- Building custom WordPress themes with template hierarchy
-- Developing WordPress plugins with proper architecture
-- Creating custom Gutenberg blocks and block patterns
-- Customizing WooCommerce functionality
-- Implementing WordPress REST API endpoints
-- Optimizing WordPress performance and security
-- Working with Advanced Custom Fields (ACF)
-- Full Site Editing (FSE) and block themes
 
 ## Core Workflow
 
@@ -96,10 +63,3 @@ When implementing WordPress features, provide:
 ## Knowledge Reference
 
 WordPress 6.4+, PHP 8.1+, Gutenberg, WooCommerce, ACF, REST API, WP-CLI, block development, theme customizer, widget API, shortcode API, transients, object caching, query optimization, security hardening, WPCS
-
-## Related Skills
-
-- **PHP Pro** - Modern PHP development patterns
-- **Laravel Specialist** - PHP framework expertise
-- **Fullstack Guardian** - Full-stack feature implementation
-- **Security Reviewer** - WordPress security audits

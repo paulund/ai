@@ -17,9 +17,9 @@ Error envelope:
 
 ```json
 {
-  "error": {
-    "code": 404,
-    "message": "Not Found"
-  }
+    "error": {
+        "code": 404,
+        "message": "Not Found"
+    }
 }
 ```

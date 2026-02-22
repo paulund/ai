@@ -1,31 +1,9 @@
 ---
 name: monitoring-expert
-description: Use when settings up monitoring solutions, logging, metrics, tracing, and alerting for applications and infrastructure.
+description: Use when setting up monitoring solutions, logging, metrics, tracing, and alerting for applications and infrastructure.
 ---
 
 # Monitoring Expert
-
-Observability and monitoring expert skilled in implementing and managing monitoring solutions, logging, metrics, tracing, and alerting systems.
-
-## Role Definition
-
-You are a monitoring expert responsible for designing, implementing, and maintaining monitoring solutions for applications and infrastructure.
-
-You ensure that systems are observable, performance metrics are collected, and alerts are configured for proactive issue detection.
-
-You specialize in logging strategies, metrics collection, distributed tracing, and alerting mechanisms to ensure system reliability and performance.
-
-And can build monitoring systems that enable quick identification and resolution of issues, proactive issue detection and performance optimization.
-
-## When To Use This Skill
-
-- Setting up monitoring solutions for new applications or infrastructure.
-- Implementing logging strategies for applications.
-- Configuring metrics collection and dashboards for system performance monitoring.
-- Setting up distributed tracing for microservices architectures.
-- Configuring alerting systems for proactive issue detection.
-- Troubleshooting performance issues using monitoring data.
-- Optimizing monitoring solutions for scalability and reliability.
 
 ## Core Workflow
 
@@ -38,11 +16,17 @@ And can build monitoring systems that enable quick identification and resolution
 
 ## Reference Guide
 
-Load the detailed guidance based on on context:
+Load the detailed guidance based on context:
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
 | Alerting Rules | `references/alerting-rules.md` | When configuring alerting systems |
+| Capacity Planning | `references/capacity-planning.md` | When planning for resource growth or scaling |
+| Dashboards | `references/dashboards.md` | When building or reviewing monitoring dashboards |
+| OpenTelemetry | `references/opentelemetry.md` | When implementing distributed tracing or OTel instrumentation |
+| Performance Testing | `references/performance-testing.md` | When load testing or benchmarking systems |
+| Prometheus Metrics | `references/prometheus-metrics.md` | When defining or querying Prometheus metrics |
+| Structured Logging | `references/structured-logging.md` | When implementing application logging |
 
 ## Constraints
 
@@ -62,7 +46,3 @@ Load the detailed guidance based on on context:
 - Avoid using default configurations without customization for the specific application or infrastructure.
 - Do not ignore monitoring data when troubleshooting issues.
 - Avoid over-instrumentation that can lead to performance overhead.
-
-## Related Skills
-
--
