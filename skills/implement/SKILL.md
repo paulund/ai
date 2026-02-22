@@ -34,9 +34,7 @@ Read the plan file. Confirm with the user which feature to implement if ambiguou
 Use the Task tool with `subagent_type: laravel-developer`:
 
 ```
-Prompt: "Read the plan at plans/<feature>/plan.md and implement all backend changes.
-
-The learnings file is at plans/<feature>/learnings.md — append corrections there if the user corrects you."
+Prompt: "Read the plan at plans/<feature>/plan.md and implement all backend changes."
 ```
 
 Wait for completion. If the agent reports test failures it couldn't fix, stop and report to the user.
@@ -46,9 +44,7 @@ Wait for completion. If the agent reports test failures it couldn't fix, stop an
 Use the Task tool with `subagent_type: inertia-developer`:
 
 ```
-Prompt: "Read the plan at plans/<feature>/plan.md and implement all frontend changes. The backend is already implemented — read the code to understand routes and props.
-
-The learnings file is at plans/<feature>/learnings.md — append corrections there if the user corrects you."
+Prompt: "Read the plan at plans/<feature>/plan.md and implement all frontend changes. The backend is already implemented — read the code to understand routes and props."
 ```
 
 Wait for completion. If the agent reports test failures it couldn't fix, stop and report to the user.
@@ -58,9 +54,7 @@ Wait for completion. If the agent reports test failures it couldn't fix, stop an
 Use the Task tool with `subagent_type: qa-engineer`:
 
 ```
-Prompt: "Read the plan at plans/<feature>/plan.md. The backend and frontend are already implemented. Run the full test suites, verify acceptance criteria coverage, and audit for security issues.
-
-The learnings file is at plans/<feature>/learnings.md — append corrections there if the user corrects you."
+Prompt: "Read the plan at plans/<feature>/plan.md. The backend and frontend are already implemented. Run the full test suites, verify acceptance criteria coverage, and audit for security issues."
 ```
 
 If QA reports failures:
@@ -69,24 +63,7 @@ If QA reports failures:
 - After the developer agent fixes the issue, re-spawn QA
 - Maximum 2 retry cycles. If still failing after 2 retries, stop and report to the user.
 
-### 5. Log QA and Review Findings as Learnings
-
-After QA completes (whether pass or fail), append any systemic issues to `plans/<feature>/learnings.md`. Examples of things to log:
-- Missing test coverage that QA had to flag
-- Missing implementations that QA or code review caught
-- Architecture violations found during review
-
-Use this format:
-
-```markdown
-## Orchestrator - [Short Description]
-
-**Finding**: [what QA or code review found]
-**Root cause**: [why the developer agent missed it]
-**Lesson**: [what to emphasise in future prompts]
-```
-
-### 6. Spawn Senior Code Reviewer
+### 5. Spawn Senior Code Reviewer
 
 Use the Task tool with `subagent_type: senior-code-reviewer`:
 
@@ -96,7 +73,7 @@ Model: sonnet
 Max turns: 15
 ```
 
-### 7. Report to User
+### 6. Report to User
 
 After all agents complete, summarize:
 - What was implemented (brief)
