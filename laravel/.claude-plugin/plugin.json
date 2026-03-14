@@ -1,0 +1,5 @@
+{
+  "name": "laravel",
+  "description": "Laravel backend conventions: models, controllers, actions, resources, migrations, and testing",
+  "version": "1.0.0"
+}

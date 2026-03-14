@@ -1,18 +1,73 @@
-# AI Collection
+# claude-plugins
 
-## Skills Available
+Personal Claude Code plugins for Laravel, Inertia.js, React, and related development workflows.
 
-- [API Developer](skills/api-developer/SKILL.md)
-- [Code Reviewer](skills/code-reviewer/SKILL.md)
-- [JavaScript Developer](skills/javascript-developer/SKILL.md)
-- [Laravel Developer](skills/laravel-developer/SKILL.md)
-- [Monitoring Expert](skills/monitoring-expert/SKILL.md)
-- [OpenAPI Spec Writer](skills/openapi-spec-writer/SKILL.md)
-- [PHP Developer](skills/php-developer/SKILL.md)
-- [React Developer](skills/react-developer/SKILL.md)
-- [Security Reviewer](skills/security-reviewer/SKILL.md)
-- [Template](skills/template/SKILL.md)
-- [TypeScript Developer](skills/typescript-developer/SKILL.md)
-- [Vue Expert](skills/vue-expert/SKILL.md)
-- [Webhook Developer](skills/webhook-developer/SKILL.md)
-- [WordPress Pro](skills/wordpress-pro/SKILL.md)
+## Plugins
+
+| Plugin | Description |
+|--------|-------------|
+| `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations, and testing with Pest |
+| `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
+| `react` | TypeScript, hooks, components, state management, layouts |
+| `laravel-sail` | Sail commands, docker-compose, service configuration, troubleshooting |
+| `api` | RESTful API design conventions, HTTP methods, status codes, and best practices |
+| `code-review` | Code review checklists for backend and frontend |
+| `git` | Git workflow: commit-push-PR and GitHub release automation |
+| `monitoring` | Observability, metrics, structured logging, and alerting patterns |
+| `security` | Security auditing, vulnerability scanning, and secure coding practices |
+| `webhook` | Webhook implementation with Standard Webhooks conventions |
+| `wordpress` | WordPress theme and plugin development, Gutenberg blocks, hooks and filters |
+
+## Installation
+
+### 1. Add the marketplace
+
+From within Claude Code, run:
+
+```
+/plugin marketplace add paulund/ai
+```
+
+### 2. Install plugins
+
+Install individual plugins as needed:
+
+```
+/plugin install laravel@paulund-ai
+/plugin install inertia@paulund-ai
+/plugin install react@paulund-ai
+/plugin install laravel-sail@paulund-ai
+/plugin install api@paulund-ai
+/plugin install code-review@paulund-ai
+/plugin install git@paulund-ai
+/plugin install monitoring@paulund-ai
+/plugin install security@paulund-ai
+/plugin install webhook@paulund-ai
+/plugin install wordpress@paulund-ai
+```
+
+Or browse and install interactively via `/plugin` → **Discover** tab.
+
+### 3. Use skills
+
+Skills are namespaced by plugin name:
+
+```
+/laravel:laravel
+/git:commit-push-pr
+/git:github-release
+```
+
+## Updating
+
+```
+/plugin marketplace update paulund-ai
+```
+
+## Local development
+
+To test plugins without installing, use `--plugin-dir`:
+
+```bash
+claude --plugin-dir ./laravel --plugin-dir ./react
+```

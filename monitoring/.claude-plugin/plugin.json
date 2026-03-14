@@ -1,0 +1,5 @@
+{
+  "name": "monitoring",
+  "description": "Observability, metrics, structured logging, and alerting patterns",
+  "version": "1.0.0"
+}

@@ -1,0 +1,5 @@
+{
+  "name": "laravel-sail",
+  "description": "Laravel Sail Docker commands and service management",
+  "version": "1.0.0"
+}

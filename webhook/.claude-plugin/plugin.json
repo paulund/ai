@@ -1,0 +1,5 @@
+{
+  "name": "webhook",
+  "description": "Webhook implementation with Standard Webhooks conventions",
+  "version": "1.0.0"
+}

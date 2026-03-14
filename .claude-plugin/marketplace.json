@@ -1,0 +1,99 @@
+{
+  "name": "paulund-ai",
+  "owner": {
+    "name": "paulund"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for Laravel, React, Inertia.js, and related development workflows"
+  },
+  "plugins": [
+    {
+      "name": "laravel",
+      "source": "./laravel",
+      "description": "Laravel backend conventions: models, controllers, actions, resources, migrations, and testing",
+      "version": "1.0.0",
+      "category": "frameworks",
+      "tags": ["laravel", "php", "backend"]
+    },
+    {
+      "name": "inertia",
+      "source": "./inertia",
+      "description": "Inertia.js page props, forms, shared data, and navigation patterns",
+      "version": "1.0.0",
+      "category": "frameworks",
+      "tags": ["inertia", "spa", "laravel"]
+    },
+    {
+      "name": "react",
+      "source": "./react",
+      "description": "React and TypeScript components, hooks, state management, and testing",
+      "version": "1.0.0",
+      "category": "frameworks",
+      "tags": ["react", "typescript", "frontend"]
+    },
+    {
+      "name": "laravel-sail",
+      "source": "./laravel-sail",
+      "description": "Laravel Sail Docker commands and service management",
+      "version": "1.0.0",
+      "category": "tools",
+      "tags": ["laravel", "docker", "sail"]
+    },
+    {
+      "name": "api",
+      "source": "./api",
+      "description": "RESTful API design conventions, HTTP methods, status codes, and best practices",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["api", "rest", "design"]
+    },
+    {
+      "name": "code-review",
+      "source": "./code-review",
+      "description": "Code review checklists and best practices for backend and frontend",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["code-review", "quality"]
+    },
+    {
+      "name": "git",
+      "source": "./git",
+      "description": "Git workflow skills: commit-push-PR and GitHub release automation",
+      "version": "1.0.0",
+      "category": "tools",
+      "tags": ["git", "github", "workflow"]
+    },
+    {
+      "name": "monitoring",
+      "source": "./monitoring",
+      "description": "Observability, metrics, structured logging, and alerting patterns",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["monitoring", "observability", "logging"]
+    },
+    {
+      "name": "security",
+      "source": "./security",
+      "description": "Security auditing, vulnerability scanning, and secure coding practices",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["security", "audit"]
+    },
+    {
+      "name": "webhook",
+      "source": "./webhook",
+      "description": "Webhook implementation with Standard Webhooks conventions",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["webhook", "integration"]
+    },
+    {
+      "name": "wordpress",
+      "source": "./wordpress",
+      "description": "WordPress theme and plugin development, Gutenberg blocks, hooks and filters",
+      "version": "1.0.0",
+      "category": "frameworks",
+      "tags": ["wordpress", "php", "cms"]
+    }
+  ]
+}
