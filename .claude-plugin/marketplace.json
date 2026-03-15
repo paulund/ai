@@ -96,6 +96,14 @@
       "tags": ["wordpress", "php", "cms"]
     },
     {
+      "name": "php",
+      "source": "./php",
+      "description": "PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, and PSR standards",
+      "version": "1.0.0",
+      "category": "languages",
+      "tags": ["php", "psr", "backend"]
+    },
+    {
       "name": "writing",
       "source": "./writing",
       "description": "Writing quality skills: humanizing AI-generated text and editing for clarity and voice",

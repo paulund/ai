@@ -45,6 +45,60 @@ class PostController extends Controller
 }
 ```
 
+## With Dependencies
+
+```php
+final readonly class ProcessOrderAction
+{
+    public function __construct(
+        private PaymentService $paymentService,
+        private NotificationService $notificationService,
+    ) {}
+
+    public function execute(User $user, array $orderData, string $paymentToken): Order
+    {
+        return DB::transaction(function () use ($user, $orderData, $paymentToken) {
+            $order = Order::create([
+                'user_id' => $user->id,
+                'total' => $orderData['total'],
+                'status' => 'pending',
+            ]);
+
+            $order->items()->createMany($orderData['items']);
+
+            $payment = $this->paymentService->charge(
+                amount: $order->total,
+                token: $paymentToken,
+            );
+
+            $order->update(['payment_id' => $payment->id, 'status' => 'paid']);
+
+            $this->notificationService->sendOrderConfirmation($order);
+
+            return $order->load('items');
+        });
+    }
+}
+```
+
+## Delete with Cleanup
+
+```php
+final readonly class DeleteUserAccountAction
+{
+    public function execute(User $user): void
+    {
+        if ($user->avatar_path) {
+            Storage::delete($user->avatar_path);
+        }
+
+        $user->posts()->delete();
+        $user->comments()->delete();
+        $user->delete();
+    }
+}
+```
+
 ## Conventions
 
 - **Naming**: Verb + Noun + `Action` (e.g., `CreatePostAction`, `ProcessPaymentAction`)

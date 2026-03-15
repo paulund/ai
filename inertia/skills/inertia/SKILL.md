@@ -23,7 +23,7 @@ description: Use when building Inertia.js pages and components, including page p
 
 ### MUST DO
 
-- Type all page props with TypeScript interfaces
+- Type all page props with TypeScript interfaces that match the Laravel API Resource exactly
 - Use `useForm` for form state and submission
 - Display validation errors from `usePage().props.errors`
 - Use `<Link>` component for navigation (not `<a>` tags)

@@ -2,32 +2,50 @@
 
 ## Jobs
 
-- Queue long-running operations (email, API calls, reports)
-- Use `ShouldQueue` interface
-- Implement `retries`, `backoff`, and `failed()` method
-- Keep payloads small — pass IDs, not full models
+- Location: `app/Jobs/`
+- Always implement `ShouldQueue`
+- Accept Value Objects as constructor arguments — not raw strings or IDs
+- Orchestrate workflows: call Services for I/O, persist via `Model::upsertFrom*()` helpers
+- Handle empty/invalid data explicitly by throwing `RuntimeException`
+- Make jobs idempotent (safe to retry)
+- Configure `$tries`, `$backoff`, and `failed()` for resilience
+- Use unique jobs to prevent duplicates where appropriate
 
 ```php
-final class ProcessPaymentJob implements ShouldQueue
+final class SyncResourceJob implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 3;
     public array $backoff = [10, 60, 300];
 
     public function __construct(
-        private readonly int $orderId,
+        private readonly Identifier $identifier,
     ) {}
 
-    public function handle(PaymentService $paymentService): void
-    {
-        $order = Order::findOrFail($this->orderId);
-        $paymentService->process($order);
+    public function handle(
+        ExternalApiService $apiService,
+        ResourceService $resourceService,
+    ): void {
+        $resource = $resourceService->find($this->identifier);
+        $response = $apiService->getReports($this->identifier);
+
+        if ($response->isEmpty()) {
+            throw new RuntimeException("No data returned for: {$this->identifier->value}");
+        }
+
+        foreach ($response->annualReports as $report) {
+            Report::upsertFromResponse($resource, 'annual', $report);
+        }
+
+        foreach ($response->quarterlyReports as $report) {
+            Report::upsertFromResponse($resource, 'quarterly', $report);
+        }
     }
 
     public function failed(\Throwable $exception): void
     {
-        // Notify admin
+        // Notify admin or log
     }
 }
 ```

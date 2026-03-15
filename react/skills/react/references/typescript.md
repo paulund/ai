@@ -90,3 +90,5 @@ type UserMap = Record<string, User>;
 - Never use `any` — use `unknown` and narrow with type guards
 - Use `as const` for literal arrays and objects
 - Prefer `React.ReactNode` for children, not `JSX.Element`
+- Use `satisfies` to validate objects against a type without widening
+- Keep Inertia page prop types in sync with the Laravel API Resource that serves them

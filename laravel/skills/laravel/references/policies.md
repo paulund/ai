@@ -32,6 +32,21 @@ final class PostPolicy
 }
 ```
 
+## Ability Mapping
+
+| Ability  | Policy method | Typical actions          |
+|----------|--------------|--------------------------|
+| `view`   | `view()`     | show, index              |
+| `update` | `update()`   | edit, update, sync       |
+| `delete` | `delete()`   | destroy                  |
+| `create` | `create()`   | store (pass class, not instance) |
+
+For `create`, pass the model class name rather than an instance:
+
+```php
+$user->can('create', Wallet::class);
+```
+
 ## Form Request Integration
 
 ```php
@@ -39,7 +54,11 @@ final class UpdatePostRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('post'));
+        $post = $this->route('post');
+
+        return $this->user() !== null
+            && $post instanceof Post
+            && $this->user()->can('update', $post);
     }
 }
 ```

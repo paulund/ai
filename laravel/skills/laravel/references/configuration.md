@@ -19,7 +19,7 @@ Laravel provides a powerful `#[Config]` attribute that allows injecting configur
 Use the attribute in the constructor of your class.
 
 ```php
-use Illuminate\Support\Facades\Config;
+use Illuminate\Container\Attributes\Config;
 
 class PaymentService
 {

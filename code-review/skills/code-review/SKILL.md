@@ -11,6 +11,25 @@ description: Use when reviewing code, pull requests, or auditing code quality an
 4. **Provide** constructive feedback with specific, actionable suggestions for improvement.
 5. **Collaborate** with the author to clarify questions and ensure understanding of the feedback.
 
+## Feedback Format
+
+Group findings by severity:
+
+- **Critical** — bugs, security vulnerabilities, data loss risks (must fix)
+- **High** — performance issues, incorrect logic, architectural problems (should fix)
+- **Medium** — code quality, readability, missing tests (fix when possible)
+- **Low** — style, naming, minor improvements (optional)
+
+For each finding: include the file and line reference, explain the problem, and suggest the fix.
+
+## What to Check
+
+- **Correctness** — does it do what it's supposed to?
+- **Security** — input validation, SQL injection, XSS, exposed IDs, auth checks
+- **Performance** — N+1 queries, missing indexes, unnecessary work
+- **Architecture** — does it follow the project's layered pattern (Value Objects, DTOs, Services, Jobs, Models)?
+- **Test coverage** — are the happy path and edge cases covered?
+
 ## Reference Guide
 
 | Topic | Reference | Load When |

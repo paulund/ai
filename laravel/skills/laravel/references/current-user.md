@@ -1,19 +1,39 @@
 # Getting the Current User in Controllers
 
-## Core Principle
+Inject the authenticated user via the `#[CurrentUser]` attribute in the constructor — never call `Auth::user()` inside methods.
 
-Laravel allows injecting the authenticated user directly into controller constructors using the `#[CurrentUser]` attribute. This approach is cleaner than calling `Auth::user()` inside methods and makes the authentication requirement explicit.
+```php
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 
-## Benefits
+final class PostController extends Controller
+{
+    public function __construct(
+        #[CurrentUser] private readonly User $user,
+    ) {}
 
-- **Explicit Dependencies**: Authentication requirements are clear in the constructor
-- **Type Safety**: Full IDE support and type checking for `$this->user`
-- **Testability**: Easy to inject mock users in tests
-- **Consistency**: Same pattern across all controllers
-- **No Facades**: Eliminates need for `Auth::user()` calls
+    public function __invoke(IndexPostsRequest $request): Response
+    {
+        return Inertia::render('Posts/Index', [
+            'posts' => PostResource::collection(
+                Post::query()->where('user_id', $this->user->id)->get()
+            ),
+        ]);
+    }
+}
+```
+
+## Public Routes
+
+Use a nullable type when the route does not require authentication:
+
+```php
+public function __construct(
+    #[CurrentUser] private readonly ?User $user,
+) {}
+```
 
 ## When NOT to Use
 
-- **API Resource Controllers**: When using route model binding for user resources
-- **Public Routes**: When the route doesn't require authentication (use nullable type instead)
-- **Middleware Heavy Logic**: When you need complex authentication logic beyond simple user injection
+- Route model binding for the authenticated user (e.g. `/users/{user}`) — use binding directly
+- Complex authentication logic beyond simple user injection — handle in middleware
