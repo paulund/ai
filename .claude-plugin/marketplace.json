@@ -118,6 +118,22 @@
       "version": "1.0.0",
       "category": "tools",
       "tags": ["docker", "docker-compose", "healthchecks", "containers"]
+    },
+    {
+      "name": "marketing",
+      "source": "./marketing",
+      "description": "Social media content, copywriting, content strategy, email sequences, and SEO auditing",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["marketing", "social-media", "content", "copywriting", "seo", "email"]
+    },
+    {
+      "name": "saas",
+      "source": "./saas",
+      "description": "SaaS planning: PRD framework, go-to-market strategy, launch readiness, and pricing strategy",
+      "version": "1.0.0",
+      "category": "workflows",
+      "tags": ["saas", "product", "prd", "go-to-market", "launch", "pricing"]
     }
   ]
 }

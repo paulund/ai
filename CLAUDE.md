@@ -39,6 +39,8 @@ repo root/
 - **`php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
 - **`wordpress`** — WordPress theme/plugin development, Gutenberg, hooks
 - **`docker`** — Docker Compose healthchecks, service dependencies, container readiness
+- **`marketing`** — Social media content (X, LinkedIn), copywriting, content strategy, email sequences, SEO auditing
+- **`saas`** — SaaS PRD framework, go-to-market strategy, launch readiness checklist, pricing strategy
 
 ### Usage
 
