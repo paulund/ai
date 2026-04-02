@@ -59,7 +59,7 @@
       "name": "git",
       "source": "./git",
       "description": "Git workflow skills: commit-push-PR and GitHub release automation",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "tools",
       "tags": ["git", "github", "workflow"]
     },
@@ -115,7 +115,7 @@
       "name": "docker",
       "source": "./docker",
       "description": "Docker and Docker Compose configuration, healthchecks, and service dependency management",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "tools",
       "tags": ["docker", "docker-compose", "healthchecks", "containers"]
     },
