@@ -38,6 +38,7 @@ repo root/
 - **`webhook`** — Webhook implementation with Standard Webhooks
 - **`php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
 - **`wordpress`** — WordPress theme/plugin development, Gutenberg, hooks
+- **`docker`** — Docker Compose healthchecks, service dependencies, container readiness
 
 ### Usage
 

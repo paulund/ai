@@ -110,6 +110,14 @@
       "version": "1.0.0",
       "category": "workflows",
       "tags": ["writing", "editing", "humanizer"]
+    },
+    {
+      "name": "docker",
+      "source": "./docker",
+      "description": "Docker and Docker Compose configuration, healthchecks, and service dependency management",
+      "version": "1.0.0",
+      "category": "tools",
+      "tags": ["docker", "docker-compose", "healthchecks", "containers"]
     }
   ]
 }
