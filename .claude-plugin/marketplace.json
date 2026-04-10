@@ -24,14 +24,6 @@
       "tags": ["inertia", "spa", "laravel"]
     },
     {
-      "name": "react",
-      "source": "./react",
-      "description": "React and TypeScript components, hooks, state management, and testing",
-      "version": "1.0.0",
-      "category": "frameworks",
-      "tags": ["react", "typescript", "frontend"]
-    },
-    {
       "name": "laravel-sail",
       "source": "./laravel-sail",
       "description": "Laravel Sail Docker commands and service management",
