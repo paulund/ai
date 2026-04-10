@@ -28,7 +28,6 @@ repo root/
 
 - **`laravel`** — Laravel backend conventions: models, controllers, actions, resources, migrations, testing
 - **`inertia`** — Inertia.js page props, forms, shared data, navigation
-- **`react`** — React + TypeScript components, hooks, state management
 - **`laravel-sail`** — Laravel Sail Docker commands and service management
 - **`api`** — RESTful API design conventions and best practices
 - **`code-review`** — Code review checklists for backend and frontend

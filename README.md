@@ -1,6 +1,8 @@
 # claude-plugins
 
-Personal Claude Code plugins for Laravel, Inertia.js, React, and related development workflows.
+Personal Claude Code plugins for Laravel, Inertia.js, and related development workflows.
+
+> **Note:** The `react` plugin has been removed. For React/Next.js frontend work, use the [Vercel best practices skill](https://vercel.com/docs) instead, which covers React, Next.js, and deployment patterns with first-party guidance.
 
 ## Plugins
 
@@ -8,7 +10,6 @@ Personal Claude Code plugins for Laravel, Inertia.js, React, and related develop
 |--------|-------------|
 | `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations, and testing with Pest |
 | `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
-| `react` | TypeScript, hooks, components, state management, layouts |
 | `laravel-sail` | Sail commands, docker-compose, service configuration, troubleshooting |
 | `api` | RESTful API design conventions, HTTP methods, status codes, and best practices |
 | `code-review` | Code review checklists for backend and frontend |
@@ -35,7 +36,6 @@ Install individual plugins as needed:
 ```
 /plugin install laravel@paulund-ai
 /plugin install inertia@paulund-ai
-/plugin install react@paulund-ai
 /plugin install laravel-sail@paulund-ai
 /plugin install api@paulund-ai
 /plugin install code-review@paulund-ai
@@ -69,5 +69,5 @@ Skills are namespaced by plugin name:
 To test plugins without installing, use `--plugin-dir`:
 
 ```bash
-claude --plugin-dir ./laravel --plugin-dir ./react
+claude --plugin-dir ./laravel
 ```
