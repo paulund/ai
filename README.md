@@ -4,23 +4,77 @@ Personal Claude Code global skills for Laravel, Inertia.js, and related developm
 
 ## Skills
 
+### Laravel
+
+Skills for building Laravel applications following consistent conventions. Covers the full backend lifecycle — from structuring controllers, models, and Eloquent relationships, to actions, jobs, events, policies, and API resources. The testing skill adds Pest-based coverage with factories, feature tests, and Inertia assertions. The Sail skill handles the Docker development environment.
+
 | Skill | Description |
 |-------|-------------|
 | `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations |
 | `laravel-testing` | Testing with Pest: factories, unit tests, Inertia testing |
 | `laravel-sail` | Sail commands, docker-compose, service configuration, troubleshooting |
 | `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
+
+### PHP
+
+Best practices for modern PHP development independent of any framework. Enforces strict types, immutable Value Objects, typed DTOs, and structured exception hierarchies following PSR standards.
+
+| Skill | Description |
+|-------|-------------|
+| `php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards |
+
+### API Design
+
+Conventions for designing consistent, well-documented REST APIs. Covers resource naming, HTTP methods, status codes, error shapes, pagination, filtering, authentication, versioning, and OpenAPI specification.
+
+| Skill | Description |
+|-------|-------------|
 | `api` | RESTful API design conventions, HTTP methods, status codes, and best practices |
-| `code-review` | Code review checklists for backend and frontend |
-| `docker` | Docker Compose healthchecks, service dependencies, container readiness |
+| `webhook` | Webhook implementation with Standard Webhooks conventions |
+
+### Git & CI/CD
+
+Skills for consistent Git workflows, automated releases, and GitHub Actions pipelines. Handles branching strategy, commit conventions, PR creation, changelog generation, and version tagging.
+
+| Skill | Description |
+|-------|-------------|
 | `git-commit-push-pr` | Git commit, push, and PR workflow |
 | `git-github-release` | GitHub release automation |
 | `git-github-actions-claude` | GitHub Actions with Claude integration |
+| `bump-version` | Version bumping automation |
+
+### Infrastructure
+
+Skills for containerisation, observability, and security. Covers Docker Compose service wiring, structured logging, metrics, alerting, and security auditing across frontend, backend, and infrastructure layers.
+
+| Skill | Description |
+|-------|-------------|
+| `docker` | Docker Compose healthchecks, service dependencies, container readiness |
 | `monitoring` | Observability, metrics, structured logging, and alerting patterns |
 | `security` | Security auditing, vulnerability scanning, and secure coding practices |
-| `webhook` | Webhook implementation with Standard Webhooks conventions |
-| `php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards |
+
+### Code Quality
+
+Review and refactoring skills that apply consistent standards across backend and frontend code.
+
+| Skill | Description |
+|-------|-------------|
+| `code-review` | Code review checklists for backend and frontend |
+
+### WordPress
+
+Skills for building WordPress themes and plugins to modern standards. Covers plugin architecture, theme development, Gutenberg block creation, hooks and filters, and performance and security hardening.
+
+| Skill | Description |
+|-------|-------------|
 | `wordpress` | WordPress theme and plugin development, Gutenberg blocks, hooks and filters |
+
+### Marketing
+
+Skills for creating and distributing content across channels. Covers platform-specific writing for X and LinkedIn, copywriting frameworks, email sequences, SEO auditing, and repurposing long-form content into social posts.
+
+| Skill | Description |
+|-------|-------------|
 | `marketing-content-repurposer` | Repurpose content across platforms |
 | `marketing-content-strategy` | Content strategy planning |
 | `marketing-copywriting` | Copywriting frameworks and guides |
@@ -29,13 +83,26 @@ Personal Claude Code global skills for Laravel, Inertia.js, and related developm
 | `marketing-reply-drafter` | Reply drafting for social media |
 | `marketing-seo-audit` | SEO auditing checklist |
 | `marketing-x-content` | X (Twitter) post creation |
+
+### SaaS
+
+Skills for planning and launching SaaS products. Covers writing product requirements documents, building go-to-market plans, pricing strategy, and validating launch readiness against a structured checklist.
+
+| Skill | Description |
+|-------|-------------|
 | `saas-go-to-market` | Go-to-market strategy |
 | `saas-launch-checklist` | Launch readiness checklist |
 | `saas-pricing-strategy` | Pricing strategy frameworks |
 | `saas-prd` | SaaS PRD framework |
+
+### Writing
+
+Skills for improving written output. The humanizer removes AI-sounding patterns from generated text; the technical writer skill applies consistent style, structure, and clarity to documentation and guides.
+
+| Skill | Description |
+|-------|-------------|
 | `writing-humanizer` | Humanize AI-generated text |
 | `writing-technical-writer` | Technical writing style and structure |
-| `bump-version` | Version bumping automation |
 
 ## Installation
 
