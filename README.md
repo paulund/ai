@@ -43,13 +43,14 @@ Clone this repo and copy any skills you want into `~/.claude/skills/`:
 
 ```bash
 git clone https://github.com/paulund/ai.git
+cd ai
 
 # Install individual skills
-cp -r ai/laravel ~/.claude/skills/
-cp -r ai/git-commit-push-pr ~/.claude/skills/
+cp -r laravel ~/.claude/skills/
+cp -r git-commit-push-pr ~/.claude/skills/
 
 # Or install all skills
-for d in ai/*/; do cp -r "$d" ~/.claude/skills/; done
+for d in */; do cp -r "$d" ~/.claude/skills/; done
 ```
 
 ## Usage
