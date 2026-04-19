@@ -41,7 +41,17 @@ Skills for consistent Git workflows, automated releases, and GitHub Actions pipe
 | `git-commit-push-pr` | Git commit, push, and PR workflow |
 | `git-github-release` | GitHub release automation |
 | `git-github-actions-claude` | GitHub Actions with Claude integration |
+| `merge-main` | Merge origin/main into current branch and resolve conflicts |
 | `bump-version` | Version bumping automation |
+
+### TypeScript & Next.js
+
+Best practices for TypeScript strict-mode development and Next.js 15 App Router patterns. Covers type safety, Zod integration, Prisma types, server vs client components, server actions, data fetching, caching, and streaming.
+
+| Skill | Description |
+|-------|-------------|
+| `typescript-best-practices` | TypeScript strict-mode: types, Zod, Prisma, React typing conventions |
+| `nextjs-best-practices` | Next.js 15 App Router: server/client components, server actions, caching, routing |
 
 ### Infrastructure
 
@@ -55,11 +65,12 @@ Skills for containerisation, observability, and security. Covers Docker Compose 
 
 ### Code Quality
 
-Review and refactoring skills that apply consistent standards across backend and frontend code.
+Review and refactoring skills that apply consistent standards across backend and frontend code. The `learnt` skill extracts lessons from the current session and saves them to the right place — memories, CLAUDE.md, or global skill files.
 
 | Skill | Description |
 |-------|-------------|
 | `code-review` | Code review checklists for backend and frontend |
+| `learnt` | Extract session lessons and save them to the right place |
 
 ### WordPress
 
@@ -101,7 +112,7 @@ Skills for improving written output. The humanizer removes AI-sounding patterns 
 
 | Skill | Description |
 |-------|-------------|
-| `writing-humanizer` | Humanize AI-generated text |
+| `humanizer` | Humanize AI-generated text |
 | `writing-technical-writer` | Technical writing style and structure |
 
 ## Installation
