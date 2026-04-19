@@ -1,5 +1,0 @@
-{
-  "name": "php",
-  "description": "PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, and PSR standards",
-  "version": "1.0.0"
-}

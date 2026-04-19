@@ -1,5 +1,0 @@
-{
-  "name": "docker",
-  "description": "Docker and Docker Compose configuration, healthchecks, and service management",
-  "version": "1.1.0"
-}

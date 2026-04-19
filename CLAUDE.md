@@ -4,59 +4,71 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Repository Purpose
 
-This is a Claude Code **plugin marketplace** — a collection of reusable skill plugins distributed via the `/plugin` command. It is not a runnable application; there are no build or test commands.
+This is a collection of reusable Claude Code skills, intended to be installed as global skills in `~/.claude/skills/`. It is not a runnable application; there are no build or test commands.
 
 ## Structure
 
-The repo root contains a `.claude-plugin/marketplace.json` that catalogues all plugins. Each plugin is a top-level directory with its own `.claude-plugin/plugin.json` manifest and a `skills/` subdirectory:
+All skills live at the repo root. Skills from multi-skill groups are prefixed with the group name:
 
 ```
 repo root/
-├── .claude-plugin/
-│   └── marketplace.json       # marketplace catalogue
+├── api/
+├── code-review/
+├── docker/
+├── git-commit-push-pr/
+├── git-github-release/
 ├── laravel/
-│   ├── .claude-plugin/
-│   │   └── plugin.json        # plugin manifest
-│   └── skills/
-│       └── laravel/
-│           ├── SKILL.md
-│           └── references/    # optional
+├── laravel-testing/
+├── marketing-copywriting/
+├── marketing-content-strategy/
 └── ...
 ```
 
-### Plugins
+Each skill directory contains a `SKILL.md` and an optional `references/` subdirectory.
 
-- **`laravel`** — Laravel backend conventions: models, controllers, actions, resources, migrations, testing
-- **`inertia`** — Inertia.js page props, forms, shared data, navigation
-- **`laravel-sail`** — Laravel Sail Docker commands and service management
+### Skills
+
 - **`api`** — RESTful API design conventions and best practices
 - **`code-review`** — Code review checklists for backend and frontend
-- **`git`** — Git workflow: commit-push-PR, GitHub releases
+- **`docker`** — Docker Compose healthchecks, service dependencies, container readiness
+- **`git-commit-push-pr`** — Git commit, push, and PR workflow
+- **`git-github-actions-claude`** — GitHub Actions with Claude integration
+- **`git-github-release`** — GitHub release automation
+- **`inertia`** — Inertia.js page props, forms, shared data, navigation
+- **`laravel`** — Laravel backend conventions: models, controllers, actions, resources, migrations
+- **`laravel-testing`** — Laravel testing: factories, unit tests, Inertia testing
+- **`laravel-sail`** — Laravel Sail Docker commands and service management
+- **`marketing-content-repurposer`** — Repurpose content across platforms
+- **`marketing-content-strategy`** — Content strategy planning
+- **`marketing-copywriting`** — Copywriting frameworks and guides
+- **`marketing-email-sequence`** — Email sequence writing
+- **`marketing-linkedin-content`** — LinkedIn post creation
+- **`marketing-reply-drafter`** — Reply drafting for social media
+- **`marketing-seo-audit`** — SEO auditing checklist
+- **`marketing-x-content`** — X (Twitter) post creation
 - **`monitoring`** — Observability, metrics, structured logging, alerting
+- **`php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
+- **`saas-go-to-market`** — Go-to-market strategy
+- **`saas-launch-checklist`** — Launch readiness checklist
+- **`saas-pricing-strategy`** — Pricing strategy frameworks
+- **`saas-prd`** — SaaS PRD framework
 - **`security`** — Security auditing and secure coding practices
 - **`webhook`** — Webhook implementation with Standard Webhooks
-- **`php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
 - **`wordpress`** — WordPress theme/plugin development, Gutenberg, hooks
-- **`docker`** — Docker Compose healthchecks, service dependencies, container readiness
-- **`marketing`** — Social media content (X, LinkedIn), copywriting, content strategy, email sequences, SEO auditing
-- **`saas`** — SaaS PRD framework, go-to-market strategy, launch readiness checklist, pricing strategy
+- **`writing-humanizer`** — Humanize AI-generated text
+- **`writing-technical-writer`** — Technical writing style and structure
+- **`bump-version`** — Version bumping automation
 
-### Usage
+### Installing as Global Skills
 
-Add the marketplace and install plugins:
-
-```
-/plugin marketplace add paulund/ai
-/plugin install laravel@paulund-ai
-```
-
-Or for local development, use `--plugin-dir`:
+Copy the skills you want to `~/.claude/skills/`:
 
 ```bash
-claude --plugin-dir ./laravel
+cp -r laravel ~/.claude/skills/
+cp -r git-commit-push-pr ~/.claude/skills/
+# or copy all (excluding CLAUDE.md and README.md)
+for d in */; do cp -r "$d" ~/.claude/skills/; done
 ```
-
-Skills are namespaced by plugin name (e.g. `/laravel:laravel`, `/git:commit-push-pr`).
 
 ## Skill Authoring Rules
 
