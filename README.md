@@ -1,73 +1,63 @@
-# claude-plugins
+# claude-skills
 
-Personal Claude Code plugins for Laravel, Inertia.js, and related development workflows.
+Personal Claude Code global skills for Laravel, Inertia.js, and related development workflows.
 
-> **Note:** The `react` plugin has been removed. For React/Next.js frontend work, use the [Vercel best practices skill](https://vercel.com/docs) instead, which covers React, Next.js, and deployment patterns with first-party guidance.
+## Skills
 
-## Plugins
-
-| Plugin | Description |
-|--------|-------------|
-| `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations, and testing with Pest |
-| `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
+| Skill | Description |
+|-------|-------------|
+| `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations |
+| `laravel-testing` | Testing with Pest: factories, unit tests, Inertia testing |
 | `laravel-sail` | Sail commands, docker-compose, service configuration, troubleshooting |
+| `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
 | `api` | RESTful API design conventions, HTTP methods, status codes, and best practices |
 | `code-review` | Code review checklists for backend and frontend |
-| `git` | Git workflow: commit-push-PR and GitHub release automation |
+| `docker` | Docker Compose healthchecks, service dependencies, container readiness |
+| `git-commit-push-pr` | Git commit, push, and PR workflow |
+| `git-github-release` | GitHub release automation |
+| `git-github-actions-claude` | GitHub Actions with Claude integration |
 | `monitoring` | Observability, metrics, structured logging, and alerting patterns |
 | `security` | Security auditing, vulnerability scanning, and secure coding practices |
 | `webhook` | Webhook implementation with Standard Webhooks conventions |
+| `php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards |
 | `wordpress` | WordPress theme and plugin development, Gutenberg blocks, hooks and filters |
+| `marketing-content-repurposer` | Repurpose content across platforms |
+| `marketing-content-strategy` | Content strategy planning |
+| `marketing-copywriting` | Copywriting frameworks and guides |
+| `marketing-email-sequence` | Email sequence writing |
+| `marketing-linkedin-content` | LinkedIn post creation |
+| `marketing-reply-drafter` | Reply drafting for social media |
+| `marketing-seo-audit` | SEO auditing checklist |
+| `marketing-x-content` | X (Twitter) post creation |
+| `saas-go-to-market` | Go-to-market strategy |
+| `saas-launch-checklist` | Launch readiness checklist |
+| `saas-pricing-strategy` | Pricing strategy frameworks |
+| `saas-prd` | SaaS PRD framework |
+| `writing-humanizer` | Humanize AI-generated text |
+| `writing-technical-writer` | Technical writing style and structure |
+| `bump-version` | Version bumping automation |
 
 ## Installation
 
-### 1. Add the marketplace
-
-From within Claude Code, run:
-
-```
-/plugin marketplace add paulund/ai
-```
-
-### 2. Install plugins
-
-Install individual plugins as needed:
-
-```
-/plugin install laravel@paulund-ai
-/plugin install inertia@paulund-ai
-/plugin install laravel-sail@paulund-ai
-/plugin install api@paulund-ai
-/plugin install code-review@paulund-ai
-/plugin install git@paulund-ai
-/plugin install monitoring@paulund-ai
-/plugin install security@paulund-ai
-/plugin install webhook@paulund-ai
-/plugin install wordpress@paulund-ai
-```
-
-Or browse and install interactively via `/plugin` → **Discover** tab.
-
-### 3. Use skills
-
-Skills are namespaced by plugin name:
-
-```
-/laravel:laravel
-/git:commit-push-pr
-/git:github-release
-```
-
-## Updating
-
-```
-/plugin marketplace update paulund-ai
-```
-
-## Local development
-
-To test plugins without installing, use `--plugin-dir`:
+Clone this repo and copy any skills you want into `~/.claude/skills/`:
 
 ```bash
-claude --plugin-dir ./laravel
+git clone https://github.com/paulund/ai.git
+
+# Install individual skills
+cp -r ai/laravel ~/.claude/skills/
+cp -r ai/git-commit-push-pr ~/.claude/skills/
+
+# Or install all skills
+for d in ai/*/; do cp -r "$d" ~/.claude/skills/; done
+```
+
+## Usage
+
+Skills are invoked by name in Claude Code:
+
+```
+/laravel
+/git-commit-push-pr
+/git-github-release
 ```
