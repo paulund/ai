@@ -52,6 +52,8 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 - **`saas-launch-checklist`** — Launch readiness checklist
 - **`saas-pricing-strategy`** — Pricing strategy frameworks
 - **`saas-prd`** — SaaS PRD framework
+- **`plan`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
+- **`ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
 - **`security`** — Security auditing and secure coding practices
 - **`webhook`** — Webhook implementation with Standard Webhooks
 - **`wordpress`** — WordPress theme/plugin development, Gutenberg, hooks

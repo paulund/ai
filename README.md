@@ -63,6 +63,15 @@ Skills for containerisation, observability, and security. Covers Docker Compose 
 | `monitoring` | Observability, metrics, structured logging, and alerting patterns |
 | `security` | Security auditing, vulnerability scanning, and secure coding practices |
 
+### Dev Loop
+
+Skills for autonomous feature development. `plan` turns an idea into dependency-ordered GitHub issues; `ship` picks the next ready issue, implements it with TDD, runs the quality gate, and opens a reviewed PR — designed to run repeatedly via `/loop /ship`.
+
+| Skill | Description |
+|-------|-------------|
+| `plan` | Turn an idea into vertical-sliced GitHub issues ready for the ship loop |
+| `ship` | Pick the next AFK issue, implement with TDD, run quality gate, open PR |
+
 ### Code Quality
 
 Review and refactoring skills that apply consistent standards across backend and frontend code. The `learnt` skill extracts lessons from the current session and saves them to the right place — memories, CLAUDE.md, or global skill files.
