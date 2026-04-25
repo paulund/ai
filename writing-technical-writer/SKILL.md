@@ -1,5 +1,5 @@
 ---
-name: technical-writer
+name: writing-technical-writer
 description: Use when creating technical documentation, guides, tutorials, API docs, or blog posts about software products and services.
 ---
 
