@@ -12,12 +12,12 @@ All skills live at the repo root. Skills from multi-skill groups are prefixed wi
 
 ```
 repo root/
-├── api/
+├── dev-api/
 ├── code-review/
-├── docker/
+├── dev-docker/
 ├── git-commit-push-pr/
 ├── git-github-release/
-├── laravel/
+├── dev-laravel/
 ├── laravel-testing/
 ├── marketing-copywriting/
 ├── marketing-content-strategy/
@@ -28,16 +28,24 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 
 ### Skills
 
-- **`api`** — RESTful API design conventions and best practices
+- **`ai-ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
+- **`ai-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
+- **`bump-version`** — Version bumping automation
 - **`code-review`** — Code review checklists for backend and frontend
-- **`docker`** — Docker Compose healthchecks, service dependencies, container readiness
+- **`dev-api`** — RESTful API design conventions and best practices
+- **`dev-docker`** — Docker Compose healthchecks, service dependencies, container readiness
+- **`dev-inertia`** — Inertia.js page props, forms, shared data, navigation
+- **`dev-laravel`** — Laravel backend conventions: models, controllers, actions, resources, migrations
+- **`dev-php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
+- **`dev-pre-commit`** — Pre-commit hooks with Husky, lint-staged, and Prettier
+- **`dev-tdd`** — Test-driven development: red-green-refactor loop, interface design, mocking boundaries
+- **`dev-webhook`** — Webhook implementation with Standard Webhooks
+- **`dev-wordpress`** — WordPress theme/plugin development, Gutenberg, hooks
 - **`git-commit-push-pr`** — Git commit, push, and PR workflow
 - **`git-github-actions-claude`** — GitHub Actions with Claude integration
 - **`git-github-release`** — GitHub release automation
-- **`inertia`** — Inertia.js page props, forms, shared data, navigation
-- **`laravel`** — Laravel backend conventions: models, controllers, actions, resources, migrations
-- **`laravel-testing`** — Laravel testing: factories, unit tests, Inertia testing
 - **`laravel-sail`** — Laravel Sail Docker commands and service management
+- **`laravel-testing`** — Laravel testing: factories, unit tests, Inertia testing
 - **`marketing-content-repurposer`** — Repurpose content across platforms
 - **`marketing-content-strategy`** — Content strategy planning
 - **`marketing-copywriting`** — Copywriting frameworks and guides
@@ -46,27 +54,21 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 - **`marketing-reply-drafter`** — Reply drafting for social media
 - **`marketing-seo-audit`** — SEO auditing checklist
 - **`marketing-x-content`** — X (Twitter) post creation
-- **`monitoring`** — Observability, metrics, structured logging, alerting
-- **`php`** — PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards
+- **`ops-monitoring`** — Observability, metrics, structured logging, alerting
 - **`saas-go-to-market`** — Go-to-market strategy
 - **`saas-launch-checklist`** — Launch readiness checklist
 - **`saas-pricing-strategy`** — Pricing strategy frameworks
 - **`saas-prd`** — SaaS PRD framework
-- **`plan`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
-- **`ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
 - **`security`** — Security auditing and secure coding practices
-- **`webhook`** — Webhook implementation with Standard Webhooks
-- **`wordpress`** — WordPress theme/plugin development, Gutenberg, hooks
 - **`writing-humanizer`** — Humanize AI-generated text
 - **`writing-technical-writer`** — Technical writing style and structure
-- **`bump-version`** — Version bumping automation
 
 ### Installing as Global Skills
 
 Copy the skills you want to `~/.claude/skills/`:
 
 ```bash
-cp -r laravel ~/.claude/skills/
+cp -r dev-laravel ~/.claude/skills/
 cp -r git-commit-push-pr ~/.claude/skills/
 # or copy all (excluding CLAUDE.md and README.md)
 for d in */; do cp -r "$d" ~/.claude/skills/; done
