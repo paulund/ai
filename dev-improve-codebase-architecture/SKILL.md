@@ -1,5 +1,5 @@
 ---
-name: improve-codebase-architecture
+name: dev-improve-codebase-architecture
 description: Use when the user wants to improve software architecture, find refactoring opportunities, consolidate tightly-coupled modules, reduce shallow abstractions, or make a codebase more testable and AI-navigable. Language-agnostic. Produces GitHub issues labeled per the `github-triage` scheme, ready for an AFK agent.
 ---
 

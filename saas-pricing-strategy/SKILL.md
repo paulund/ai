@@ -1,5 +1,5 @@
 ---
-name: pricing-strategy
+name: saas-pricing-strategy
 description: Use when making SaaS pricing decisions, structuring pricing tiers, choosing a value metric, planning a price increase, or designing a pricing page. Produces a pricing recommendation with tier structure, value metric rationale, and pricing page guidance.
 ---
 

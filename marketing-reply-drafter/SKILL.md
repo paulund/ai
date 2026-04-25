@@ -1,5 +1,5 @@
 ---
-name: reply-drafter
+name: marketing-reply-drafter
 description: Use when drafting replies to social media posts on X or LinkedIn that add genuine value to the conversation. Produces 2-3 reply options with different angles for direct copy-paste.
 ---
 

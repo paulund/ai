@@ -1,5 +1,5 @@
 ---
-name: seo-audit
+name: marketing-seo-audit
 description: Use when auditing a website for SEO issues, diagnosing ranking problems, reviewing technical SEO health, or checking on-page optimisation. Produces a prioritised list of findings with specific actions.
 ---
 

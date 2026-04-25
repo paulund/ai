@@ -1,5 +1,5 @@
 ---
-name: email-sequence
+name: marketing-email-sequence
 description: Use when creating email sequences, drip campaigns, welcome flows, onboarding emails, trial nurture sequences, or re-engagement campaigns. Produces complete sequences with subject lines, preview text, timing, and email body copy.
 ---
 

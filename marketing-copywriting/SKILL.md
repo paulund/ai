@@ -1,5 +1,5 @@
 ---
-name: copywriting
+name: marketing-copywriting
 description: Use when writing marketing copy for landing pages, feature sections, headlines, CTAs, product descriptions, or any web page where the goal is to convert visitors into users or customers.
 ---
 

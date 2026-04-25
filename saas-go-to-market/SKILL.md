@@ -1,5 +1,5 @@
 ---
-name: go-to-market
+name: saas-go-to-market
 description: Use when planning a go-to-market strategy for a SaaS product, defining positioning and messaging, choosing channels, planning a launch, or building a 90-day marketing plan. Produces a structured GTM document with positioning, channels, launch phases, and metrics.
 ---
 

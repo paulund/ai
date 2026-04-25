@@ -1,5 +1,5 @@
 ---
-name: content-strategy
+name: marketing-content-strategy
 description: Use when planning a content strategy, defining content pillars, building a content calendar, deciding what to write about, or aligning content output with business goals. Produces a structured, actionable content plan.
 ---
 

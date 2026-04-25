@@ -1,5 +1,5 @@
 ---
-name: commit-push-pr
+name: git-commit-push-pr
 description: Use when the user wants to commit staged or unstaged changes, push a branch, and open a pull request in one step.
 ---
 
