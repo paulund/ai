@@ -147,37 +147,7 @@ EOF
 )"
 ```
 
-### Step 8 — Runtime validation with Chrome DevTools MCP
-
-If the changes touch any route in `app/` or `src/app/` (or pages in older routing):
-
-1. Start the dev server (`pnpm dev`) — in the background
-2. Wait for it to be ready
-3. For each affected route, use Chrome DevTools MCP to:
-   - Navigate to the route
-   - Check **console logs** — no errors or unexpected warnings
-   - Check **network** — no 4xx/5xx responses
-   - Check **accessibility tree** — no critical issues
-   - Capture a **screenshot**
-4. Stop the dev server
-
-Post a PR comment summarising the runtime check:
-
-```markdown
-## Runtime check (Chrome DevTools MCP)
-
-**Routes verified:** `/tasks`, `/tasks/new`
-
-- Console: clean ✅
-- Network: all 200 ✅
-- A11y: no critical issues ✅
-
-<screenshot attachment>
-```
-
-If any check fails, treat it as a quality-gate failure and go back to Step 4's Stop-the-Line triage.
-
-### Step 9 — Transition and loop
+### Step 8 — Transition and loop
 
 - Transition the issue: remove `in-progress`, add `in-review`
 - Return to Step 1
@@ -206,8 +176,8 @@ Stop and leave the branch for the user in these cases:
 Before implementing, always read the repo's `CLAUDE.md` if present. It overrides generic guidance.
 
 Framework rules apply automatically via global skills:
-- `~/.claude/skills/nextjs-best-practices.md`
-- `~/.claude/skills/typescript-best-practices.md`
+- `~/.claude/skills/dev-nextjs.md`
+- `~/.claude/skills/dev-typescript.md`
 
 If you repeatedly see a pattern these skills don't cover, tell the user — the rule belongs in one of those files.
 
