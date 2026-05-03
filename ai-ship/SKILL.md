@@ -119,6 +119,32 @@ Reading the skill files at runtime (rather than inlining their text) keeps the p
 2. For **Medium** / **Low**: fix them all. Skip only if genuinely out of scope — note the reason in the PR comment.
 3. **Max 2 review-fix cycles.** If findings persist, Stop-the-Line per Step 4's rules and leave the branch for the user.
 
+**Create GitHub issues for every accepted-as-is item** that isn't already tracked by an open issue. Do this before posting the PR comments so you can reference issue numbers inline.
+
+For each deferred item:
+1. Check `gh issue list --state open` for an existing issue covering it — skip if one exists, note its number
+2. If no issue exists, create one:
+
+```bash
+gh issue create \
+  --title "chore: <short description of the deferred finding>" \
+  --body "$(cat <<'EOF'
+## Context
+
+Deferred from PR #<N> review — accepted as-is because <reason>.
+
+## What to do
+
+<concrete description of the fix needed, with file:line reference>
+
+## Acceptance criteria
+
+- [ ] <specific, testable criterion>
+EOF
+)" \
+  --label "planned"
+```
+
 **Post two separate PR comments** so each can be resolved independently on GitHub:
 
 ```bash
@@ -128,8 +154,8 @@ gh pr comment <pr-number> --body "$(cat <<'EOF'
 ### Fixed
 - [list of issues fixed with file:line reference]
 
-### Accepted as-is
-- [Medium/Low items not fixed, with brief reason]
+### Accepted as-is (Low only — Critical/High/Medium must always be fixed)
+- [item — reason — tracked in #N]
 EOF
 )"
 ```
@@ -141,8 +167,8 @@ gh pr comment <pr-number> --body "$(cat <<'EOF'
 ### Fixed
 - [list of issues fixed with file:line reference]
 
-### Accepted as-is
-- [items not fixed, with brief reason]
+### Accepted as-is (Low only — Critical/High/Medium must always be fixed)
+- [item — reason — tracked in #N]
 EOF
 )"
 ```
@@ -185,7 +211,8 @@ If you repeatedly see a pattern these skills don't cover, tell the user — the 
 
 - Don't skip the quality gate even once — it's the contract
 - Don't stuff AI output into the PR description
-- Don't create new issues from bugs found during review — fix them on the current PR
+- Don't defer Critical/High/Medium findings to issues — fix them on the current PR or Stop-the-Line
+- Do create issues for Low findings that are genuinely out of scope — don't silently drop them
 - Don't pick `hitl` issues autonomously
 - Don't force-push to a branch that already has a PR open unless the user asks
 - Don't merge the PR — merging is always a human decision
