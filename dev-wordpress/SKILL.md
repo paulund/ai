@@ -11,16 +11,6 @@ description: Use when developing WordPress themes, plugins, customizing Gutenber
 4. **Optimize** - Cache, query optimization, asset optimization
 5. **Test & secure** - Security audit, performance testing, compatibility checks
 
-## Reference Guide
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| Theme Development | `references/theme-development.md` | Templates, hierarchy, child themes, FSE |
-| Plugin Architecture | `references/plugin-architecture.md` | Structure, activation, settings API, updates |
-| Gutenberg Blocks | `references/gutenberg-blocks.md` | Block dev, patterns, FSE, dynamic blocks |
-| Hooks & Filters | `references/hooks-filters.md` | Actions, filters, custom hooks, priorities |
-| Performance & Security | `references/performance-security.md` | Caching, optimization, hardening, backups |
-
 ## Constraints
 
 ### MUST DO

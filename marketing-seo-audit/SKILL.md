@@ -5,13 +5,13 @@ description: Use when auditing a website for SEO issues, diagnosing ranking prob
 
 ## Core Workflow
 
-1. **Gather site context** — ask about the site type (SaaS, content, e-commerce, local), business goals, priority keywords or pages, and what is known about current issues.
-2. **Determine audit scope** — full site audit, specific page audit, or targeted check (e.g., only technical SEO, or only on-page).
-3. **Check technical foundations** — crawlability, indexation, Core Web Vitals, HTTPS, URL structure.
-4. **Review on-page elements** — title tags, meta descriptions, heading structure, content quality, internal linking, image alt text.
-5. **Assess content quality** — E-E-A-T signals, topical depth, keyword targeting alignment.
-6. **Load the checklist reference** — read `references/seo-audit-checklist.md` for the full checklist.
-7. **Output prioritised findings** — group by impact (critical/important/minor), with specific fix instructions for each.
+1. Gather site context — type, goals, known issues
+2. Determine scope — full, page-level, or targeted
+3. Check technical foundations
+4. Review on-page elements
+5. Assess content quality
+6. Load `references/seo-audit-checklist.md`
+7. Output prioritised findings by impact
 
 ---
 

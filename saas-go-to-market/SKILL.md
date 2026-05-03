@@ -86,44 +86,27 @@ Do not skip to phase 5. Each phase builds the evidence and confidence needed for
 
 ## Launch Phases in Detail
 
-### Pre-launch (before full public launch)
+### Pre-launch
 
-Goals: build an audience, gather evidence, create launch assets.
-
-- Build a landing page with email capture
-- Define the waitlist incentive (early pricing, feature input, founding member status)
-- Identify and engage 3-5 beta users who will provide case studies
-- Create launch content (demo video, screenshots, testimonials)
-- Prepare email sequence for waitlist-to-active users
-- Identify key communities, newsletters, and publications to reach on launch day
+- Landing page with email capture
+- Waitlist incentive
+- 3-5 beta users for case studies
+- Launch content (demo, screenshots, testimonials)
+- Email sequence for waitlist
 
 ### Launch day
 
-Goals: maximum distribution in a single coordinated push.
-
 - Email waitlist
-- Post on all rented channels simultaneously
-- Submit to Product Hunt if ready (requires real engagement, not just self-promotion)
-- Reach out to borrowed channels (newsletters, communities) who agreed to share
-- Engage actively with all responses and comments for the first 48 hours
-- Monitor for technical issues — launch traffic finds edge cases
+- Post on rented channels simultaneously
+- Product Hunt if ready
+- Engage with responses for 48 hours
+- Monitor for technical issues
 
-### Post-launch: first 30/60/90 days
+### Post-launch
 
-30 days: Focus on activation and first retention signal
-- Track which users reach the activation milestone
-- Identify where users drop off and fix the biggest obstacle
-- Collect feedback from every churned trial user
-
-60 days: Focus on conversion optimisation
-- Test pricing page changes
-- Improve the onboarding sequence based on activation data
-- Start content and SEO foundation
-
-90 days: Focus on sustainable acquisition
-- Identify which channel drove the highest quality signups
-- Double down on the 1-2 channels with best signal
-- Start building the case study library
+- **30 days:** activation and retention. Track activation milestone, fix biggest drop-off, collect churn feedback.
+- **60 days:** conversion. Test pricing, improve onboarding, start SEO.
+- **90 days:** acquisition. Identify best channel, double down, build case studies.
 
 ---
 

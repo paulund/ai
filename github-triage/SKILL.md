@@ -91,15 +91,7 @@ An issue can only move along these transitions. The maintainer can override any 
 
 ## Invocation
 
-The maintainer invokes `/github-triage` then describes what they want in natural language. The skill interprets the request and takes the appropriate action.
-
-Example requests:
-
-- "Show me anything that needs my attention"
-- "Let's look at #42"
-- "Move #42 to planned + afk"
-- "What's planned and afk?"
-- "Are there any unlabeled issues?"
+The user describes what they want in natural language after invoking `/github-triage`.
 
 ## Workflow: Show What Needs Attention
 
@@ -133,12 +125,7 @@ Tell the maintainer:
 - If it matches a prior out-of-scope rejection, surface that: "This is similar to `.out-of-scope/concept-name.md` — we rejected this before because X. Do you still feel the same way?"
 - A brief summary of what you found in the codebase that's relevant
 
-Then wait for the maintainer's direction. They may:
-
-- Agree and ask you to apply labels → do it
-- Want to flesh it out → start a /domain-model session
-- Override with a different state → apply their choice
-- Want to discuss → have a conversation
+Then wait for direction before acting.
 
 ### Step 3: Bug reproduction (bugs only)
 
@@ -161,12 +148,12 @@ If the issue needs to be fleshed out before it's ready for an agent, interview t
 
 Depending on the outcome:
 
-- **planned + afk** — post an agent brief comment (see [AGENT-BRIEF.md](AGENT-BRIEF.md)), apply `planned` + `afk`
-- **planned + hitl** — post a comment summarizing the task, what was established during triage, and why it needs human implementation. Use the same structure as an agent brief but note the reason it can't be delegated (e.g. requires judgment calls, external system access, design decisions, or manual testing). Apply `planned` + `hitl`.
-- **needs-info** — post triage notes with progress so far and questions for the reporter (see Needs Info Output below)
-- **wontfix (bug)** — post a polite comment explaining why, then close the issue
-- **wontfix (feature)** — write to `.out-of-scope/`, post a comment linking to it, then close the issue (see [OUT-OF-SCOPE.md](OUT-OF-SCOPE.md))
-- **needs-triage** — apply the label. Optionally leave a comment if there's partial progress to capture.
+- **planned + afk** — post agent brief, apply labels
+- **planned + hitl** — post summary + reason it needs human work, apply labels
+- **needs-info** — post triage notes with questions
+- **wontfix (bug)** — explain why, close
+- **wontfix (feature)** — write to `.out-of-scope/`, link in comment, close
+- **needs-triage** — apply label
 
 ## Workflow: Quick State Override
 

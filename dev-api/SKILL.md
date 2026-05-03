@@ -1,62 +1,60 @@
 ---
 name: dev-api
-description: Use when designing, building, documenting, or maintaining RESTful APIs — including endpoint design, OpenAPI specifications, security, and release readiness.
+description: Use when designing, building, documenting, or maintaining RESTful APIs in this project. Enforces the project's style guide, response envelopes, pagination, field naming, and release readiness.
 ---
 
 ## Core Workflow
 
-1. **Analyze requirements** — understand business needs and define required endpoints.
-2. **Design endpoints** — choose resources, HTTP methods, URL hierarchy, and versioning strategy.
-3. **Implement endpoints** — build with proper status codes, error handling, pagination, and caching.
-4. **Secure the API** — enforce HTTPS, authentication, authorization, rate limiting, and input validation.
-5. **Write OpenAPI spec** — draft the specification in YAML/JSON covering all endpoints, parameters, and response schemas with examples.
-6. **Validate spec** — review for accuracy, completeness, and OAS compliance; use tooling to lint.
-7. **Test** — cover success paths, error paths, edge cases, and security scenarios.
-8. **Release** — run pre-release checklist, publish documentation, deploy.
-9. **Maintain** — monitor usage and performance, version breaking changes, deprecate responsibly, keep spec in sync.
-
-## Reference Guide
-
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
-| HTTP Methods | [references/http-methods.md](references/http-methods.md) | Deciding on appropriate HTTP methods for endpoints |
-| Resource Naming | [references/resource-naming.md](references/resource-naming.md) | Naming endpoints and structuring URL hierarchies |
-| Versioning | [references/versioning.md](references/versioning.md) | Planning breaking changes or deprecating API versions |
-| Status Codes | [references/status-codes.md](references/status-codes.md) | Choosing HTTP status codes for responses |
-| Filtering & Pagination | [references/filtering-pagination.md](references/filtering-pagination.md) | Implementing list endpoints with filtering, sorting, or pagination |
-| Response Shape | [references/response-shape.md](references/response-shape.md) | Structuring JSON response envelopes for data and errors |
-| Including Related Data | [references/including-related-data.md](references/including-related-data.md) | Implementing optional expansion of related resources |
-| Field Naming | [references/field-naming.md](references/field-naming.md) | Defining field names in request/response payloads |
-| Datetime Handling | [references/datetime-handling.md](references/datetime-handling.md) | Working with dates and times in API payloads |
-| Authentication & Tokens | [references/authentication-tokens.md](references/authentication-tokens.md) | Implementing authentication or token management |
-| Rate Limiting | [references/rate-limiting.md](references/rate-limiting.md) | Implementing request throttling or abuse prevention |
-| Security Basics | [references/security-basics.md](references/security-basics.md) | Reviewing API security or handling untrusted input |
-| Validation Errors | [references/validation-errors.md](references/validation-errors.md) | Formatting validation error responses |
-| Caching | [references/caching.md](references/caching.md) | Implementing HTTP caching for GET endpoints |
-| Idempotency | [references/idempotency.md](references/idempotency.md) | Ensuring safe retries for mutating operations |
-| Error Handling | [references/error-handling.md](references/error-handling.md) | Mapping exceptions to API error responses |
-| Documentation | [references/documentation.md](references/documentation.md) | Creating or updating API documentation |
-| Deprecation | [references/deprecation.md](references/deprecation.md) | Planning to retire or replace API endpoints |
-| Consistency Rules | [references/consistency-rules.md](references/consistency-rules.md) | Reviewing API design for style guide compliance |
-| Pre-Release Checklist | [references/pre-release-checklist.md](references/pre-release-checklist.md) | Before releasing a new API or major endpoint |
-| OpenAPI Specification | [references/openapi-specification.md](references/openapi-specification.md) | Writing, updating, or validating an OpenAPI spec |
+1. **Analyze requirements** — define resources, operations, and auth requirements.
+2. **Design endpoints** — plural nouns, hyphens, no verbs, no camelCase in URLs. Decide on versioning if breaking changes are possible.
+3. **Implement endpoints** — enforce the response shape, error envelope, pagination, field naming, and datetime rules from Constraints below.
+4. **Secure** — enforce HTTPS, validate and sanitize all inputs, and implement authentication per project requirements.
+5. **Document** — update the OpenAPI spec before any code is deployed; include request, success, and error examples.
+6. **Test** — cover success paths, error paths, edge cases, and security scenarios.
+7. **Release** — run the Pre-Release Checklist.
 
 ## Constraints
 
 ### MUST DO
 
-- Follow RESTful principles for endpoint design and HTTP method usage.
-- Use HTTPS and secure all endpoints against common vulnerabilities.
-- Document every endpoint in an OpenAPI spec with request, success, and error examples.
-- Return meaningful HTTP status codes and consistent error envelopes.
-- Validate the OpenAPI spec using tooling before publishing.
-- Paginate all list endpoints with sensible defaults and max limits.
-- Version breaking changes and communicate deprecation timelines.
+- Use `snake_case` for all JSON field names, query parameters, and error detail keys.
+- Return datetimes as UTC ISO 8601 with trailing `Z` (`YYYY-MM-DDTHH:MM:SSZ`).
+- Wrap successful responses in a consistent envelope:
+  ```json
+  {
+    "data": [ ... ],
+    "meta": { "total": 120, "page": 2 },
+    "links": { "next": "...", "prev": "..." }
+  }
+  ```
+- Wrap errors in a consistent envelope:
+  ```json
+  {
+    "error": {
+      "code": 422,
+      "message": "Validation failed",
+      "details": { "field_name": ["Error message"] }
+    }
+  }
+  ```
+- Paginate all list endpoints with `page` and `per_page` query params. Enforce sensible defaults and a max limit.
+- Return meaningful HTTP status codes and never expose stack traces, internal IDs, or secrets in responses.
+- Include a request/correlation ID header for tracing.
+- Version breaking changes with a URL prefix (`/v1/`, `/v2/`). Confirm with the user before introducing breaking changes.
+- Update the OpenAPI spec before deploying any endpoint change. Validate the spec in CI to catch drift early.
+- Use HTTPS everywhere and validate/sanitize all inputs; reject early.
 
 ### MUST NOT DO
 
-- Expose sensitive data (stack traces, internal IDs, secrets) in responses.
+- Mix pagination styles, error envelope shapes, or field casing across endpoints in the same API.
+- Use verb-based endpoint names (e.g., `/getUsers`) or camelCase in URLs.
 - Introduce breaking changes without versioning and user confirmation.
-- Use ambiguous language or omit details in API documentation.
 - Ship an endpoint without updating the OpenAPI spec.
 - Neglect testing — every endpoint needs success and failure path coverage.
+
+## Reference Guide
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| OpenAPI Specification | [references/openapi-specification.md](references/openapi-specification.md) | Writing, updating, or validating an OpenAPI spec |
+| Pre-Release Checklist | [references/pre-release-checklist.md](references/pre-release-checklist.md) | Before releasing a new API or major endpoint |

@@ -32,21 +32,6 @@ final class PostPolicy
 }
 ```
 
-## Ability Mapping
-
-| Ability  | Policy method | Typical actions          |
-|----------|--------------|--------------------------|
-| `view`   | `view()`     | show, index              |
-| `update` | `update()`   | edit, update, sync       |
-| `delete` | `delete()`   | destroy                  |
-| `create` | `create()`   | store (pass class, not instance) |
-
-For `create`, pass the model class name rather than an instance:
-
-```php
-$user->can('create', Wallet::class);
-```
-
 ## Form Request Integration
 
 ```php

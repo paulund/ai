@@ -99,19 +99,12 @@ EOF
 Rules:
 - **Keep the description clean and human-readable.** Summary + `Closes #N`. No AI output, no checklists, no screenshots.
 
-### Step 7 — Automated review (clean-context sub-agents)
+### Step 7 — Automated review
 
-Run `/review` and `/security-review` as **sub-agents** so each reads the PR diff with a fresh perspective, free of implementation bias.
+Spawn `/review` and `/security-review` as sub-agents (fresh context, read-only) so they read the PR diff without implementation bias.
 
-**Spawn both agents in parallel** (single message, two `Agent` tool calls, `subagent_type=general-purpose`, read-only):
-
-- **Agent A — PR review of `#<N>`.**
-  Prompt the agent to `Read` `~/.claude/skills/review/SKILL.md` and follow it against PR `#<N>`. It should use `gh pr view <N>` / `gh pr diff <N>` for context. **Return findings only** as a markdown table with columns: `severity | file:line | category | description | suggested fix`. No prose, no file edits.
-
-- **Agent B — Security review of `#<N>`.**
-  Prompt the agent to `Read` `~/.claude/skills/security-review/SKILL.md` and follow it against the branch vs `origin/HEAD`. Return the markdown report exactly as that skill specifies. No file edits.
-
-Reading the skill files at runtime (rather than inlining their text) keeps the prompts in sync when the standalone skills change.
+- Agent A: read `~/.agents/skills/review/SKILL.md`, run against PR `#<N>`, return findings as `severity | file:line | category | description | suggested fix`
+- Agent B: read `~/.agents/skills/security-review/SKILL.md`, run against branch vs `origin/HEAD`, return report per that skill
 
 **Fix loop (parent context — implementation memory is still loaded):**
 

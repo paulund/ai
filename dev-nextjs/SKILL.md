@@ -93,13 +93,9 @@ export const getProject = cache(async (id: string) => {
 
 ## Queries Layer
 
-In apps with more than a handful of pages, extract all Prisma reads into `src/lib/queries/`, one file per model. Pages call typed query functions — they do not import the database client directly. Mutations stay in `src/lib/actions/`.
+Extract all Prisma reads into `src/lib/queries/` (one file per model). Pages call typed query functions — they never import the database client directly. Mutations stay in `src/lib/actions/`.
 
-Rule: reads in `lib/queries/`, writes in `lib/actions/`, no page imports `@/lib/db` directly.
-
-`lib/queries/` functions must NOT have `'use server'`. They are plain async functions called directly from server components. `'use server'` belongs only in `lib/actions/` — for mutations and any function called from a client component. If you see a read-only function inside `lib/actions/`, move it to the corresponding subdirectory in `lib/queries/`.
-
-Benefits: all read shapes for a model are in one place, common queries are defined once, and query functions are testable without rendering components. Paginated queries return `{ items, total }`. If a function in `lib/actions/` only reads, move it to `lib/queries/`.
+Rule: reads in `lib/queries/`, writes in `lib/actions/`, no page imports `@/lib/db` directly. `lib/queries/` functions must NOT have `'use server'`.
 
 ## Caching
 

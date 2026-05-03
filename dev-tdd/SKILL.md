@@ -7,13 +7,9 @@ description: Use when building features or fixing bugs using test-driven develop
 
 ## Philosophy
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+Tests verify behavior through public interfaces, not implementation details. Good tests survive refactors because they describe _what_ the system does, not _how_.
 
-**Good tests** are integration-style: they exercise real code paths through public APIs and describe _what_ the system does, not _how_. These tests survive refactors because they don't care about internal structure.
-
-**Bad tests** are coupled to implementation — mocking internal collaborators, testing private methods, or verifying via external means (e.g. querying the database directly instead of through the interface). Warning sign: your test breaks when you refactor but behavior hasn't changed.
-
-See references for examples and guidelines.
+Warning sign: tests break during refactors where behavior hasn't changed.
 
 ## Reference Guide
 
