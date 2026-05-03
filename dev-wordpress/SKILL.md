@@ -1,6 +1,7 @@
 ---
 name: dev-wordpress
 description: Use when developing WordPress themes, plugins, customizing Gutenberg blocks, implementing WooCommerce features, or optimizing WordPress performance and security.
+category: standards
 ---
 
 ## Core Workflow

@@ -1,6 +1,7 @@
 ---
 name: saas-prd
 description: Use when generating PRDs for standard SaaS features, planning feature requirements, or documenting decisions for authentication, billing, teams, email flows, legal, notifications, API, and other table-stakes SaaS functionality. Use this before starting implementation to document the decisions that vary per project.
+category: saas
 ---
 
 ## Core Workflow

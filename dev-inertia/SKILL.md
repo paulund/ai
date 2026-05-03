@@ -1,6 +1,7 @@
 ---
 name: dev-inertia
 description: Use when building Inertia.js pages and components, including page props, forms, shared data, navigation, partial reloads, and deferred props.
+category: standards
 ---
 
 ## Core Workflow

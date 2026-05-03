@@ -1,6 +1,7 @@
 ---
 name: dev-pre-commit
 description: Use when setting up pre-commit hooks, configuring Husky, adding lint-staged, or enabling commit-time formatting, type checking, or testing. Installs and wires up Husky v9, lint-staged with Prettier, and optionally typecheck and test scripts.
+category: standards
 ---
 
 # Setup Pre-Commit Hooks

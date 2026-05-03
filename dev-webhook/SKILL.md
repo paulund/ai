@@ -1,6 +1,7 @@
 ---
 name: dev-webhook
 description: Use when developing outgoing webhooks for applications and services.
+category: standards
 ---
 
 ## Core Workflow

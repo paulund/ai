@@ -1,6 +1,7 @@
 ---
 name: git-merge-main
 description: Merge origin/main into the current branch and resolve all conflicts. Use when the user wants to sync their branch with main, pull in upstream changes, or says "merge in main", "sync with main", "rebase from main", or "update from main". Always invoke this skill for merge/sync workflows — don't just run git merge manually.
+category: workflow
 ---
 
 # Merge origin/main into current branch

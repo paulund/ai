@@ -1,6 +1,7 @@
 ---
 name: dev-php
 description: Use when writing or fixing PHP code, implementing classes, traits, or interfaces, applying PSR standards, or working with PHP 8.3+ patterns like readonly properties, enums, named arguments, match expressions, and union types.
+category: standards
 ---
 
 ## Core Workflow

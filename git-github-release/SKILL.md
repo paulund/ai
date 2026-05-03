@@ -1,6 +1,7 @@
 ---
 name: git-github-release
 description: Use when the user wants to publish a new GitHub release, cut a version tag, or ship a new version using semver.
+category: workflow
 ---
 
 ## Core Workflow

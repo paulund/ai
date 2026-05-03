@@ -1,6 +1,7 @@
 ---
 name: dev-nextjs
 description: Next.js 15 App Router best practices. Auto-load when working in app/, src/app/, components/, server actions, or route handlers. Trigger on user request or when writing any Next.js-specific code.
+category: standards
 ---
 
 # Next.js 15 App Router Best Practices

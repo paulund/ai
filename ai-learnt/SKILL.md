@@ -1,6 +1,7 @@
 ---
 name: ai-learnt
 description: Use when the user says "learnt", "remember that", "teach claude", "update the rules", "save that lesson", or at the end of a session where Claude was corrected or a pattern was validated. Extracts lessons from the current session and saves them to the right place so Claude gets smarter over time. Always invoke this skill — don't just write memories ad-hoc.
+category: workflow
 ---
 
 # Learnt — Session Teaching Loop
