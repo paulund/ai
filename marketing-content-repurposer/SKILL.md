@@ -1,6 +1,7 @@
 ---
 name: marketing-content-repurposer
 description: Use when repurposing a blog post, article, newsletter, video transcript, or long-form content into social media posts for X, LinkedIn, or both platforms. Takes existing content and creates platform-optimised social posts that stand alone without requiring the reader to have seen the source.
+category: marketing
 ---
 
 ## Core Workflow

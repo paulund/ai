@@ -1,6 +1,7 @@
 ---
 name: ai-pr-learnt
 description: Use at the end of a sprint or week to extract lessons from PR review comments. Scans pull request reviews and inline comments from the last 7 days across all your repos, picks out corrections, decisions, and validated patterns, and saves them to the right place so Claude gets smarter over time.
+category: workflow
 ---
 
 # PR Learnt — Review Comment Teaching Loop

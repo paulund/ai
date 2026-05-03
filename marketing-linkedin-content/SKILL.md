@@ -1,6 +1,7 @@
 ---
 name: marketing-linkedin-content
 description: Use when writing LinkedIn posts from an idea, work experience, observation, or topic the user provides. Produces 2-3 variations with different hooks for direct copy-paste into LinkedIn.
+category: marketing
 ---
 
 ## Core Workflow

@@ -1,6 +1,7 @@
 ---
 name: dev-laravel
 description: Use when building or modifying Laravel applications, including routes, controllers, models, migrations, jobs, actions, and API resources.
+category: standards
 ---
 
 ## Core Workflow

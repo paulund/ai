@@ -1,6 +1,7 @@
 ---
 name: dev-tdd
 description: Use when building features or fixing bugs using test-driven development, when the user mentions "red-green-refactor", wants integration-style tests, or asks for test-first development.
+category: standards
 ---
 
 # Test-Driven Development

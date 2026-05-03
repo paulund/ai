@@ -1,6 +1,7 @@
 ---
 name: saas-launch-checklist
 description: Use when auditing launch readiness for a SaaS product, doing a pre-launch review, or checking what is missing before going live. Produces a categorised checklist with status for each item and clear distinction between must-have blockers and post-launch additions.
+category: saas
 ---
 
 ## Core Workflow

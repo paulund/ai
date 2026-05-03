@@ -1,6 +1,7 @@
 ---
 name: marketing-x-content
 description: Use when writing X/Twitter posts, threads, or long-form articles from an idea, news item, article URL, or topic the user provides. Produces 2-3 variations with different hooks and formats for direct copy-paste into X.
+category: marketing
 ---
 
 ## Core Workflow

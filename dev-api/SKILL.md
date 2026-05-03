@@ -1,6 +1,7 @@
 ---
 name: dev-api
 description: Use when designing, building, documenting, or maintaining RESTful APIs in this project. Enforces the project's style guide, response envelopes, pagination, field naming, and release readiness.
+category: standards
 ---
 
 ## Core Workflow

@@ -1,6 +1,7 @@
 ---
 name: dev-improve-codebase-architecture
 description: Use when the user wants to improve software architecture, find refactoring opportunities, consolidate tightly-coupled modules, reduce shallow abstractions, or make a codebase more testable and AI-navigable. Language-agnostic. Produces GitHub issues labeled per the `github-triage` scheme, ready for an AFK agent.
+category: workflow
 ---
 
 # Improve Codebase Architecture
@@ -54,9 +55,11 @@ Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't
 
 Apply the **deletion test** to anything you suspect is shallow: would deleting it concentrate complexity, or just move it? A "yes, concentrates" is the signal you want.
 
-### 2. Present candidates
+### 2. Ship candidates as issues
 
-Present a numbered list of deepening opportunities. For each candidate:
+Present a numbered list of deepening opportunities so the user can see what was found. Then immediately create a GitHub issue for **every** candidate. Do not wait for the user to pick — the goal is to get every opportunity into the backlog.
+
+For each candidate, the issue body must include:
 
 - **Files** — which files/modules are involved
 - **Problem** — why the current architecture is causing friction
@@ -67,34 +70,37 @@ Use the project's domain vocabulary (from `CONTEXT.md` if it exists; otherwise t
 
 **ADR conflicts**: if a candidate contradicts an existing ADR, only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly (e.g. _"contradicts ADR-0007 — but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
 
-Do NOT propose interfaces yet. Ask the user: "Which of these would you like to explore?"
+**Labels** — `enhancement` + `planned`. These are briefs for future grilling, not ready-for-agent yet.
 
-### 3. Grilling loop
+### 3. Grilling loop (optional — user-initiated)
 
-Once the user picks a candidate, load [references/deepening.md](references/deepening.md) and drop into a grilling conversation. Walk the design tree with them:
+If the user later picks a candidate from the backlog, load [references/deepening.md](references/deepening.md) and walk the design tree with them:
 
 1. **Classify the dependencies** using the four categories in `deepening.md` (in-process, local-substitutable, remote-but-owned, true-external). The category determines what sits behind the seam and how tests cross it.
 2. **Shape the deepened module** — what the new interface exposes, what stays inside.
 3. **Decide the testing strategy** — which old tests get deleted, which new tests at the new interface replace them. Follow "replace, don't layer."
 4. **Apply seam discipline** — only introduce a port if at least two adapters are justified.
 
+After grilling, update the issue: change the state label from `planned` to `ready-for-agent` (or `ready-for-human` if human judgment is still needed), and append the grilling output to the body.
+
 If the user wants to explore alternative shapes for the deepened module's interface, hand off to the sibling [`design-interface`](../design-interface/SKILL.md) skill, which generates radically different interface candidates in parallel and compares them.
 
-### 4. Ship to GitHub
+### 4. Create the issues
 
-Once a candidate has been grilled to the point that the deepened module's shape, dependency strategy, and testing strategy are all settled, turn it into a GitHub issue using `gh`. Infer the repo from `git remote`. Confirm with the user before creating.
+Use `gh issue create` for every candidate found in Step 2. Infer the repo from `git remote`. Do not confirm with the user — create them immediately.
 
-**Labels** (from the [`github-triage`](../github-triage/SKILL.md) scheme — apply exactly **one** state label and **one** category label):
+**Labels**:
 
 | Label | When |
 |---|---|
 | `enhancement` (category) | Always — refactors are enhancements, not bugs. |
-| `ready-for-agent` (state) | Default for refactors emerging from this skill. The grilling loop produces a complete brief; an AFK agent can pick it up. |
+| `planned` (state) | Default for issues created in Step 2. The candidate has been identified but not yet grilled. |
+| `ready-for-agent` (state) | Only after the optional grilling loop (Step 3) has settled the design. |
 | `ready-for-human` (state) | Use when the work needs human judgment the brief can't pin down — risky migration steps, coordination with other teams, or design calls deferred during grilling. Note the reason in the brief. |
 
-Do not use `needs-triage` or `needs-info` — by the time you reach step 4 the issue is already specified. If something blocks specification, return to step 3.
+Do not use `needs-triage` or `needs-info` — the candidate is already scoped enough to go into the backlog.
 
-**Issue body** — open with the AI disclaimer, then a complete brief. The grilling loop has already produced everything below; this step just packages it.
+**Issue body** — open with the AI disclaimer, then a complete brief. If the issue is created from Step 2 (before grilling), include the candidate summary and mark sections like "Dependency category", "Seam & adapters", and "Testing strategy" as `TBD — to be filled during grilling loop.`
 
 ```markdown
 > *This was generated by AI during triage.*
@@ -146,11 +152,10 @@ After creating each issue, print the URL so the user can open it.
 - Use the vocabulary from `references/language.md` exactly (module, interface, implementation, depth, seam, adapter, leverage, locality). Treat drift as a bug.
 - Apply the deletion test before flagging any module as shallow. Suspicion is not evidence.
 - Read `CONTEXT.md` and any `docs/adr/` *if they exist* before exploring.
-- Present candidates as a numbered list and wait for the user to pick before going deeper.
-- In step 3, classify dependencies against the four categories in `references/deepening.md` before proposing a seam.
-- In step 4, label every issue with exactly one category (`enhancement`) and exactly one state (`ready-for-agent` or `ready-for-human`), per the `github-triage` scheme.
+- In step 2, create a GitHub issue for every candidate found. Do not wait for the user to pick.
+- In step 3 (if the user initiates grilling), classify dependencies against the four categories in `references/deepening.md` before proposing a seam.
+- In step 4, label every issue with exactly one category (`enhancement`) and exactly one state (`planned`, `ready-for-agent`, or `ready-for-human`), per the `github-triage` scheme.
 - Open every GitHub issue body with the AI disclaimer line: `> *This was generated by AI during triage.*`
-- Confirm with the user before running `gh issue create`. Show the title, labels, and body first.
 
 **MUST NOT DO**
 

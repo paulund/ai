@@ -1,6 +1,7 @@
 ---
 name: ai-to-prd
 description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub issues ready for the /ship loop, with marketing requirements captured alongside. Use when the user wants to plan a feature, break down work, or convert an idea into issues. Trigger phrases - "/plan", "plan this feature", "break this into issues".
+category: workflow
 ---
 
 # Plan

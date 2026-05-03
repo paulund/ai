@@ -1,6 +1,7 @@
 ---
 name: dev-typescript
 description: TypeScript strict-mode best practices. Auto-load when editing *.ts or *.tsx files. Covers type safety patterns, Zod integration, Prisma types, and React typing conventions.
+category: standards
 ---
 
 # TypeScript Best Practices

@@ -1,6 +1,7 @@
 ---
 name: ai-ship
 description: Pick the next ready AFK GitHub issue, implement it with TDD, run the full Next.js quality gate, call /simplify, create a PR, call /review + /security-review, and verify the app at runtime with Chrome DevTools MCP. Use when the user wants to process the backlog, implement the next issue, or run the dev loop. Trigger phrases - "/ship", "ship the next issue", "work through the backlog".
+category: workflow
 ---
 
 # Ship

@@ -1,6 +1,7 @@
 ---
 name: dev-docker
 description: Use when writing or modifying Docker Compose files, configuring services, healthchecks, and container dependencies.
+category: standards
 ---
 
 ## Core Workflow
