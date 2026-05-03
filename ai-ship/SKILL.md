@@ -23,13 +23,40 @@ Intended to run repeatedly via `/loop /ship` until no issues remain.
 ### Step 1 — Pick the next issue
 
 ```bash
-gh issue list --label "planned,afk" --state open --json number,title,labels,body --jq 'sort_by(.labels[].name | select(test("^p[123]$")))'
+gh issue list --label "planned,afk" --state open --json number,title,labels,body
+```
+
+Then verify blockers with open/closed state — **never assume a referenced issue is open without checking**:
+
+```python
+import json, sys, re, subprocess
+
+data = json.load(sys.stdin)
+
+def get_blockers(body):
+    m = re.search(r'##\s+Blocked by\s*\n(.*?)(?=\n##|\Z)', body or '', re.DOTALL | re.IGNORECASE)
+    if not m:
+        return []
+    return re.findall(r'#(\d+)', m.group(1))
+
+def is_open(num):
+    r = subprocess.run(['gh', 'issue', 'view', num, '--json', 'state'], capture_output=True, text=True)
+    return r.returncode == 0 and json.loads(r.stdout).get('state') == 'OPEN'
+
+for issue in sorted(data, key=lambda i: next((l['name'] for l in i['labels'] if re.match(r'^p[123]$', l['name'])), 'p9')):
+    labels = [l['name'] for l in issue['labels']]
+    if 'hitl' in labels or 'blocked' in labels:
+        continue
+    open_blockers = [b for b in get_blockers(issue['body']) if is_open(b)]
+    if not open_blockers:
+        print(f"PICK: #{issue['number']} — {issue['title']}")
+        break
 ```
 
 Rules:
 - Skip any issue labelled `hitl`
 - Skip any issue labelled `blocked`
-- Skip any issue whose `Blocked by #N` references are still open
+- Skip any issue whose `Blocked by #N` references have **open** state — always query `gh issue view N --json state` to confirm; a merged/closed blocker does NOT block
 - Pick highest priority (`p1` > `p2` > `p3`)
 - If no issues match, stop cleanly and report the empty backlog
 
