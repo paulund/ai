@@ -38,8 +38,8 @@ Skills for consistent Git workflows, automated releases, and GitHub Actions pipe
 
 | Skill | Description |
 |-------|-------------|
-| `git-commit-push-pr` | Git commit, push, and PR workflow |
-| `git-github-release` | GitHub release automation |
+| `dev-commit-push-pr` | Git commit, push, and PR workflow |
+| `release-github-release` | GitHub release automation |
 | `git-github-actions-claude` | GitHub Actions with Claude integration |
 | `merge-main` | Merge origin/main into current branch and resolve conflicts |
 | `bump-version` | Version bumping automation |
@@ -134,7 +134,7 @@ cd ai
 
 # Install individual skills
 cp -r laravel ~/.claude/skills/
-cp -r git-commit-push-pr ~/.claude/skills/
+cp -r dev-commit-push-pr ~/.claude/skills/
 
 # Or install all skills
 for d in */; do cp -r "$d" ~/.claude/skills/; done
@@ -146,6 +146,6 @@ Skills are invoked by name in Claude Code:
 
 ```
 /laravel
-/git-commit-push-pr
-/git-github-release
+/dev-commit-push-pr
+/release-github-release
 ```

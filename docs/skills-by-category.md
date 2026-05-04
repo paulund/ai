@@ -8,17 +8,17 @@ Context and convention skills loaded automatically during implementation. Not ma
 
 | Skill | Description |
 |-------|-------------|
-| `dev-api` | RESTful API design conventions and best practices |
-| `dev-docker` | Docker Compose healthchecks, service dependencies, container readiness |
-| `dev-inertia` | Inertia.js page props, forms, shared data, navigation |
-| `dev-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
-| `dev-nextjs` | Next.js App Router patterns, server/client components, caching |
-| `dev-php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions |
-| `dev-pre-commit` | Pre-commit hooks with Husky, lint-staged, and Prettier |
-| `dev-tdd` | Test-driven development: red-green-refactor loop, mocking boundaries |
-| `dev-typescript` | TypeScript strict-mode: types, Zod, Prisma, React typing conventions |
-| `dev-webhook` | Webhook implementation with Standard Webhooks |
-| `dev-wordpress` | WordPress theme/plugin development, Gutenberg, hooks |
+| `standards-api` | RESTful API design conventions and best practices |
+| `standards-docker` | Docker Compose healthchecks, service dependencies, container readiness |
+| `standards-inertia` | Inertia.js page props, forms, shared data, navigation |
+| `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
+| `standards-nextjs` | Next.js App Router patterns, server/client components, caching |
+| `standards-php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions |
+| `standards-pre-commit` | Pre-commit hooks with Husky, lint-staged, and Prettier |
+| `standards-tdd` | Test-driven development: red-green-refactor loop, mocking boundaries |
+| `standards-typescript` | TypeScript strict-mode: types, Zod, Prisma, React typing conventions |
+| `standards-webhook` | Webhook implementation with Standard Webhooks |
+| `standards-wordpress` | WordPress theme/plugin development, Gutenberg, hooks |
 
 ## SDLC Workflow
 
@@ -32,14 +32,14 @@ Manually triggered skills mapped to the [Development Workflow](./development-wor
 | Dev | `dev-ship` | Pick the next ready issue, implement with TDD, open PR |
 | Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |
 | Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
-| Dev | `simplify` | Identify and remove unnecessary complexity in the codebase |
-| Review | `review` | Code review checklists for backend and frontend |
-| Review | `security-review` | Security auditing and secure coding practices review |
+| Dev | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
+| Review | `dev-review` | Code review checklists for backend and frontend |
+| Review | `dev-security-review` | Security auditing and secure coding practices review |
 | Test | `qa` | Validate requirements and function against acceptance criteria |
 | Release | `release-github-release` | GitHub release automation with changelog and version tagging |
 | Ops | `ops-monitoring` | Observability, metrics, structured logging, and alerting review |
 | Ops | `ops-triage` | Triage GitHub issues through a label-based state machine |
-| Ops | `ops-improve-architecture` | Surface architectural friction and propose refactors |
+| Ops | `ops-improve-codebase-architecture` | Surface architectural friction and propose refactors |
 | Learn | `learn-learnt` | Distil recent session lessons into skills and CLAUDE.md |
 | Learn | `learn-pr-learnt` | Review your own PRs from the last 7 days and extract learnings |
 

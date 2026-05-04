@@ -300,7 +300,7 @@ Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as
 
 ### 18. Curly Quotation Marks
 
-**Problem:** ChatGPT uses curly quotes (“...”) instead of straight quotes ("...").
+**Problem:** AI chatbots use curly quotes (“...”) instead of straight quotes ("...").
 
 **Before:**
 > He said “the project is on track” but others disagreed.

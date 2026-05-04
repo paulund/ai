@@ -4,72 +4,72 @@ A linear SDLC map showing which skills to invoke at each stage. Skills are prefi
 
 ## 1. Plan — Idea & Discovery
 
-Description: Stress-test the initial concept and generate UI/UX designs.
+Description: Stress-test the initial concept until shared understanding.
 AFK: No
 Skills:
-  - `plan-grill-me` — Interview the user relentlessly about the plan until shared understanding
-  - `plan-design-interface` — Generate UI/UX designs from requirements
+  - `ai-grill-me` — Interview the user relentlessly about the plan until shared understanding
 Context: User's initial idea or concept
+Output: Refined requirements and shared understanding
 
 ## 2. Plan — PRD to Issues
 
 Description: Define goals, features, specs, and break down into vertical-sliced GitHub issues.
 AFK: No
 Skills:
-  - `plan-to-prd` — Turn an idea into a parent PRD plus vertical-sliced GitHub issues
+  - `ai-to-prd` — Turn an idea into a parent PRD plus vertical-sliced GitHub issues
 Context: Outcome of grill me, research, and prototyping
+Output: GitHub issues
 
 ## 3. Dev — Implementation
 
 Description: Write code, run tests, open PRs, and merge to main.
 AFK: Yes
 Skills:
-  - `dev-ship` — Pick the next ready issue, implement with TDD, run quality gate, open PR
+  - `ai-ship` — Pick the next ready issue, implement with TDD, run quality gate, open PR
   - `dev-commit-push-pr` — Commit, push, and open a pull request
-  - `dev-merge-main` — Merge origin/main into the current branch and resolve conflicts
+  - `git-merge-main` — Merge origin/main into the current branch and resolve conflicts
 Context: GitHub issue
+Output: Open PR
 
-## 4. Review — Code Review
+## 4. PR Review — Code Review & Resolution
 
-Description: Automated code and security review on open PRs.
-AFK: Yes
-Skills:
-  - `review` — Code review checklists for backend and frontend
-  - `security-review` — Security auditing and secure coding practices review
-Context: Open PR
-
-## 5. Test — QA / Testing
-
-Description: Validate requirements and functionality.
+Description: Validate requirements and functionality, action feedback.
 AFK: No
 Skills:
-  - `qa` — Validate requirements and function against acceptance criteria
-Context: GitHub PR
+  - `pr-review` — Code review checklists for backend and frontend
+  - `dev-pr` — Action PR review feedback, resolve merge conflicts, fix CI issues
+Context: Open PR
+Output: Merged PR to main
 
-## 6. Release — Deployment
+## 5. Release — Deployment
 
 Description: Release to users and tag versions.
 AFK: Yes
 Skills:
   - `release-github-release` — GitHub release automation with changelog and version tagging
 Context: Merged PR to main
+Output: Tagged release
 
-## 7. Ops — Monitoring & Maintenance
+## 6. Ops — Monitoring & Maintenance
 
 Description: Maintain and observe post-launch.
 AFK: Yes
 Skills:
   - `ops-monitoring` — Observability, metrics, structured logging, and alerting review
-Context: Log data, monitoring dashboards
+  - `github-triage` — Triage GitHub issues through a label-based state machine
+  - `improve-codebase-architecture` — Surface architectural friction and propose refactors
+Context: Log data, monitoring dashboards, GitHub issues
+Output: Updated issues, refactor proposals
 
-## 8. Learn — Retrospective
+## 7. Learn — Retrospective
 
 Description: Extract lessons from sessions and your own PRs so Claude gets smarter over time.
 AFK: Yes / No
 Skills:
-  - `learn-learnt` — Sweep recent session transcripts and distil lessons into skills and CLAUDE.md
-  - `learn-pr-learnt` — Review your own PRs from the last 7 days and extract learnings
+  - `ai-learnt` — Sweep recent session transcripts and distil lessons into skills and AGENTS.md
+  - `ai-pr-learnt` — Review your own PRs from the last 7 days and extract learnings
 Context: Recent session transcripts / GitHub PRs you've authored
+Output: Updated skills and conventions
 
 ---
 
@@ -77,21 +77,28 @@ Context: Recent session transcripts / GitHub PRs you've authored
 
 ```mermaid
 flowchart TD
-    A([Plan<br/>plan-grill-me<br/>plan-design-interface]) --> B([Plan<br/>plan-to-prd])
-    B --> C([Dev<br/>dev-ship<br/>dev-commit-push-pr<br/>dev-merge-main])
-    C --> D([Review<br/>review<br/>security-review])
-    D --> E([Test<br/>qa])
-    E --> F([Release<br/>release-github-release])
-    F --> G([Ops<br/>ops-monitoring])
-    G --> H([Learn<br/>learn-learnt<br/>learn-pr-learnt])
-    H -.-> A
+    A([Plan<br/>ai-grill-me]) -->|refines requirements| B([Plan<br/>ai-to-prd])
+    B -->|creates| C[GitHub Issues]
+    C -->|input| D([Dev<br/>ai-ship<br/>dev-commit-push-pr<br/>git-merge-main])
+    D -->|opens| E[Open PR]
+    E -->|input| F([Review<br/>pr-review<br/>dev-pr])
+    F -->|merges| G[Merged PR to main]
+    G -->|triggers| H([Release<br/>release-github-release])
+    H -->|tags| I[Release]
+    I --> J([Ops<br/>ops-monitoring<br/>github-triage<br/>improve-codebase-architecture])
+    J -->|updates| C
+    J --> K([Learn<br/>ai-learnt<br/>ai-pr-learnt])
+    K -.->|feeds back| A
 
     style A fill:#e1f5fe
     style B fill:#e1f5fe
-    style C fill:#e8f5e9
-    style D fill:#fff3e0
-    style E fill:#fff3e0
-    style F fill:#f3e5f5
-    style G fill:#fce4ec
-    style H fill:#fffde7
+    style C fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style D fill:#e8f5e9
+    style E fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style F fill:#fff3e0
+    style G fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style H fill:#f3e5f5
+    style I fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style J fill:#fce4ec
+    style K fill:#fffde7
 ```
