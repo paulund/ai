@@ -56,8 +56,8 @@ Description: Maintain and observe post-launch.
 AFK: Yes
 Skills:
   - `ops-monitoring` — Observability, metrics, structured logging, and alerting review
-  - `github-triage` — Triage GitHub issues through a label-based state machine
-  - `improve-codebase-architecture` — Surface architectural friction and propose refactors
+  - `ops-triage` — Triage GitHub issues through a label-based state machine
+  - `ops-improve-codebase-architecture` — Surface architectural friction and propose refactors
 Context: Log data, monitoring dashboards, GitHub issues
 Output: Updated issues, refactor proposals
 
@@ -85,7 +85,7 @@ flowchart TD
     F -->|merges| G[Merged PR to main]
     G -->|triggers| H([Release<br/>release-github-release])
     H -->|tags| I[Release]
-    I --> J([Ops<br/>ops-monitoring<br/>github-triage<br/>improve-codebase-architecture])
+    I --> J([Ops<br/>ops-monitoring<br/>ops-triage<br/>ops-improve-codebase-architecture])
     J -->|updates| C
     J --> K([Learn<br/>ai-learnt<br/>ai-pr-learnt])
     K -.->|feeds back| A
