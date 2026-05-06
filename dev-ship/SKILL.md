@@ -44,7 +44,13 @@ def is_open(num):
     r = subprocess.run(['gh', 'issue', 'view', num, '--json', 'state'], capture_output=True, text=True)
     return r.returncode == 0 and json.loads(r.stdout).get('state') == 'OPEN'
 
-for issue in sorted(data, key=lambda i: next((l['name'] for l in i['labels'] if re.match(r'^p[123]$', l['name'])), 'p9')):
+def sort_key(i):
+    labels = [l['name'] for l in i['labels']]
+    is_bug = 0 if 'bug' in labels else 1
+    priority = next((l for l in labels if re.match(r'^p[123]$', l)), 'p9')
+    return (is_bug, priority)
+
+for issue in sorted(data, key=sort_key):
     labels = [l['name'] for l in issue['labels']]
     if 'hitl' in labels or 'blocked' in labels:
         continue
@@ -58,7 +64,8 @@ Rules:
 - Skip any issue labelled `hitl`
 - Skip any issue labelled `blocked`
 - Skip any issue whose `Blocked by #N` references have **open** state — always query `gh issue view N --json state` to confirm; a merged/closed blocker does NOT block
-- Pick highest priority (`p1` > `p2` > `p3`)
+- **Pick bugs before features.** Any open `bug` is picked before any non-bug, regardless of priority
+- Within bugs, pick highest priority (`p1` > `p2` > `p3`). Same for non-bugs once the bug bucket is empty
 - If no issues match, stop cleanly and report the empty backlog
 
 Read the issue body fully — the acceptance criteria drive the TDD cycles.

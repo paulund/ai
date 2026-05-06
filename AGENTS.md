@@ -28,6 +28,7 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 ### Skills
 
 - **`dev-ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
+- **`plan-bug`** — Interview the user about a bug and file it as a planned+afk GitHub issue
 - **`plan-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
 - **`bump-version`** — Version bumping automation
 - **`review`** — Code review checklists for backend and frontend
