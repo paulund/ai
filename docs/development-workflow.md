@@ -120,16 +120,22 @@ flowchart LR
     S2 --> S3[dev-simplify]
     S3 --> S4[quality-gate]
     S4 --> S5[pr-open]
-    S5 --> S6[pr-review]
+    S5 --> SW[pr-wait-checks]
+    SW --> S6[pr-review]
     S6 --> S7[quality-gate]
     S7 --> S8[pr-security-review]
     S8 --> S9[pr-verify]
     S9 --> Done([Done<br/>issue → in-review])
+    Done --> Fin[learn-learnt<br/>finalizer]
 
     classDef step fill:#e8f5e9,stroke:#2e7d32
     classDef gate fill:#fff3e0,stroke:#e65100
+    classDef wait fill:#e3f2fd,stroke:#1565c0
+    classDef finalizer fill:#fce4ec,stroke:#c2185b
     class S1,S3,S5,S6,S8,S9 step
     class S2,S4,S7 gate
+    class SW wait
+    class Fin finalizer
 ```
 
 ## PR maintenance — pick the right skill for the state

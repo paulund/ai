@@ -33,6 +33,7 @@ Manually triggered skills mapped to the [Development Workflow](./development-wor
 | Dev | `quality-gate` | Lint + types + tests + build, with Stop-the-Line on failure |
 | Dev | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
 | Dev | `pr-open` | Open a PR for a pushed branch and transition issue labels |
+| Dev | `pr-wait-checks` | Poll `gh pr checks` until CI is terminal (or timeout), report the rollup |
 | Dev | `pr-fix` | Action external review feedback and CI failures on an existing PR |
 | Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
 | Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |

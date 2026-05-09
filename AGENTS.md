@@ -35,6 +35,7 @@ Single-purpose skills that compose into an issue-to-merged-PR workflow. Each is 
 - **`quality-gate`** — Lint + types + tests + build, with Stop-the-Line on failure
 - **`dev-simplify`** — Cleanup pass over recently changed code
 - **`pr-open`** — Open a PR for a pushed branch and transition issue labels
+- **`pr-wait-checks`** — Poll `gh pr checks` until CI is terminal (or timeout), report the rollup
 - **`pr-review`** — Read PR diff, classify findings, action Critical/High/Medium as commits
 - **`pr-security-review`** — Same shape, security focus, ≥80% confidence threshold
 - **`pr-verify`** — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary
