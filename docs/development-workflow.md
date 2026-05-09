@@ -20,30 +20,30 @@ Skills:
 Context: Outcome of grill me, research, and prototyping
 Output: GitHub issues
 
-## 3. Dev — Implementation (chain steps 1–4)
+## 3. Dev — Implementation
 
 Description: Write code with TDD, run the quality gate, simplify.
-AFK: Yes (run by the agent-orchestration scheduler as a chain)
+AFK: Yes
 Skills:
   - `dev-implement` — Implement one issue with TDD on a pre-prepared branch
-  - `quality-gate` — Lint + types + tests + build, Stop-the-Line policy
+  - `quality-gate` — Lint + types + tests + build, with Stop-the-Line on failure
   - `dev-simplify` — Cleanup pass over recently changed code
-  - `dev-commit-push-pr` — Commit, push, and open a pull request (ad-hoc human use)
-Context: GitHub issue, pre-prepared worktree from supervisor
+  - `dev-commit-push-pr` — Commit, push, and open a pull request (single-shot)
+Context: GitHub issue, branch
 Output: Branch with code + tests, pushed but no PR yet
 
-## 4. PR Review — Open, Review, Verify (chain steps 5–9)
+## 4. PR Review — Open, Review, Verify
 
-Description: Open the PR, run code + security review with fresh context, runtime-verify the feature.
-AFK: Yes (continued chain run)
+Description: Open the PR, run code + security review, runtime-verify the feature.
+AFK: Yes
 Skills:
   - `pr-open` — Open the PR for the pushed branch and transition labels
-  - `pr-review` — Read PR diff in fresh context, action review findings, commit, push
+  - `pr-review` — Read PR diff, action review findings, commit, push
   - `quality-gate` — Re-run after review fixes
   - `pr-security-review` — Security-focused review pass with the same shape
   - `pr-verify` — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary
-  - `pr-fix` — Action external review feedback / CI failures (label-driven via `pr-afk`)
-  - `merge-main` — Resolve merge conflicts (label-driven via `pr-afk` + DIRTY)
+  - `pr-fix` — Action external review feedback / CI failures
+  - `dev-merge-main` — Resolve merge conflicts
 Context: Pushed branch, linked issue
 Output: PR ready for human merge
 
@@ -85,9 +85,9 @@ Output: Updated skills and conventions
 flowchart TD
     A([Plan<br/>ai-grill-me]) -->|refines requirements| B([Plan<br/>ai-to-prd])
     B -->|creates| C[GitHub Issues]
-    C -->|picked by scheduler| D([Ship Chain<br/>see below])
+    C -->|picked| D([Implement<br/>see below])
     D -->|opens| E[Open PR]
-    E -->|chain continues| F([Review + Verify<br/>see below])
+    E -->|review| F([Review + Verify<br/>see below])
     F -->|merge ready| G[Human merges PR]
     G -->|triggers| H([Release<br/>release-github-release])
     H -->|tags| I[Release]
@@ -109,13 +109,13 @@ flowchart TD
     style K fill:#fffde7
 ```
 
-## Ship Chain — per-issue, AFK (driven by agent-orchestration scheduler)
+## Implement and ship — per-issue sequence
 
-Each step runs as its own opencode invocation with fresh context. State passes through prompt envelope (`{issue, branch, pr}`) + a shared worktree.
+Compose these skills in order, manually or via any orchestrator. Each runs in its own context; state passes through the optional first-line JSON envelope (`{issue, branch, pr}`) and the shared working directory.
 
 ```mermaid
 flowchart LR
-    Start([Issue picked<br/>by scheduler]) --> S1
+    Start([Issue picked]) --> S1
     S1[dev-implement] --> S2[quality-gate]
     S2 --> S3[dev-simplify]
     S3 --> S4[quality-gate]
@@ -124,7 +124,7 @@ flowchart LR
     S6 --> S7[quality-gate]
     S7 --> S8[pr-security-review]
     S8 --> S9[pr-verify]
-    S9 --> Done([Chain done<br/>issue → in-review])
+    S9 --> Done([Done<br/>issue → in-review])
 
     classDef step fill:#e8f5e9,stroke:#2e7d32
     classDef gate fill:#fff3e0,stroke:#e65100
@@ -132,18 +132,20 @@ flowchart LR
     class S2,S4,S7 gate
 ```
 
-## PR Watch — label-driven, single-shot (continuous)
+## PR maintenance — pick the right skill for the state
 
-Polls open PRs and routes to a single skill based on label + state. Skips PRs with an active ship-chain.
+Open PRs need different actions depending on what's wrong with them. Pick the skill that matches:
 
 ```mermaid
 flowchart LR
-    Poll([PR poller<br/>every 15 min]) --> Check{check labels<br/>+ status}
-    Check -->|pr-afk + DIRTY| MM[merge-main]
-    Check -->|pr-afk + comments| PF[pr-fix]
-    Check -->|verify-feature<br/>not yet verified| PV[pr-verify]
-    Check -->|otherwise| Skip([no action])
+    PR([Open PR]) --> Check{state?}
+    Check -->|merge conflict<br/>with base| MM[dev-merge-main]
+    Check -->|external review<br/>comments / CI fails| PF[pr-fix]
+    Check -->|feature not yet<br/>runtime-verified| PV[pr-verify]
+    Check -->|nothing wrong| Skip([no action])
 
     classDef skill fill:#e8f5e9,stroke:#2e7d32
     class MM,PF,PV skill
 ```
+
+An orchestrator can automate this routing via labels (e.g. `pr-afk`, `verify-feature`) and a polling loop, but the skills themselves don't depend on that — invoke them directly when you spot the matching state.

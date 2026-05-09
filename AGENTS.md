@@ -27,21 +27,21 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 
 ### Skills
 
-### Dev loop (chain skills)
+### Dev loop
 
-These skills compose into the AFK ship loop run by the agent-orchestration scheduler. Each step is its own context — no mega-skills, no sub-agent fan-out.
+Single-purpose skills that compose into an issue-to-merged-PR workflow. Each is stateless across runs and accepts an optional context envelope on the first prompt line — pipe them manually, or have any orchestrator drive them in sequence.
 
-- **`dev-implement`** — Implement one issue with TDD on a pre-prepared branch (chain step 1)
-- **`quality-gate`** — Lint + types + tests + build with Stop-the-Line failure handling (chain step, reusable between phases)
-- **`dev-simplify`** — Cleanup pass over recently changed code (chain step)
-- **`pr-open`** — Open a PR for a pushed branch and transition issue labels (chain step)
-- **`pr-review`** — Read PR diff in fresh context, action review findings, commit (chain step)
-- **`pr-security-review`** — Same shape, security focus (chain step)
-- **`pr-verify`** — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary (chain step + label-driven)
-- **`pr-fix`** — Action external review feedback and CI failures on an existing PR (label-driven)
-- **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts (label-driven on `pr-afk` + DIRTY)
+- **`dev-implement`** — Implement one issue with TDD on a pre-prepared branch
+- **`quality-gate`** — Lint + types + tests + build, with Stop-the-Line on failure
+- **`dev-simplify`** — Cleanup pass over recently changed code
+- **`pr-open`** — Open a PR for a pushed branch and transition issue labels
+- **`pr-review`** — Read PR diff, classify findings, action Critical/High/Medium as commits
+- **`pr-security-review`** — Same shape, security focus, ≥80% confidence threshold
+- **`pr-verify`** — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary
+- **`pr-fix`** — Action external review feedback and CI failures on an existing PR
+- **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts
 - **`dev-commit-push-pr`** — Git commit, push, and PR workflow (ad-hoc human use)
-- **`dev-ship`** *(deprecated — being replaced by the chain above; remove after orchestrator cutover)*
+- **`dev-ship`** *(deprecated — see the per-step skills above)*
 - **`plan-bug`** — Interview the user about a bug and file it as a planned+afk GitHub issue
 - **`plan-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
 - **`bump-version`** — Version bumping automation
