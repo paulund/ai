@@ -35,7 +35,9 @@ These skills compose into the AFK ship loop run by the agent-orchestration sched
 - **`quality-gate`** — Lint + types + tests + build with Stop-the-Line failure handling (chain step, reusable between phases)
 - **`dev-simplify`** — Cleanup pass over recently changed code (chain step)
 - **`pr-open`** — Open a PR for a pushed branch and transition issue labels (chain step)
-- **`pr-review`**, **`pr-security-review`**, **`pr-verify`** — Review + runtime-verify chain steps (added in part 2)
+- **`pr-review`** — Read PR diff in fresh context, action review findings, commit (chain step)
+- **`pr-security-review`** — Same shape, security focus (chain step)
+- **`pr-verify`** — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary (chain step + label-driven)
 - **`pr-fix`** — Action external review feedback and CI failures on an existing PR (label-driven)
 - **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts (label-driven on `pr-afk` + DIRTY)
 - **`dev-commit-push-pr`** — Git commit, push, and PR workflow (ad-hoc human use)
@@ -66,6 +68,8 @@ These skills compose into the AFK ship loop run by the agent-orchestration sched
 - **`marketing-seo-audit`** — SEO auditing checklist
 - **`marketing-x-content`** — X (Twitter) post creation
 - **`ops-monitoring`** — Observability, metrics, structured logging, alerting
+- **`ops-triage`** — Triage GitHub issues through a label-based state machine
+- **`ops-backlog-health`** — Periodic non-interactive scrub: close resolved blockers, surface drift
 - **`saas-go-to-market`** — Go-to-market strategy
 - **`saas-launch-checklist`** — Launch readiness checklist
 - **`saas-pricing-strategy`** — Pricing strategy frameworks

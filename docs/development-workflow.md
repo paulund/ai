@@ -20,26 +20,32 @@ Skills:
 Context: Outcome of grill me, research, and prototyping
 Output: GitHub issues
 
-## 3. Dev — Implementation
+## 3. Dev — Implementation (chain steps 1–4)
 
-Description: Write code, run tests, open PRs, and merge to main.
-AFK: Yes
+Description: Write code with TDD, run the quality gate, simplify.
+AFK: Yes (run by the agent-orchestration scheduler as a chain)
 Skills:
-  - `ai-ship` — Pick the next ready issue, implement with TDD, run quality gate, open PR
-  - `dev-commit-push-pr` — Commit, push, and open a pull request
-  - `git-merge-main` — Merge origin/main into the current branch and resolve conflicts
-Context: GitHub issue
-Output: Open PR
+  - `dev-implement` — Implement one issue with TDD on a pre-prepared branch
+  - `quality-gate` — Lint + types + tests + build, Stop-the-Line policy
+  - `dev-simplify` — Cleanup pass over recently changed code
+  - `dev-commit-push-pr` — Commit, push, and open a pull request (ad-hoc human use)
+Context: GitHub issue, pre-prepared worktree from supervisor
+Output: Branch with code + tests, pushed but no PR yet
 
-## 4. PR Review — Code Review & Resolution
+## 4. PR Review — Open, Review, Verify (chain steps 5–9)
 
-Description: Validate requirements and functionality, action feedback.
-AFK: No
+Description: Open the PR, run code + security review with fresh context, runtime-verify the feature.
+AFK: Yes (continued chain run)
 Skills:
-  - `pr-review` — Code review checklists for backend and frontend
-  - `dev-pr` — Action PR review feedback, resolve merge conflicts, fix CI issues
-Context: Open PR
-Output: Merged PR to main
+  - `pr-open` — Open the PR for the pushed branch and transition labels
+  - `pr-review` — Read PR diff in fresh context, action review findings, commit, push
+  - `quality-gate` — Re-run after review fixes
+  - `pr-security-review` — Security-focused review pass with the same shape
+  - `pr-verify` — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary
+  - `pr-fix` — Action external review feedback / CI failures (label-driven via `pr-afk`)
+  - `merge-main` — Resolve merge conflicts (label-driven via `pr-afk` + DIRTY)
+Context: Pushed branch, linked issue
+Output: PR ready for human merge
 
 ## 5. Release — Deployment
 
@@ -73,19 +79,19 @@ Output: Updated skills and conventions
 
 ---
 
-## Workflow Diagram
+## Workflow Diagram — high level
 
 ```mermaid
 flowchart TD
     A([Plan<br/>ai-grill-me]) -->|refines requirements| B([Plan<br/>ai-to-prd])
     B -->|creates| C[GitHub Issues]
-    C -->|input| D([Dev<br/>ai-ship<br/>dev-commit-push-pr<br/>git-merge-main])
+    C -->|picked by scheduler| D([Ship Chain<br/>see below])
     D -->|opens| E[Open PR]
-    E -->|input| F([Review<br/>pr-review<br/>dev-pr])
-    F -->|merges| G[Merged PR to main]
+    E -->|chain continues| F([Review + Verify<br/>see below])
+    F -->|merge ready| G[Human merges PR]
     G -->|triggers| H([Release<br/>release-github-release])
     H -->|tags| I[Release]
-    I --> J([Ops<br/>ops-monitoring<br/>ops-triage<br/>ops-improve-codebase-architecture])
+    I --> J([Ops<br/>ops-monitoring<br/>ops-triage<br/>ops-backlog-health<br/>ops-improve-codebase-architecture])
     J -->|updates| C
     J --> K([Learn<br/>ai-learnt<br/>ai-pr-learnt])
     K -.->|feeds back| A
@@ -101,4 +107,43 @@ flowchart TD
     style I fill:#fff9c4,stroke:#f57f17,stroke-width:2px
     style J fill:#fce4ec
     style K fill:#fffde7
+```
+
+## Ship Chain — per-issue, AFK (driven by agent-orchestration scheduler)
+
+Each step runs as its own opencode invocation with fresh context. State passes through prompt envelope (`{issue, branch, pr}`) + a shared worktree.
+
+```mermaid
+flowchart LR
+    Start([Issue picked<br/>by scheduler]) --> S1
+    S1[dev-implement] --> S2[quality-gate]
+    S2 --> S3[dev-simplify]
+    S3 --> S4[quality-gate]
+    S4 --> S5[pr-open]
+    S5 --> S6[pr-review]
+    S6 --> S7[quality-gate]
+    S7 --> S8[pr-security-review]
+    S8 --> S9[pr-verify]
+    S9 --> Done([Chain done<br/>issue → in-review])
+
+    classDef step fill:#e8f5e9,stroke:#2e7d32
+    classDef gate fill:#fff3e0,stroke:#e65100
+    class S1,S3,S5,S6,S8,S9 step
+    class S2,S4,S7 gate
+```
+
+## PR Watch — label-driven, single-shot (continuous)
+
+Polls open PRs and routes to a single skill based on label + state. Skips PRs with an active ship-chain.
+
+```mermaid
+flowchart LR
+    Poll([PR poller<br/>every 15 min]) --> Check{check labels<br/>+ status}
+    Check -->|pr-afk + DIRTY| MM[merge-main]
+    Check -->|pr-afk + comments| PF[pr-fix]
+    Check -->|verify-feature<br/>not yet verified| PV[pr-verify]
+    Check -->|otherwise| Skip([no action])
+
+    classDef skill fill:#e8f5e9,stroke:#2e7d32
+    class MM,PF,PV skill
 ```
