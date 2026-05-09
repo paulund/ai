@@ -36,7 +36,6 @@ Manually triggered skills mapped to the [Development Workflow](./development-wor
 | Dev | `pr-fix` | Action external review feedback and CI failures on an existing PR |
 | Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
 | Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |
-| Dev | `dev-ship` | *(deprecated — see the per-step skills above)* |
 | Review | `pr-review` | Code review pass, findings actioned as commits |
 | Review | `pr-security-review` | Security review pass, fixes actioned as commits |
 | Review | `pr-verify` | Runtime verify via Chrome DevTools MCP, screenshot to PR comment |
