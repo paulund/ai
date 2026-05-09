@@ -41,7 +41,6 @@ Single-purpose skills that compose into an issue-to-merged-PR workflow. Each is 
 - **`pr-fix`** — Action external review feedback and CI failures on an existing PR
 - **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts
 - **`dev-commit-push-pr`** — Git commit, push, and PR workflow (ad-hoc human use)
-- **`dev-ship`** *(deprecated — see the per-step skills above)*
 - **`plan-bug`** — Interview the user about a bug and file it as a planned+afk GitHub issue
 - **`plan-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
 - **`bump-version`** — Version bumping automation

@@ -1,12 +1,12 @@
 ---
 name: plan-bug
-description: Interview the user about a bug and file it as a `planned + afk` GitHub issue ready for /dev-ship. Use when the user wants to log a bug, report a defect, or file a bug ticket. Trigger phrases - "/plan-bug", "log a bug", "file a bug".
+description: Interview the user about a bug and file it as a `planned + afk` GitHub issue ready for autonomous implementation. Use when the user wants to log a bug, report a defect, or file a bug ticket. Trigger phrases - "/plan-bug", "log a bug", "file a bug".
 category: plan
 ---
 
 # Plan Bug
 
-Fast-path for logging bugs the user already understands. Interview, file, done — no codebase exploration, no reproduction attempt. The agent that picks up the issue via `/dev-ship` does the investigation.
+Fast-path for logging bugs the user already understands. Interview, file, done — no codebase exploration, no reproduction attempt. The agent that later picks up the issue (via `/dev-implement` or an orchestrator) does the investigation.
 
 For underspecified bugs that need evaluation or repro, use `/ops-triage` instead.
 
@@ -89,11 +89,7 @@ EOF
 )"
 ```
 
-After filing, print the issue URL and a one-line next step:
-
-```
-Run /loop /dev-ship to pick it up, or /dev-ship for a single run.
-```
+After filing, print the issue URL. The `planned + afk` labels signal that the issue is ready for autonomous implementation — an orchestrator polling those labels will pick it up, or a human can invoke `/dev-implement` directly with the issue number.
 
 ## Constraints
 
