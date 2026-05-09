@@ -27,7 +27,21 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 
 ### Skills
 
-- **`dev-ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
+### Dev loop
+
+Single-purpose skills that compose into an issue-to-merged-PR workflow. Each is stateless across runs and accepts an optional context envelope on the first prompt line — pipe them manually, or have any orchestrator drive them in sequence.
+
+- **`dev-implement`** — Implement one issue with TDD on a pre-prepared branch
+- **`quality-gate`** — Lint + types + tests + build, with Stop-the-Line on failure
+- **`dev-simplify`** — Cleanup pass over recently changed code
+- **`pr-open`** — Open a PR for a pushed branch and transition issue labels
+- **`pr-review`** — Read PR diff, classify findings, action Critical/High/Medium as commits
+- **`pr-security-review`** — Same shape, security focus, ≥80% confidence threshold
+- **`pr-verify`** — Boot dev server, drive UI via Chrome DevTools MCP, post screenshot summary
+- **`pr-fix`** — Action external review feedback and CI failures on an existing PR
+- **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts
+- **`dev-commit-push-pr`** — Git commit, push, and PR workflow (ad-hoc human use)
+- **`dev-ship`** *(deprecated — see the per-step skills above)*
 - **`plan-bug`** — Interview the user about a bug and file it as a planned+afk GitHub issue
 - **`plan-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
 - **`bump-version`** — Version bumping automation
@@ -41,8 +55,6 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 - **`standards-tdd`** — Test-driven development: red-green-refactor loop, interface design, mocking boundaries
 - **`standards-webhook`** — Webhook implementation with Standard Webhooks
 - **`standards-wordpress`** — WordPress theme and plugin development, Gutenberg, hooks
-- **`dev-commit-push-pr`** — Git commit, push, and PR workflow
-- **`dev-pr`** — Action PR review feedback, resolve merge conflicts, fix CI failures on open PRs
 - **`git-github-actions-claude`** — GitHub Actions with Claude integration
 - **`release-github-release`** — GitHub release automation
 - **`laravel-sail`** — Laravel Sail Docker commands and service management
@@ -56,6 +68,8 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 - **`marketing-seo-audit`** — SEO auditing checklist
 - **`marketing-x-content`** — X (Twitter) post creation
 - **`ops-monitoring`** — Observability, metrics, structured logging, alerting
+- **`ops-triage`** — Triage GitHub issues through a label-based state machine
+- **`ops-backlog-health`** — Periodic non-interactive scrub: close resolved blockers, surface drift
 - **`saas-go-to-market`** — Go-to-market strategy
 - **`saas-launch-checklist`** — Launch readiness checklist
 - **`saas-pricing-strategy`** — Pricing strategy frameworks

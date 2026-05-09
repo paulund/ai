@@ -1,141 +1,131 @@
 ---
 name: pr-review
-description: Consolidated pull-request review workflow. Run a full review pass covering metadata, acceptance criteria, code quality, security, breaking changes, and documentation. Use when reviewing a PR, when asked to review code, or when a PR needs a comprehensive review. Trigger phrases - "/pr-review", "review this PR".
+description: Use when the user wants to read a PR's diff, run a code-review pass, and action the findings as commits on the same branch. Trigger phrases - "/pr-review", "review and action this PR".
 category: dev
 ---
 
 # PR Review
 
-Run a consolidated review on a single pull request: validate metadata and scope, verify acceptance criteria, and spawn parallel review passes for code quality, security, breaking changes, and documentation staleness. Present a unified, deduplicated report with severity-ranked findings, then draft review comments and ask before posting.
+Read a PR's diff, run a code-review pass, and action the findings on the same branch.
 
-## Philosophy
+## Inputs
 
-- **Context is everything.** Reviews run in sub-agents with fresh context so implementation bias does not creep into the findings.
-- **No PR is too small for a scope check.** Even a one-liner should explain why it exists and what ticket it closes.
-- **Deduplicate before presenting.** Multiple agents may flag the same issue; the human reviewer only needs to see it once.
-- **Comments are human-curated.** Draft them, but never post without explicit confirmation.
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
+
+```json
+{ "pr": 123, "branch": "agent/issue-582-foo" }
+```
+
+When invoked without context, detect the PR from the current branch:
+
+```bash
+gh pr view --json number,title,body,headRefName,baseRefName,closingIssuesReferences
+```
 
 ## Workflow
 
-### Step 1 — Resolve the PR
+### Step 1 — Gather PR context
 
-Extract the PR number from the user's args. If none provided:
-
-1. Query PRs awaiting your review:
-   ```bash
-   gh pr list --search "review-requested:@me" --state open --json number,title,author,url
-   ```
-2. If results exist, present them and ask the user to pick one (or auto-select if exactly one).
-3. If no review-requested PRs exist, list all open PRs:
-   ```bash
-   gh pr list --state open --json number,title,author,url
-   ```
-4. If still none, stop and report: *"No open PRs found."*
-
-### Step 2 — Gather PR metadata and linked ticket
-
-Fetch PR details:
 ```bash
-gh pr view <N> --json number,title,body,headRefName,baseRefName,author,url,closingIssuesReferences
+gh pr view <pr> --json number,title,body,headRefName,baseRefName,closingIssuesReferences
+gh pr diff <pr>
 ```
 
-- Parse `closingIssuesReferences` for linked issues.
-- For each linked issue, run `gh issue view <N>` to extract the body and acceptance criteria.
-- If **no linked issue exists**, flag as a metadata finding: *"PR has no linked issue — acceptance criteria cannot be verified."*
+For each entry in `closingIssuesReferences`, fetch the issue body:
 
-### Step 3 — PR metadata and scope check
+```bash
+gh issue view <N> --json title,body,labels
+```
 
-Validate the following. Produce a pass/flag report.
+The acceptance criteria from the linked issue drive Step 2's coverage check.
 
-| Check | Criteria |
-|-------|----------|
-| **Title** | Present, descriptive, and explains *what* the change does. |
-| **Description** | Present, not empty or auto-generated, and explains *what* and *why*. |
-| **Single concern** | Changes are scoped to one logical concern. Cross-domain changes are flagged. |
-| **Out-of-scope changes** | No files or hunks appear unrelated to the PR's stated purpose. |
-| **Acceptance criteria** | Each criterion from the linked issue is visibly addressed in the diff or PR body. |
+### Step 2 — Metadata + scope check
 
-Load `references/pr-metadata-checklist.md` for the full checklist and guidance.
+Validate the following. Each becomes a finding if it fails.
 
-### Step 4 — Run review passes in parallel (sub-agents)
+| Check | Criteria | Severity if failing |
+|---|---|---|
+| Title | Descriptive, explains what changed | Low |
+| Description | Present, explains what + why, links the issue | Low |
+| Single concern | Diff is scoped to one logical change | Medium |
+| Out-of-scope changes | No unrelated files / hunks | Medium |
+| Acceptance criteria | Each criterion from the linked issue is visibly addressed | High |
 
-Spawn sub-agents with **fresh context** so they review the diff without implementation bias. Run them in parallel.
+Load `references/pr-metadata-checklist.md` for the full rubric.
 
-**Agent A — Code Review**
-- Load `~/.agents/skills/dev-review/SKILL.md` (or equivalent global skill path)
-- Run against PR `#<N>`
-- Return findings as: `severity | file:line | category | description | suggested fix`
+### Step 3 — Code-review pass
 
-**Agent B — Security Review**
-- Load `~/.agents/skills/dev-security-review/SKILL.md` (or equivalent global skill path)
-- Run against PR `#<N>`
-- Return findings per that skill's markdown format
+Read the diff and apply the review heuristics. Focus on:
 
-**Agent C — Breaking Changes**
-- Prompt from `references/sub-agent-prompts.md`
-- Analyze the diff for backward-incompatible changes: public API signatures, database migrations, configuration changes, removed endpoints, altered default behavior
-- Return findings with migration guidance where applicable
+- **Correctness** — wrong logic, wrong type, off-by-one, dropped error handling
+- **Project conventions** — naming, file layout, import order, framework patterns from `AGENTS.md` / `standards-*` skills if installed
+- **Performance** — obvious N+1, sync work in hot paths, unnecessary allocations
+- **Test coverage** — every acceptance criterion has a behaviour test; tests verify through public interfaces
+- **Readability** — dead code, redundant branches, premature abstraction, unhelpful comments
 
-**Agent D — Documentation Staleness**
-- Prompt from `references/sub-agent-prompts.md`
-- Check if README, CHANGELOG, API docs, inline docblocks, or other docs reference changed code and are now stale or missing updates
-- Return findings per file
+For each finding, classify by severity (rubric in `references/review-severity-rubric.md`):
 
-**Framework standards**
-- Do NOT auto-detect frameworks or spawn framework-specific agents. The `dev-review` agent will naturally apply whatever global `standards-*` skills the user's project has installed.
+- **CRITICAL** — production crash, data loss, unaddressed acceptance criterion
+- **HIGH** — significant bug, missing error handling on a sensitive path, breaking change without migration
+- **MEDIUM** — code-quality issue, test gap, minor breaking change
+- **LOW** — style, trivial nits
 
-### Step 5 — Deduplicate and consolidate feedback
+### Step 4 — Action findings
 
-Collect all sub-agent reports.
+For every **Critical**, **High**, and **Medium** finding: **fix the code in this run.** Do not defer.
 
-1. **Deduplicate** — merge findings that hit the same file/line/issue across multiple agents. Combine rationale and cite all contributing agents.
-2. **Classify severity** — for each consolidated finding, assign one of:
-   - **CRITICAL** — security RCE/auth bypass, data loss, production crash, unaddressed acceptance criteria
-   - **HIGH** — significant bugs, missing error handling, security issues in sensitive paths, breaking changes without migration path
-   - **MEDIUM** — code quality, maintainability, test gaps, minor breaking changes with migration path
-   - **LOW** — style nits, minor documentation gaps, trivial optimizations
+For **Low** findings: fix if trivial. Defer only if genuinely out of scope; create a tracking issue in that case:
 
-Load `references/review-severity-rubric.md` for detailed classification rules.
+```bash
+gh issue create \
+  --title "chore: <short description>" \
+  --body "Deferred from PR #<N> review — accepted as-is because <reason>." \
+  --label "planned,afk"
+```
 
-### Step 6 — Present findings
+### Step 5 — Commit and push
 
-Render a single consolidated markdown report:
+Group fixes by concern. One commit per logical change.
 
-1. **Metadata & Scope Check** — pass/flag for each check from Step 3
-2. **Acceptance Criteria Coverage** — linked issue(s), criteria status (covered / unaddressed / not applicable)
-3. **Findings by Severity**
-   - CRITICAL
-   - HIGH
-   - MEDIUM
-   - LOW
+```bash
+git add <files>
+git commit -m "Address review: <one-line summary>"
+git push origin HEAD
+```
 
-Each finding must include: severity badge, file:line, category, description, suggested fix.
+### Step 6 — Post a single review-summary comment
 
-### Step 7 — Draft and optionally post PR comments
+```bash
+gh pr comment <pr> --body "$(cat <<EOF
+## Automated review
 
-1. For each new finding (not already present as an existing review comment on the PR), draft a concise review comment.
-2. Ask the user:
-   > "Post these as pending review comments on PR #<N>? (y/n)"
-3. If **yes**, post via:
-   ```bash
-   gh pr review <N> --comment --body-file <draft-file>
-   ```
-   Or equivalent `gh` commands for individual line comments where supported.
-4. If **no**, present the drafted comments as copy-pasteable markdown.
+### Fixed
+- [list each finding actioned with file:line]
+
+### Deferred (Low only — Critical/High/Medium are always fixed)
+- [item — reason — tracked in #N]
+EOF
+)"
+```
+
+### Step 7 — Report
+
+```json
+{ "pr": <N>, "findings": <count>, "fixed": <count>, "deferred": <count> }
+```
 
 ## Constraints
 
 ### MUST DO
-- Resolve the PR before reviewing.
-- Check for linked issues and acceptance criteria.
-- Run review passes in parallel sub-agents with fresh context.
-- Deduplicate findings from multiple sub-agents.
-- Classify all findings by severity.
-- Ask the user before posting comments to the PR.
+- Read the diff and linked issue body before flagging anything.
+- Action every Critical / High / Medium finding in the same run — do not defer them.
+- Track deferred Low findings as GitHub issues; never silently drop.
+- Commit fixes incrementally, grouped by concern.
 
 ### MUST NOT DO
-- Post comments to the PR without explicit user confirmation.
-- Skip the metadata and scope check.
+- Spawn sub-agents — this skill is designed to run in a single context.
+- Run the quality gate — that's `quality-gate`'s job.
+- Force-push.
+- Resolve merge conflicts — that's `merge-main`'s job.
 - Merge the PR.
-- Run review passes in the same context as the implementation (always spawn fresh sub-agents).
-- Flag issues in test files or documentation as security vulnerabilities (respect `dev-security-review` exclusions).
+- Post review comments without first committing the fixes.

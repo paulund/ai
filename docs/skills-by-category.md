@@ -29,16 +29,24 @@ Manually triggered skills mapped to the [Development Workflow](./development-wor
 | Plan | `plan-grill-me` | Stress-test a plan or design via relentless questioning |
 | Plan | `plan-design-interface` | Generate UI/UX designs from requirements |
 | Plan | `plan-to-prd` | Turn an idea into a PRD plus vertical-sliced GitHub issues |
-| Dev | `dev-ship` | Pick the next ready issue, implement with TDD, open PR |
-| Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |
-| Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
+| Dev | `dev-implement` | Implement one issue with TDD on a pre-prepared branch |
+| Dev | `quality-gate` | Lint + types + tests + build, with Stop-the-Line on failure |
 | Dev | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
-| Review | `dev-review` | Code review checklists for backend and frontend |
-| Review | `dev-security-review` | Security auditing and secure coding practices review |
+| Dev | `pr-open` | Open a PR for a pushed branch and transition issue labels |
+| Dev | `pr-fix` | Action external review feedback and CI failures on an existing PR |
+| Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
+| Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |
+| Dev | `dev-ship` | *(deprecated — see the per-step skills above)* |
+| Review | `pr-review` | Code review pass, findings actioned as commits |
+| Review | `pr-security-review` | Security review pass, fixes actioned as commits |
+| Review | `pr-verify` | Runtime verify via Chrome DevTools MCP, screenshot to PR comment |
+| Review | `dev-review` | Lightweight code review checklist (read-only) |
+| Review | `dev-security-review` | Lightweight security review checklist (read-only) |
 | Test | `qa` | Validate requirements and function against acceptance criteria |
 | Release | `release-github-release` | GitHub release automation with changelog and version tagging |
 | Ops | `ops-monitoring` | Observability, metrics, structured logging, and alerting review |
 | Ops | `ops-triage` | Triage GitHub issues through a label-based state machine |
+| Ops | `ops-backlog-health` | Periodic non-interactive scrub: close resolved blockers, surface drift |
 | Ops | `ops-improve-codebase-architecture` | Surface architectural friction and propose refactors |
 | Learn | `learn-learnt` | Distil recent session lessons into skills and CLAUDE.md |
 | Learn | `learn-pr-learnt` | Review your own PRs from the last 7 days and extract learnings |
