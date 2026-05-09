@@ -29,10 +29,14 @@ Manually triggered skills mapped to the [Development Workflow](./development-wor
 | Plan | `plan-grill-me` | Stress-test a plan or design via relentless questioning |
 | Plan | `plan-design-interface` | Generate UI/UX designs from requirements |
 | Plan | `plan-to-prd` | Turn an idea into a PRD plus vertical-sliced GitHub issues |
-| Dev | `dev-ship` | Pick the next ready issue, implement with TDD, open PR |
-| Dev | `dev-commit-push-pr` | Commit, push, and open a pull request |
+| Dev | `dev-implement` | Implement one issue with TDD on a pre-prepared branch (chain step) |
+| Dev | `quality-gate` | Lint + types + tests + build with Stop-the-Line policy (chain step, reusable) |
+| Dev | `dev-simplify` | Identify and remove unnecessary complexity in the codebase (chain step) |
+| Dev | `pr-open` | Open a PR for a pushed branch and transition issue labels (chain step) |
+| Dev | `pr-fix` | Action external review feedback and CI failures on an existing PR |
 | Dev | `dev-merge-main` | Merge origin/main into current branch and resolve conflicts |
-| Dev | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
+| Dev | `dev-commit-push-pr` | Commit, push, and open a pull request (ad-hoc human use) |
+| Dev | `dev-ship` | *(deprecated — replaced by the chain above; remove after orchestrator cutover)* |
 | Review | `dev-review` | Code review checklists for backend and frontend |
 | Review | `dev-security-review` | Security auditing and secure coding practices review |
 | Test | `qa` | Validate requirements and function against acceptance criteria |

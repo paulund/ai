@@ -27,7 +27,19 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 
 ### Skills
 
-- **`dev-ship`** — Pick the next AFK issue, implement with TDD, quality gate, open PR
+### Dev loop (chain skills)
+
+These skills compose into the AFK ship loop run by the agent-orchestration scheduler. Each step is its own context — no mega-skills, no sub-agent fan-out.
+
+- **`dev-implement`** — Implement one issue with TDD on a pre-prepared branch (chain step 1)
+- **`quality-gate`** — Lint + types + tests + build with Stop-the-Line failure handling (chain step, reusable between phases)
+- **`dev-simplify`** — Cleanup pass over recently changed code (chain step)
+- **`pr-open`** — Open a PR for a pushed branch and transition issue labels (chain step)
+- **`pr-review`**, **`pr-security-review`**, **`pr-verify`** — Review + runtime-verify chain steps (added in part 2)
+- **`pr-fix`** — Action external review feedback and CI failures on an existing PR (label-driven)
+- **`dev-merge-main`** — Merge `origin/main` into the current branch and resolve conflicts (label-driven on `pr-afk` + DIRTY)
+- **`dev-commit-push-pr`** — Git commit, push, and PR workflow (ad-hoc human use)
+- **`dev-ship`** *(deprecated — being replaced by the chain above; remove after orchestrator cutover)*
 - **`plan-bug`** — Interview the user about a bug and file it as a planned+afk GitHub issue
 - **`plan-to-prd`** — Turn an idea into vertical-sliced GitHub issues for the ship loop
 - **`bump-version`** — Version bumping automation
@@ -41,8 +53,6 @@ Each skill directory contains a `SKILL.md` and an optional `references/` subdire
 - **`standards-tdd`** — Test-driven development: red-green-refactor loop, interface design, mocking boundaries
 - **`standards-webhook`** — Webhook implementation with Standard Webhooks
 - **`standards-wordpress`** — WordPress theme and plugin development, Gutenberg, hooks
-- **`dev-commit-push-pr`** — Git commit, push, and PR workflow
-- **`dev-pr`** — Action PR review feedback, resolve merge conflicts, fix CI failures on open PRs
 - **`git-github-actions-claude`** — GitHub Actions with Claude integration
 - **`release-github-release`** — GitHub release automation
 - **`laravel-sail`** — Laravel Sail Docker commands and service management
