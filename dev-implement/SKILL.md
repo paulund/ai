@@ -65,7 +65,7 @@ For each acceptance criterion:
 
 Tests verify behaviour through public interfaces, not implementation details.
 
-### Step 5 — Commit and push
+### Step 5 — Commit and push (mandatory clean-tree gate)
 
 Stage in logical groups. Commit messages should describe the why, not the what:
 
@@ -74,6 +74,25 @@ git add <files for one logical change>
 git commit -m "<imperative summary>"
 git push origin HEAD
 ```
+
+Repeat per logical change. Anything you touched — including files modified during exploration that you decided to keep — must end up in a commit.
+
+**Pre-report verification — run this exact check before reporting Step 6:**
+
+```bash
+git status --porcelain
+```
+
+The output **must be empty**. If it isn't:
+
+1. The branch is dirty. You have un-committed work.
+2. Decide for each path: keep it (commit it) or revert it (`git checkout -- <path>`).
+3. Re-run `git status --porcelain` — repeat until empty.
+4. Push: `git push origin HEAD`.
+
+**Do not** report success while `git status --porcelain` is non-empty. The next skill in the workflow (`pr-open`) will refuse to act on a dirty tree, and any orchestrator wrapping these skills will treat that refusal as a chain failure.
+
+If you genuinely cannot decide what to do with a leftover modification (e.g. an unrelated drive-by edit), revert it. Drive-by edits don't belong in this issue's commits.
 
 ### Step 6 — Report
 
@@ -89,7 +108,9 @@ Output a JSON summary so any caller can pick up the result:
 - Trust the input envelope when `issue` and `branch` are provided — never re-pick or re-checkout in that case.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.
+- **Run `git status --porcelain` before reporting and refuse to report success unless the output is empty.**
 - Push before reporting completion.
+- Keep commits scoped to the current issue — revert drive-by edits rather than smuggling them into the PR.
 
 ### MUST NOT DO
 - Open a PR — that is `pr-open`'s job.
@@ -98,3 +119,4 @@ Output a JSON summary so any caller can pick up the result:
 - Add `hitl` to the current issue without stopping the run — surface ambiguity, don't paper over it.
 - Run the quality gate — that's `quality-gate`'s job.
 - Spawn sub-agents for review — review skills are separate skills.
+- Report success while the tree has uncommitted changes. Ever.
