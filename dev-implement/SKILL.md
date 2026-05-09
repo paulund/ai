@@ -1,28 +1,27 @@
 ---
 name: dev-implement
-description: Use when the user wants to implement a single AFK GitHub issue end-to-end with TDD on a pre-prepared branch. Invoked as the first step of the ship-issue chain by the orchestrator scheduler, or directly by a human via "/dev-implement --issue N". Stops after the implementation lands on the branch — does NOT open a PR. Trigger phrases - "/dev-implement", "implement this issue", "ship issue N".
+description: Use when the user wants to implement a single AFK GitHub issue end-to-end with TDD. Stops after the implementation lands on the branch — does NOT open a PR or run the quality gate. Trigger phrases - "/dev-implement", "implement this issue", "ship issue N".
 category: dev
 ---
 
 # Dev Implement
 
-Implement one issue with TDD on the current worktree's branch. Push when done. The orchestrator's chain runner takes it from here (quality gate → simplify → pr-open → review → security review → verify).
+Implement one issue with TDD on a branch and push the result. Scope ends at the push — opening the PR and verifying the build are separate jobs.
 
 ## Inputs
 
-The first line of the prompt may carry orchestrator context as JSON:
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
-{ "issue": 582, "branch": "agent/issue-582-foo", "scheduled": true }
+{ "issue": 582, "branch": "agent/issue-582-foo" }
 ```
 
-When `scheduled: true` is set, the orchestrator already picked the issue, vetted blockers, and created the worktree on the correct branch. **Trust it.** Skip Step 1 issue-picking and Step 2 branch-setup entirely.
-
-When invoked directly by a human (no JSON, or `scheduled: false`), do Step 1 and Step 2 manually.
+- `issue` — when set, work on this specific issue. When omitted, pick the next ready one (Step 1).
+- `branch` — when set, the worktree is already on this branch and `node_modules` is ready. When omitted, set up a new branch from `main` (Step 2).
 
 ## Workflow
 
-### Step 1 — Pick the next issue (skip when `scheduled`)
+### Step 1 — Pick the next issue (when `issue` is omitted)
 
 ```bash
 gh issue list --label "planned,afk" --state open --json number,title,labels,body
@@ -40,7 +39,7 @@ Rules:
 - Pick highest priority (`p1` > `p2` > `p3`).
 - If no issues match, stop cleanly and report the empty backlog.
 
-### Step 2 — Set up the branch (skip when `scheduled`)
+### Step 2 — Set up the branch (when `branch` is omitted)
 
 - Check out the base branch (usually `main`), pull latest.
 - Create a new branch: `agent/issue-<N>-<slug>`.
@@ -76,11 +75,9 @@ git commit -m "<imperative summary>"
 git push origin HEAD
 ```
 
-Do not open a PR — the chain runner's `pr-open` step handles that.
+### Step 6 — Report
 
-### Step 6 — Hand off
-
-Report a one-block summary so the chain runner can pass it to the next step:
+Output a JSON summary so any caller can pick up the result:
 
 ```json
 { "issue": <N>, "branch": "<branch>", "commits": <count>, "filesChanged": <count> }
@@ -89,15 +86,15 @@ Report a one-block summary so the chain runner can pass it to the next step:
 ## Constraints
 
 ### MUST DO
-- Trust orchestrator context when `scheduled: true` — never re-pick the issue or re-checkout the branch.
+- Trust the input envelope when `issue` and `branch` are provided — never re-pick or re-checkout in that case.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.
 - Push before reporting completion.
 
 ### MUST NOT DO
-- Open a PR. That is the next step's job.
-- Run `gh issue list` or `git checkout main && git pull` when `scheduled: true`.
+- Open a PR — that is `pr-open`'s job.
+- Run `gh issue list` or `git checkout main && git pull` when both `issue` and `branch` are provided.
 - Pick `hitl` or `blocked` issues when picking manually.
-- Add `hitl` to the chain's current issue without stopping the run — surface ambiguity, don't paper over it.
-- Run the quality gate inside this skill — that's a separate chain step.
-- Spawn sub-agents for review. Reviews are separate chain steps.
+- Add `hitl` to the current issue without stopping the run — surface ambiguity, don't paper over it.
+- Run the quality gate — that's `quality-gate`'s job.
+- Spawn sub-agents for review — review skills are separate skills.

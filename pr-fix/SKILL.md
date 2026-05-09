@@ -6,9 +6,11 @@ category: dev
 
 # PR Fix
 
-Action external review feedback and CI failures on an existing PR. The chain runner handles the quality-gate and stop-the-line policy around this skill — focus on the fix.
+Action external review feedback and CI failures on an existing PR. Single-purpose: focuses on the fixes; does not handle merge conflicts (use `merge-main`) and does not open new PRs (use `pr-open`).
 
 ## Inputs
+
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
 { "pr": 123, "branch": "agent/issue-582-foo" }
@@ -101,7 +103,7 @@ After push, post the commit SHA into each thread's reply if it wasn't known when
 ### MUST NOT DO
 - Resolve merge conflicts. That's `merge-main`.
 - Open a PR. That's `pr-open`.
-- Run the quality gate. The chain runner inserts `quality-gate` as the next step.
+- Run the quality gate — that's `quality-gate`'s job.
 - Force-push to a branch that already has a PR open unless explicitly asked.
 - Mark a thread as resolved without making the requested change or replying.
 - Action a thread whose latest reply is already from the agent (idempotency).

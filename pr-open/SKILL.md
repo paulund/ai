@@ -1,6 +1,6 @@
 ---
 name: pr-open
-description: Use when the user wants to open a pull request for an already-pushed branch that implements a specific issue. Invoked by the orchestrator after dev-implement + quality-gate + dev-simplify. Trigger phrases - "/pr-open", "open the pr", "create pr for this branch".
+description: Use when the user wants to open a pull request for an already-pushed branch that implements a specific issue. Idempotent — returns the existing PR if one is already open for the branch. Trigger phrases - "/pr-open", "open the pr", "create pr for this branch".
 category: dev
 ---
 
@@ -10,7 +10,7 @@ Open a pull request for the current branch and transition the issue's labels. Id
 
 ## Inputs
 
-The first line of the prompt may carry orchestrator context as JSON:
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
 { "issue": 582, "branch": "agent/issue-582-foo" }

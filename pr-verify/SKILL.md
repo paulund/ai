@@ -1,6 +1,6 @@
 ---
 name: pr-verify
-description: Use when the user wants to verify a PR's feature works at runtime by booting the dev server, exercising the affected UI via Chrome DevTools MCP, and posting a screenshot summary back to the PR. Designed as a chain step or as a label-driven trigger via the `verify-feature` PR label. Trigger phrases - "/pr-verify", "verify this PR", "runtime check the pr".
+description: Use when the user wants to verify a PR's feature works at runtime by booting the dev server, exercising the affected UI via Chrome DevTools MCP, and posting a screenshot summary back to the PR. Idempotent — skips if `verified` or `verify-failed` is already on the PR. Trigger phrases - "/pr-verify", "verify this PR", "runtime check the pr".
 category: dev
 ---
 
@@ -9,6 +9,8 @@ category: dev
 Boot the dev server, drive the affected UI via Chrome DevTools MCP, and post a runtime-verification comment + screenshot to the PR. Idempotent: skips if a `verified` or `verify-failed` label is already set.
 
 ## Inputs
+
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
 { "pr": 123, "branch": "agent/issue-582-foo" }
@@ -111,7 +113,7 @@ If failed: `gh pr edit <pr> --add-label verify-failed`
 
 ### MUST NOT DO
 - Run when `verified` or `verify-failed` is already on the PR.
-- Skip the dev-server-not-ready check — false positives on never-booted servers waste a chain step.
+- Skip the dev-server-not-ready check — false positives on never-booted servers produce misleading verifications.
 - Edit the code or push commits. This skill is read-only against the branch.
 - Merge the PR.
 - Post screenshots inline as base64 in the PR comment — link to committed paths instead so the comment stays small.

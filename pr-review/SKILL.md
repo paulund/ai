@@ -1,14 +1,16 @@
 ---
 name: pr-review
-description: Use when the user wants to read a PR's diff, run a code-review pass with fresh context, and action the findings as commits on the same branch. Designed as a chain step — does not spawn sub-agents (the chain runner already gives fresh context). Trigger phrases - "/pr-review", "review and action this PR".
+description: Use when the user wants to read a PR's diff, run a code-review pass, and action the findings as commits on the same branch. Trigger phrases - "/pr-review", "review and action this PR".
 category: dev
 ---
 
 # PR Review
 
-Read a PR's diff, run a code-review pass, and action the findings on the same branch. The chain runner provides fresh context — no sub-agents inside this skill.
+Read a PR's diff, run a code-review pass, and action the findings on the same branch.
 
 ## Inputs
+
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
 { "pr": 123, "branch": "agent/issue-582-foo" }
@@ -121,9 +123,9 @@ EOF
 - Commit fixes incrementally, grouped by concern.
 
 ### MUST NOT DO
-- Spawn sub-agents. The chain runner already provides fresh context.
-- Run the quality gate. The chain runner inserts `quality-gate` as the next step.
+- Spawn sub-agents — this skill is designed to run in a single context.
+- Run the quality gate — that's `quality-gate`'s job.
 - Force-push.
-- Resolve merge conflicts (`merge-main` is a separate label-driven trigger).
+- Resolve merge conflicts — that's `merge-main`'s job.
 - Merge the PR.
 - Post review comments without first committing the fixes.

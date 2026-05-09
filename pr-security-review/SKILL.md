@@ -1,14 +1,16 @@
 ---
 name: pr-security-review
-description: Use when the user wants a security-focused review pass on a PR with fresh context, with findings actioned as commits on the same branch. Designed as a chain step — does not spawn sub-agents. Trigger phrases - "/pr-security-review", "security review and fix".
+description: Use when the user wants a security-focused review pass on a PR with findings actioned as commits on the same branch. Trigger phrases - "/pr-security-review", "security review and fix".
 category: dev
 ---
 
 # PR Security Review
 
-Security-focused review of a PR's diff, with findings actioned as commits. The chain runner provides fresh context — no sub-agents inside this skill.
+Security-focused review of a PR's diff, with findings actioned as commits on the same branch.
 
 ## Inputs
+
+When invoked with arguments, the first line of the prompt may carry a context envelope as JSON:
 
 ```json
 { "pr": 123, "branch": "agent/issue-582-foo" }
@@ -115,8 +117,8 @@ EOF
 - Trace data flow from external input to sensitive sink before declaring exploitability.
 
 ### MUST NOT DO
-- Spawn sub-agents — the chain runner provides fresh context.
-- Run the quality gate. The chain runner handles that.
+- Spawn sub-agents — this skill is designed to run in a single context.
+- Run the quality gate — that's `quality-gate`'s job.
 - Run commands to reproduce vulnerabilities — read code only.
 - Flag DoS, rate-limiting, regex DoS, memory safety in memory-safe languages, missing audit logs, or issues in test-only files.
 - Force-push.
