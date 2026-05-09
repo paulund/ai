@@ -138,8 +138,6 @@ ln -sn ~/Documents/Code/ai/standards-typescript .agents/skills/standards-typescr
 # ...
 ```
 
-The chain orchestrator (paulund/agent-orchestration) validates that every skill referenced in a workflow / chain JSON exists at one of these locations on startup.
-
 ## Skill Authoring Rules
 
 **Frontmatter** — Skills require `name` and `description` only. The `description` must start with "Use when..." and describe trigger conditions.
