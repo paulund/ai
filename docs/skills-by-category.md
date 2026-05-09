@@ -2,6 +2,15 @@
 
 This document groups all skills by *type* so you can see *what* they are, independent of when to use them in the SDLC.
 
+## Install scope
+
+| Scope | Where | Categories |
+|---|---|---|
+| **Global** | `~/.agents/skills/` (with `~/.claude/skills/` symlinks) | SDLC Workflow only |
+| **Per-project** | `<project>/.agents/skills/` (symlinked to this repo) | Standards, Marketing, SaaS, Writing |
+
+Per-project skills only load when the agent's cwd is that project — keeps context lean and avoids burning tokens on irrelevant skills (e.g. a Laravel app shouldn't load `standards-nextjs`). See `AGENTS.md` for install commands.
+
 ## Standards
 
 Context and convention skills loaded automatically during implementation. Not manually triggered.
