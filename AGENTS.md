@@ -77,15 +77,65 @@ Single-purpose skills that compose into an issue-to-merged-PR workflow. Each is 
 - **`writing-humanizer`** — Humanize AI-generated text
 - **`writing-technical-writer`** — Technical writing style and structure
 
-### Installing as Global Skills
+### Installing — global vs per-project
 
-Copy the skills you want to `~/.claude/skills/`:
+Skills come in two scopes. Where you install determines what loads on every agent run:
+
+**Global** (`~/.agents/skills/`, with `~/.claude/skills/` as symlinks): the skills that any project can use, on every run. Covers:
+
+- The chain steps and dev workflow (`dev-implement`, `quality-gate`, `dev-simplify`, `pr-open`, `pr-review`, `pr-security-review`, `pr-verify`, `pr-fix`, `dev-merge-main`, `dev-commit-push-pr`)
+- Planning (`plan-bug`, `plan-grill-me`, `plan-to-prd`)
+- Ops (`ops-triage`, `ops-backlog-health`, `ops-improve-codebase-architecture`, `ops-monitoring`)
+- Learn (`learn-learnt`, `learn-pr-learnt`)
+- Release (`release-github-release`)
+
+**Per-project** (`<project>/.agents/skills/`): only loaded when the agent is running in that project's cwd. Use this for skills that don't apply everywhere — installing globally just burns context tokens on irrelevant skills:
+
+- **Standards** — `standards-laravel`, `standards-php`, `standards-nextjs`, `standards-typescript`, `standards-tdd`, `standards-api`, `standards-docker`, `standards-pre-commit`, `standards-webhook`, `standards-wordpress`, `standards-inertia`
+- **Marketing / SEO** — `marketing-*`, `marketing-seo-audit`
+- **SaaS planning** — `saas-go-to-market`, `saas-launch-checklist`, `saas-prd`, `saas-pricing-strategy`
+- **Writing** — `writing-humanizer`, `writing-technical-writer`
+- **Framework-specific** — `laravel-sail`, `laravel-testing`, `plan-design-interface`, `git-github-actions-claude`
+
+**Layout convention:**
+
+```
+~/.agents/skills/                            # canonical install for global skills
+├── dev-implement/
+├── quality-gate/
+└── ...
+
+~/.claude/skills/                            # symlinks → ~/.agents/skills/<name>
+├── dev-implement -> ../../.agents/skills/dev-implement
+└── ...
+
+<project>/.agents/skills/                    # per-project: symlinks → this repo
+├── standards-nextjs -> /path/to/paulund/ai/standards-nextjs
+├── marketing-seo-audit -> /path/to/paulund/ai/marketing-seo-audit
+└── ...
+```
+
+Install commands:
 
 ```bash
-cp -r standards-laravel ~/.claude/skills/
-cp -r dev-commit-push-pr ~/.claude/skills/
-# or copy all (excluding CLAUDE.md and README.md)
-for d in */; do cp -r "$d" ~/.claude/skills/; done
+# Global skills — chain + dev workflow + ops + planning
+cd ~/Documents/Code/ai  # this repo
+for d in dev-implement dev-simplify quality-gate \
+         pr-open pr-fix pr-review pr-security-review pr-verify \
+         dev-merge-main dev-commit-push-pr \
+         plan-bug plan-grill-me plan-to-prd \
+         ops-triage ops-backlog-health ops-improve-codebase-architecture \
+         learn-learnt learn-pr-learnt release-github-release; do
+  rm -rf ~/.agents/skills/$d && cp -r $d ~/.agents/skills/
+  ln -snf ../../.agents/skills/$d ~/.claude/skills/$d
+done
+
+# Per-project skills — symlink only what the project actually needs
+cd ~/Documents/Code/<your-project>
+mkdir -p .agents/skills
+ln -sn ~/Documents/Code/ai/standards-nextjs   .agents/skills/standards-nextjs
+ln -sn ~/Documents/Code/ai/standards-typescript .agents/skills/standards-typescript
+# ...
 ```
 
 ## Skill Authoring Rules
