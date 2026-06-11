@@ -1,12 +1,12 @@
-# AI Prompts & Skills
+# AI Commands & Skills
 
-Source of truth for reusable AI agent prompts and skills.
+Source of truth for reusable AI agent commands and skills.
 Distributed via `bin/sync` to global and per-project directories.
 
-## Prompts vs Skills
+## Commands vs Skills
 
-- **Prompts** — human-invoked workflows. Loaded on demand, not in context.
-  Single `.md` files in `prompts/`.
+- **Commands** — human-invoked workflows. Loaded on demand, not in context.
+  Single `.md` files in `commands/`.
 - **Skills** — agent and/or human invoked. Description preloaded in context for
   auto-activation. Directories under `skills/` with `SKILL.md` + optional `references/`.
 
@@ -18,7 +18,7 @@ cp sync.example.toml sync.toml
 
 # 2. Edit sync.toml to match your setup
 #    - Set global target directories
-#    - List the prompts/skills you want globally
+#    - List the commands/skills you want globally
 #    - Define any per-project installs
 
 # 3. Run the sync script
@@ -26,14 +26,14 @@ bin/sync              # install/update
 bin/sync --dry-run    # preview
 ```
 
-## Available Prompts
+## Available Commands
 
-12 prompts in `prompts/`, grouped by domain.
+12 commands in `commands/`, grouped by domain.
 
 ### Dev Loop
 
-| Prompt | Description |
-|--------|-------------|
+| Command | Description |
+|---------|-------------|
 | `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
 | `dev-merge-main` | Merge origin/main into the current branch |
 | `pr-review` | Two-phase code + security review with findings as commits |
@@ -42,46 +42,46 @@ bin/sync --dry-run    # preview
 
 ### Planning
 
-| Prompt | Description |
-|--------|-------------|
+| Command | Description |
+|---------|-------------|
 | `plan-bug` | Interview user about a bug, file as planned+AFK issue |
 | `plan-grill-me` | Relentless interview until reaching shared understanding |
 | `plan-to-prd` | Turn idea into PRD + vertical-sliced GitHub issues |
 
 ### Ops
 
-| Prompt | Description |
-|--------|-------------|
+| Command | Description |
+|---------|-------------|
 | `ops-triage` | GitHub issue state machine — triage, brief, close, block |
 | `ops-architecture-review` | Surface architectural friction as GitHub issues |
 | `ops-vercel-log-scan` | Scan Vercel runtime logs, triage errors to root cause |
 
 ### Learning
 
-| Prompt | Description |
-|--------|-------------|
+| Command | Description |
+|---------|-------------|
 | `learn` | Extract session lessons and save to AGENTS.md or skill files |
 | `learn-prs` | Extract lessons from PR review comments over last 7 days |
 
 ### Release
 
-| Prompt | Description |
-|--------|-------------|
+| Command | Description |
+|---------|-------------|
 | `github-release` | Determine semver, write release notes, create tag |
 
 ### Content Operations
 
 This is now a **skill** — see [skills/content-editor/](/skills/content-editor/).
 
-
-
 ## Available Skills
 
-8 skills in `skills/`:
+10 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
+| `content-editor` | Autonomous content pipeline: queue, ingest, write, quality gates, publish |
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
+| `ops-architecture-review` | Surface architectural friction as GitHub issues |
 | `quality-gate` | Run lint + typecheck + test + build, stop-the-line on failure, diagnose and fix |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
@@ -90,13 +90,13 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 | `standards-typescript` | TypeScript project conventions |
 | `writing-humanizer` | Remove signs of AI-generated writing from text |
 
-## Adding a New Prompt
+## Adding a New Command
 
-Create `prompts/<name>.md` with frontmatter:
+Create `commands/<name>.md` with frontmatter:
 
 ```yaml
 ---
-description: What this prompt does, when to use it.
+description: What this command does, when to use it.
 ---
 ```
 
