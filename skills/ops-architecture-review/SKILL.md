@@ -20,7 +20,7 @@ Apply the deletion test: would deleting the suspect module concentrate complexit
 
 ### 2. Ship candidates as issues
 
-Present a numbered list of deepening opportunities, then immediately create a GitHub issue for **every** candidate.
+Search GitHub issues for existing reports on the identified friction to avoid duplicates. Present a numbered list of deepening opportunities, then create a GitHub issue for every new candidate.
 
 **Issue title** — `Deepen <module-name>: <one-line outcome>`
 
@@ -103,7 +103,7 @@ After grilling, update the issue body with resolved sections. Flip `hitl` → `a
 - Use vocabulary from `references/language.md` exactly. Treat drift as a bug.
 - Read `CONTEXT.md` and `docs/adr/` if they exist before exploring.
 - Apply the deletion test before flagging any module as shallow.
-- Create a GitHub issue for every candidate in step 2. Do not wait for user approval.
+- Check for existing GitHub issues before creating a new one for a candidate.
 - Label each issue with exactly one category (`chore`), one state (`planned`), one execution (`afk`/`hitl`).
 - Open every issue body with the AI disclaimer line.
 - Every deepening candidate must pass at least one "keep" rule from `references/architecture-rules.md`.
