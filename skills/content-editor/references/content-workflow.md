@@ -34,7 +34,6 @@ format_labels:
 pr_label: "content-review"           # Label for content PRs
 
 # Quality skill references
-seo_skill: "writing-seo-reviewer"
 humanizer_skill: "writing-humanizer"
 ```
 

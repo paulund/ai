@@ -145,9 +145,8 @@ guide for all project-specific conventions.
 **Publishing steps:**
 
 1. Run the build command from the style guide — if it fails, fix and rebuild
-2. Run SEO sanity check from the style guide (description length, H1 match,
-   filename match, link resolution). Optionally invoke `writing-seo-reviewer`
-   for a deeper pass
+2. Run the SEO sanity check from the style guide (description length, H1 match,
+   filename match, link resolution)
 3. Create a branch, commit, push, and open a pull request following the style
    guide's PR conventions
 4. Comment on the original queue item with the PR link

@@ -28,7 +28,7 @@ bin/sync --dry-run    # preview
 
 ## Available Prompts
 
-18 prompts in `prompts/`, grouped by domain.
+12 prompts in `prompts/`, grouped by domain.
 
 ### Dev Loop
 
