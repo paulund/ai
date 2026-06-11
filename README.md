@@ -28,7 +28,7 @@ bin/sync --dry-run    # preview
 
 ## Available Prompts
 
-31 prompts in `prompts/`, grouped by domain.
+18 prompts in `prompts/`, grouped by domain.
 
 ### Dev Loop
 
@@ -84,12 +84,6 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 | `writing-newsletter-draft` | Generate weekly newsletter from recent content |
 | `writing-seo-reviewer` | SEO audit for paulund.co.uk content |
 
-### Personal
-
-| Prompt | Description |
-|--------|-------------|
-| `todo` | Morning project management checkpoint across repos |
-| `url-manager` | URL structure changes for paulund.co.uk |
 
 
 ## Available Skills

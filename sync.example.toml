@@ -25,7 +25,7 @@ prompts = [
     "pr-review",
     "pr-verify",
     "github-release",
-    "todo",
+
     "writing-seo-reviewer",
 ]
 
