@@ -1,151 +1,108 @@
-# claude-skills
+# AI Commands & Skills
 
-Personal Claude Code global skills for Laravel, Inertia.js, and related development workflows.
+Source of truth for reusable AI agent commands and skills.
+Distributed via `bin/sync` to global and per-project directories.
 
-## Skills
+## Commands vs Skills
 
-### Laravel
+- **Commands** — human-invoked workflows. Loaded on demand, not in context.
+  Single `.md` files in `commands/`.
+- **Skills** — agent and/or human invoked. Description preloaded in context for
+  auto-activation. Directories under `skills/` with `SKILL.md` + optional `references/`.
 
-Skills for building Laravel applications following consistent conventions. Covers the full backend lifecycle — from structuring controllers, models, and Eloquent relationships, to actions, jobs, events, policies, and API resources. The testing skill adds Pest-based coverage with factories, feature tests, and Inertia assertions. The Sail skill handles the Docker development environment.
+## Quick Start
 
-| Skill | Description |
-|-------|-------------|
-| `laravel` | Controllers, models, Eloquent, actions, enums, jobs, events, policies, API resources, migrations |
-| `laravel-testing` | Testing with Pest: factories, unit tests, Inertia testing |
-| `laravel-sail` | Sail commands, docker-compose, service configuration, troubleshooting |
-| `inertia` | Inertia page props, shared data, forms, navigation, partial reloads, deferred props |
+```bash
+# 1. Create your local config (gitignored)
+cp sync.example.toml sync.toml
 
-### PHP
+# 2. Edit sync.toml to match your setup
+#    - Set global target directories
+#    - List the commands/skills you want globally
+#    - Define any per-project installs
 
-Best practices for modern PHP development independent of any framework. Enforces strict types, immutable Value Objects, typed DTOs, and structured exception hierarchies following PSR standards.
+# 3. Run the sync script
+bin/sync              # install/update
+bin/sync --dry-run    # preview
+```
 
-| Skill | Description |
-|-------|-------------|
-| `php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards |
+## Available Commands
 
-### API Design
-
-Conventions for designing consistent, well-documented REST APIs. Covers resource naming, HTTP methods, status codes, error shapes, pagination, filtering, authentication, versioning, and OpenAPI specification.
-
-| Skill | Description |
-|-------|-------------|
-| `api` | RESTful API design conventions, HTTP methods, status codes, and best practices |
-| `webhook` | Webhook implementation with Standard Webhooks conventions |
-
-### Git & CI/CD
-
-Skills for consistent Git workflows, automated releases, and GitHub Actions pipelines. Handles branching strategy, commit conventions, PR creation, changelog generation, and version tagging.
-
-| Skill | Description |
-|-------|-------------|
-| `dev-commit-push-pr` | Git commit, push, and PR workflow |
-| `release-github-release` | GitHub release automation |
-| `git-github-actions-claude` | GitHub Actions with Claude integration |
-| `merge-main` | Merge origin/main into current branch and resolve conflicts |
-| `bump-version` | Version bumping automation |
-
-### TypeScript & Next.js
-
-Best practices for TypeScript strict-mode development and Next.js 15 App Router patterns. Covers type safety, Zod integration, Prisma types, server vs client components, server actions, data fetching, caching, and streaming.
-
-| Skill | Description |
-|-------|-------------|
-| `typescript-best-practices` | TypeScript strict-mode: types, Zod, Prisma, React typing conventions |
-| `nextjs-best-practices` | Next.js 15 App Router: server/client components, server actions, caching, routing |
-
-### Infrastructure
-
-Skills for containerisation, observability, and security. Covers Docker Compose service wiring, structured logging, metrics, alerting, and security auditing across frontend, backend, and infrastructure layers.
-
-| Skill | Description |
-|-------|-------------|
-| `docker` | Docker Compose healthchecks, service dependencies, container readiness |
-| `monitoring` | Observability, metrics, structured logging, and alerting patterns |
-| `security` | Security auditing, vulnerability scanning, and secure coding practices |
+12 commands in `commands/`, grouped by domain.
 
 ### Dev Loop
 
-Skills for autonomous feature development. `plan` turns an idea into dependency-ordered GitHub issues; `ship` picks the next ready issue, implements it with TDD, runs the quality gate, and opens a reviewed PR — designed to run repeatedly via `/loop /ship`.
+| Command | Description |
+|---------|-------------|
+| `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
+| `dev-merge-main` | Merge origin/main into the current branch |
+| `pr-review` | Two-phase code + security review with findings as commits |
+| `pr-verify` | Boot dev server and drive UI via DevTools for screenshot verification |
+
+### Planning
+
+| Command | Description |
+|---------|-------------|
+| `plan-bug` | Interview user about a bug, file as planned+AFK issue |
+| `plan-grill-me` | Relentless interview until reaching shared understanding |
+| `plan-to-prd` | Turn idea into PRD + vertical-sliced GitHub issues |
+
+### Ops
+
+| Command | Description |
+|---------|-------------|
+| `ops-triage` | GitHub issue state machine — triage, brief, close, block |
+| `ops-vercel-log-scan` | Scan Vercel runtime logs, triage errors to root cause |
+
+### Learning
+
+| Command | Description |
+|---------|-------------|
+| `learn` | Extract session lessons and save to AGENTS.md or skill files |
+| `learn-prs` | Extract lessons from PR review comments over last 7 days |
+
+### Release
+
+| Command | Description |
+|---------|-------------|
+| `github-release` | Determine semver, write release notes, create tag |
+
+### Content Operations
+
+This is now a **skill** — see [skills/content-editor/](/skills/content-editor/).
+
+## Available Skills
+
+10 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
-| `plan` | Turn an idea into vertical-sliced GitHub issues ready for the ship loop |
-| `ship` | Pick the next AFK issue, implement with TDD, run quality gate, open PR |
+| `content-editor` | Autonomous content pipeline: queue scan, source ingestion, readiness evaluation, writing via style guide, quality gates, PR publishing |
+| `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
+| `ops-architecture-review` | Identify architectural friction, produce GitHub issues with ops-triage labels |
+| `quality-gate` | Run lint → typecheck → test → build, stop on first failure |
+| `standards-api` | RESTful API design conventions and best practices |
+| `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
+| `standards-nextjs` | Next.js 15 App Router project conventions |
+| `standards-php` | PHP 8.3+ best practices: strict types, DTOs, Value Objects, exceptions, PSR standards |
+| `standards-typescript` | TypeScript project conventions |
+| `writing-humanizer` | Remove signs of AI-generated writing from text |
 
-### Code Quality
+## Adding a New Command
 
-Review and refactoring skills that apply consistent standards across backend and frontend code. The `learnt` skill extracts lessons from the current session and saves them to the right place — memories, CLAUDE.md, or global skill files.
+Create `commands/<name>.md` with frontmatter:
 
-| Skill | Description |
-|-------|-------------|
-| `code-review` | Code review checklists for backend and frontend |
-| `learnt` | Extract session lessons and save them to the right place |
-
-### WordPress
-
-Skills for building WordPress themes and plugins to modern standards. Covers plugin architecture, theme development, Gutenberg block creation, hooks and filters, and performance and security hardening.
-
-| Skill | Description |
-|-------|-------------|
-| `wordpress` | WordPress theme and plugin development, Gutenberg blocks, hooks and filters |
-
-### Marketing
-
-Skills for creating and distributing content across channels. Covers platform-specific writing for X and LinkedIn, copywriting frameworks, email sequences, SEO auditing, and repurposing long-form content into social posts.
-
-| Skill | Description |
-|-------|-------------|
-| `marketing-content-repurposer` | Repurpose content across platforms |
-| `marketing-content-strategy` | Content strategy planning |
-| `marketing-copywriting` | Copywriting frameworks and guides |
-| `marketing-email-sequence` | Email sequence writing |
-| `marketing-linkedin-content` | LinkedIn post creation |
-| `marketing-reply-drafter` | Reply drafting for social media |
-| `marketing-seo-audit` | SEO auditing checklist |
-| `marketing-x-content` | X (Twitter) post creation |
-
-### SaaS
-
-Skills for planning and launching SaaS products. Covers writing product requirements documents, building go-to-market plans, pricing strategy, and validating launch readiness against a structured checklist.
-
-| Skill | Description |
-|-------|-------------|
-| `saas-go-to-market` | Go-to-market strategy |
-| `saas-launch-checklist` | Launch readiness checklist |
-| `saas-pricing-strategy` | Pricing strategy frameworks |
-| `saas-prd` | SaaS PRD framework |
-
-### Writing
-
-Skills for improving written output. The humanizer removes AI-sounding patterns from generated text; the technical writer skill applies consistent style, structure, and clarity to documentation and guides.
-
-| Skill | Description |
-|-------|-------------|
-| `humanizer` | Humanize AI-generated text |
-| `writing-technical-writer` | Technical writing style and structure |
-
-## Installation
-
-Clone this repo and copy any skills you want into `~/.claude/skills/`:
-
-```bash
-git clone https://github.com/paulund/ai.git
-cd ai
-
-# Install individual skills
-cp -r laravel ~/.claude/skills/
-cp -r dev-commit-push-pr ~/.claude/skills/
-
-# Or install all skills
-for d in */; do cp -r "$d" ~/.claude/skills/; done
+```yaml
+---
+description: What this command does, when to use it.
+---
 ```
 
-## Usage
+## Adding a New Skill
 
-Skills are invoked by name in Claude Code:
+Create `skills/<name>/SKILL.md` with frontmatter. See the Skill Authoring Rules
+in `AGENTS.md`.
 
-```
-/laravel
-/dev-commit-push-pr
-/release-github-release
-```
+## Configuration Reference
+
+See `sync.example.toml` for the full config format with inline documentation.
