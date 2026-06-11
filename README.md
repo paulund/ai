@@ -73,17 +73,6 @@ bin/sync --dry-run    # preview
 
 This is now a **skill** — see [skills/content-editor/](/skills/content-editor/).
 
-### Writing
-
-| Prompt | Description |
-|--------|-------------|
-| `writing-content-draft` | Write a full publishable article from sources |
-| `writing-content-evergreen` | Refresh stale Next.js/TypeScript articles |
-| `writing-content-pr-to-blog` | Turn merged PR into blog post |
-| `writing-github-release-articles` | Write technical article from GitHub release |
-| `writing-newsletter-draft` | Generate weekly newsletter from recent content |
-| `writing-seo-reviewer` | SEO audit for paulund.co.uk content |
-
 
 
 ## Available Skills
