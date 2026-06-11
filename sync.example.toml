@@ -24,8 +24,7 @@ prompts = [
     "pr-fix",
     "pr-review",
     "pr-verify",
-    "quality-gate",
-    "release-github-release",
+    "github-release",
     "todo",
     "writing-seo-reviewer",
 ]
@@ -34,6 +33,7 @@ prompts = [
 skills = [
     "dev-simplify",
     "ops-architecture-review",
+    "quality-gate",
     "standards-api",
     "standards-laravel",
     "standards-nextjs",

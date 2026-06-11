@@ -28,7 +28,7 @@ bin/sync --dry-run    # preview
 
 ## Available Prompts
 
-32 prompts in `prompts/`, grouped by domain.
+31 prompts in `prompts/`, grouped by domain.
 
 ### Dev Loop
 
@@ -36,7 +36,6 @@ bin/sync --dry-run    # preview
 |--------|-------------|
 | `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
 | `dev-merge-main` | Merge origin/main into the current branch |
-| `quality-gate` | Run lint + types + tests + build as a pre-push gate |
 | `pr-review` | Two-phase code + security review with findings as commits |
 | `pr-fix` | Action external review feedback and CI failures |
 | `pr-verify` | Boot dev server and drive UI via DevTools for screenshot verification |
@@ -68,7 +67,7 @@ bin/sync --dry-run    # preview
 
 | Prompt | Description |
 |--------|-------------|
-| `release-github-release` | Determine semver, write release notes, create tag |
+| `github-release` | Determine semver, write release notes, create tag |
 
 ### Content Operations
 
@@ -95,11 +94,12 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 
 ## Available Skills
 
-7 skills in `skills/`:
+8 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
+| `quality-gate` | Run lint + typecheck + test + build, stop-the-line on failure, diagnose and fix |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
 | `standards-nextjs` | Next.js 15 App Router project conventions |
