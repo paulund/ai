@@ -1,6 +1,5 @@
 ---
 description: Triage GitHub issues via an autonomous label-based state machine — categorize, brief, close, block, with periodic backlog health scans.
-global: true
 ---
 
 # GitHub Issue Triage

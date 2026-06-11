@@ -14,11 +14,9 @@ skill_targets  = ["~/.config/opencode/skills/", "~/.agents/skills/"]
 # Prompts to install globally (names match prompts/<name>.md)
 prompts = [
     "dev-implement",
-    "dev-simplify",
     "dev-merge-main",
-    "learn-learnt",
-    "learn-pr-learnt",
-    "ops-improve-codebase-architecture",
+    "learn",
+    "learn-prs",
     "ops-triage",
     "plan-bug",
     "plan-grill-me",
@@ -34,6 +32,8 @@ prompts = [
 
 # Skills to install globally (names match skills/<name>/)
 skills = [
+    "dev-simplify",
+    "ops-architecture-review",
     "standards-api",
     "standards-laravel",
     "standards-nextjs",

@@ -28,14 +28,13 @@ bin/sync --dry-run    # preview
 
 ## Available Prompts
 
-33 prompts in `prompts/`, grouped by domain.
+32 prompts in `prompts/`, grouped by domain.
 
 ### Dev Loop
 
 | Prompt | Description |
 |--------|-------------|
 | `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
-| `dev-simplify` | Remove unnecessary complexity from the codebase |
 | `dev-merge-main` | Merge origin/main into the current branch |
 | `quality-gate` | Run lint + types + tests + build as a pre-push gate |
 | `pr-review` | Two-phase code + security review with findings as commits |
@@ -55,15 +54,15 @@ bin/sync --dry-run    # preview
 | Prompt | Description |
 |--------|-------------|
 | `ops-triage` | GitHub issue state machine — triage, brief, close, block |
-| `ops-improve-codebase-architecture` | Surface architectural friction as GitHub issues |
+| `ops-architecture-review` | Surface architectural friction as GitHub issues |
 | `ops-vercel-log-scan` | Scan Vercel runtime logs, triage errors to root cause |
 
 ### Learning
 
 | Prompt | Description |
 |--------|-------------|
-| `learn-learnt` | Extract session lessons and save to AGENTS.md or skill files |
-| `learn-pr-learnt` | Extract lessons from PR review comments over last 7 days |
+| `learn` | Extract session lessons and save to AGENTS.md or skill files |
+| `learn-prs` | Extract lessons from PR review comments over last 7 days |
 
 ### Release
 
@@ -91,19 +90,16 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 | Prompt | Description |
 |--------|-------------|
 | `todo` | Morning project management checkpoint across repos |
-| `morning` | Daily briefing — calendar, tax deadline, gold price |
-| `local-event-finder` | Find in-person evening/weekend events in Cardiff/Bristol |
-| `personal-shopper` | Wardrobe recommendation assistant |
-| `startup-portfolio-review` | Quarterly EIS/SEIS investment review |
 | `url-manager` | URL structure changes for paulund.co.uk |
 
 
 ## Available Skills
 
-6 skills in `skills/`:
+7 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
+| `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
 | `standards-nextjs` | Next.js 15 App Router project conventions |
@@ -118,7 +114,6 @@ Create `prompts/<name>.md` with frontmatter:
 ```yaml
 ---
 description: What this prompt does, when to use it.
-global: true    # omit or set false for per-project only
 ---
 ```
 

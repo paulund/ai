@@ -51,8 +51,7 @@ repo root/
 ## Available Prompts
 
 33 prompts are available in `prompts/`. See `README.md` for the full catalog
-grouped by domain. Each prompt has a `description` in its frontmatter and may
-set `global: true` to indicate it's intended for global install.
+grouped by domain. Each prompt has a `description` in its frontmatter.
 
 ## Available Skills
 
