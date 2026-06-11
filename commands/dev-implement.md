@@ -50,6 +50,19 @@ Then discover the project's architecture context:
 - Read them if they exist — understand domain vocabulary and prior decisions.
 - Proceed silently if none exist (don't flag their absence).
 
+### Step 3b — Module Design Check
+
+Before writing any code, answer each of these. They prevent the shallow-module and duplicate-path issues that the architecture review catches post-hoc.
+
+1. **Search for existing coverage.** `rg` for the key concepts in the issue — does this logic already exist somewhere? If yes, extend it; don't create a sibling.
+2. **New module or extension?** If new: apply steps 3-5. If extension: identify the existing module and stop here.
+3. **Apply the deletion test.** If this module were deleted, would the complexity scatter into callers (keep/deepen) or vanish entirely (remove)? Consult the Architecture Rules reference below.
+4. **Identify the seam.** What's the public interface? A function, a class, a file with named exports? Document the expected contract in a sentence.
+5. **One adapter or two?** If only one concrete implementation exists or is planned, don't create a port/interface — call the implementation directly (Architecture Rules: single-adapter seams are hypothetical).
+6. **AHA check.** Does this duplicate an existing abstraction? Don't abstract until the third occurrence. Duplicate first, extract later.
+
+If these answers conflict with the issue's acceptance criteria or would produce a known shallow design, stop and add the `hitl` label — do not proceed.
+
 ### Step 4 — Implement with TDD
 
 Tests verify behaviour through public interfaces, not implementation details — good tests describe _what_ the system does and survive refactors. Do not write all tests first (horizontal slicing); each test responds to what you learned from the previous cycle.
@@ -121,6 +134,7 @@ Output a summary so the caller knows what happened:
 - Prefer type-enforced boundaries: use interfaces/types as module contracts rather than runtime validation.
 - When an issue number is provided, work on that specific issue — never re-pick.
 - Read project architecture docs (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) before starting implementation.
+- Run the Module Design Check (Step 3b) before writing any code — answer the deletion test, seam, adapter, and AHA questions upfront.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.
 - **Run `git status --porcelain` before reporting and refuse to report success unless the output is empty.**
