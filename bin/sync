@@ -1,0 +1,276 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+CONFIG_FILE="$REPO_ROOT/sync.toml"
+
+DRY_RUN=false
+CLEAN_ONLY=false
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Sync prompts and skills from this repo to global and project directories.
+
+Options:
+  --dry-run    Print what would be done without making changes
+  --clean      Only remove stale symlinks, skip install
+  --help       Show this message
+
+Config: $CONFIG_FILE (gitignored — copy from sync.example.toml)
+EOF
+    exit 0
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dry-run) DRY_RUN=true; shift ;;
+        --clean) CLEAN_ONLY=true; shift ;;
+        --help) usage ;;
+        *) echo "Unknown option: $1"; usage ;;
+    esac
+done
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo "Error: $CONFIG_FILE not found."
+    echo "Copy sync.example.toml to sync.toml and edit it."
+    exit 1
+fi
+
+# ── TOML Parser ──────────────────────────────────────────────────────
+# State machine that populates:
+#   GLOBAL_PROMPT_TARGETS GLOBAL_SKILL_TARGETS GLOBAL_PROMPTS GLOBAL_SKILLS
+#     (space-separated strings)
+#   PROJECT_PATHS PROJECT_PROMPTS PROJECT_SKILLS (indexed arrays)
+
+GLOBAL_PROMPT_TARGETS=""
+GLOBAL_SKILL_TARGETS=""
+GLOBAL_PROMPTS=""
+GLOBAL_SKILLS=""
+
+PROJECT_PATHS=()
+PROJECT_PROMPTS=()
+PROJECT_SKILLS=()
+
+current_section=""
+current_key=""
+in_array=false
+array_acc=""
+proj_idx=-1
+
+extract_values() {
+    local content="$1"
+    local remaining="${content#*\[}"
+    remaining="${remaining%\]*}"
+    while [[ "$remaining" =~ \"([^\"]+)\" ]]; do
+        echo "${BASH_REMATCH[1]}"
+        remaining="${remaining#*\"${BASH_REMATCH[1]}\"}"
+    done
+}
+
+commit_array() {
+    local key="$1" content="$2"
+    local values
+    values="$(extract_values "$content")"
+    local packed=""
+    while IFS= read -r val; do
+        packed="$packed $val"
+    done <<< "$values"
+    packed="${packed# }"
+
+    if [[ "$current_section" == "global" ]]; then
+        case "$key" in
+            prompt_targets) GLOBAL_PROMPT_TARGETS="$packed" ;;
+            skill_targets)  GLOBAL_SKILL_TARGETS="$packed" ;;
+            prompts)        GLOBAL_PROMPTS="$packed" ;;
+            skills)         GLOBAL_SKILLS="$packed" ;;
+        esac
+    elif [[ "$current_section" == "project" ]]; then
+        case "$key" in
+            path)   PROJECT_PATHS[proj_idx]="$packed" ;;
+            prompts) PROJECT_PROMPTS[proj_idx]="$packed" ;;
+            skills)  PROJECT_SKILLS[proj_idx]="$packed" ;;
+        esac
+    fi
+}
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ -z "$line" || "$line" == \#* ]] && continue
+
+    if [[ "$line" == "[global]" ]]; then
+        current_section="global"
+        continue
+    fi
+    if [[ "$line" == "[[project]]" ]]; then
+        current_section="project"
+        proj_idx=$((proj_idx + 1))
+        PROJECT_PATHS[proj_idx]=""
+        PROJECT_PROMPTS[proj_idx]=""
+        PROJECT_SKILLS[proj_idx]=""
+        continue
+    fi
+
+    if $in_array; then
+        array_acc="$array_acc $line"
+        if [[ "$array_acc" == *"]" ]]; then
+            commit_array "$current_key" "$array_acc"
+            in_array=false
+            array_acc=""
+        fi
+        continue
+    fi
+
+    if [[ "$line" =~ ^([a-zA-Z_]+)[[:space:]]*=[[:space:]]*(.*) ]]; then
+        current_key="${BASH_REMATCH[1]}"
+        val="${BASH_REMATCH[2]}"
+
+        if [[ ! "$val" == *\"* && "$val" == *\#* ]]; then
+            val="${val%%#*}"
+            val="${val%"${val##*[![:space:]]}"}"
+        fi
+
+        if [[ "$val" =~ ^\"(.*)\"$ ]]; then
+            commit_array "$current_key" "[${BASH_REMATCH[1]}]"
+        elif [[ "$val" == "[" ]]; then
+            in_array=true
+            array_acc="["
+        elif [[ "$val" =~ ^\[(.*)\]$ ]]; then
+            commit_array "$current_key" "$val"
+        fi
+    fi
+done < "$CONFIG_FILE"
+
+# ── Symlink helpers ──────────────────────────────────────────────────
+
+install_prompt() {
+    local name="$1" target_dir="$2"
+    local src="$REPO_ROOT/prompts/$name.md"
+    local dst="$target_dir/$name.md"
+    [[ -f "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
+    mkdir -p "$target_dir"
+    if $DRY_RUN; then
+        echo "  symlink: $dst -> $src"
+    else
+        ln -snf "$src" "$dst"
+    fi
+}
+
+install_skill() {
+    local name="$1" target_dir="$2"
+    local src="$REPO_ROOT/skills/$name"
+    local dst="$target_dir/$name"
+    [[ -d "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
+    mkdir -p "$target_dir"
+    if $DRY_RUN; then
+        echo "  symlink: $dst -> $src"
+    else
+        ln -snf "$src" "$dst"
+    fi
+}
+
+clean_target() {
+    local target_dir="$1" active_set="$2"
+    [[ -d "$target_dir" ]] || return
+
+    while IFS= read -r link; do
+        local name check_name link_target
+        name="$(basename "$link")"
+        check_name="${name%.md}"
+        link_target="$(readlink "$link")"
+        if [[ "$link_target" == "$REPO_ROOT"* ]]; then
+            if [[ " $active_set " != *" $check_name "* ]]; then
+                if $DRY_RUN; then
+                    echo "  [CLEAN] would remove: $link"
+                else
+                    rm -f "$link"
+                    echo "  [CLEAN] removed: $link"
+                fi
+            fi
+        fi
+    done < <(find "$target_dir" -maxdepth 1 -type l 2>/dev/null || true)
+}
+
+# ── Main ─────────────────────────────────────────────────────────────
+
+all_empty=1
+[[ -n "$GLOBAL_PROMPT_TARGETS" ]] && all_empty=0
+[[ -n "$GLOBAL_SKILL_TARGETS" ]] && all_empty=0
+[[ -n "${PROJECT_PATHS[*]-}" ]] && all_empty=0
+
+if (( all_empty )); then
+    echo "Nothing configured in $CONFIG_FILE"
+    exit 0
+fi
+
+# Install phase
+if ! $CLEAN_ONLY; then
+    # Global prompts
+    if [[ -n "$GLOBAL_PROMPT_TARGETS" && -n "$GLOBAL_PROMPTS" ]]; then
+        echo "Installing global prompts..."
+        IFS=' ' read -ra targets <<< "$GLOBAL_PROMPT_TARGETS"
+        IFS=' ' read -ra names <<< "$GLOBAL_PROMPTS"
+        for t in "${targets[@]}"; do
+            eval "tdir=$t"
+            tdir="${tdir%/}"
+            for n in "${names[@]}"; do
+                install_prompt "$n" "$tdir"
+            done
+            clean_target "$tdir" "$GLOBAL_PROMPTS"
+        done
+    fi
+
+    # Global skills
+    if [[ -n "$GLOBAL_SKILL_TARGETS" && -n "$GLOBAL_SKILLS" ]]; then
+        echo "Installing global skills..."
+        IFS=' ' read -ra targets <<< "$GLOBAL_SKILL_TARGETS"
+        IFS=' ' read -ra names <<< "$GLOBAL_SKILLS"
+        for t in "${targets[@]}"; do
+            eval "tdir=$t"
+            tdir="${tdir%/}"
+            for n in "${names[@]}"; do
+                install_skill "$n" "$tdir"
+            done
+            clean_target "$tdir" "$GLOBAL_SKILLS"
+        done
+    fi
+
+    # Per-project
+    if (( ${#PROJECT_PATHS[@]} )); then
+        echo "Installing per-project..."
+        for ((i=0; i<${#PROJECT_PATHS[@]}; i++)); do
+            eval "pdir=${PROJECT_PATHS[$i]}"
+            pdir="${pdir%/}"
+            [[ -n "$pdir" ]] || continue
+            echo "  $pdir"
+
+            pp="${PROJECT_PROMPTS[$i]:-}"
+            ps="${PROJECT_SKILLS[$i]:-}"
+
+            if [[ -n "$pp" ]]; then
+                IFS=' ' read -ra names <<< "$pp"
+                td="$pdir/.agents/prompts"
+                for n in "${names[@]}"; do
+                    install_prompt "$n" "$td"
+                done
+                clean_target "$td" "$pp"
+            fi
+            if [[ -n "$ps" ]]; then
+                IFS=' ' read -ra names <<< "$ps"
+                td="$pdir/.agents/skills"
+                for n in "${names[@]}"; do
+                    install_skill "$n" "$td"
+                done
+                clean_target "$td" "$ps"
+            fi
+        done
+    fi
+fi
+
+if $DRY_RUN; then
+    echo "Dry run complete — no changes made."
+else
+    echo "Done."
+fi

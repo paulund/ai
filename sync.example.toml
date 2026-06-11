@@ -1,0 +1,51 @@
+# sync.toml — prompt & skill distribution config
+# Copy this to sync.toml and edit for your machine.
+# sync.toml is gitignored — your local paths stay local.
+
+[global]
+# Directories where prompts are symlinked as files
+prompt_targets = ["~/.config/opencode/agents/"]
+
+# Directories where skills are symlinked as directories
+# ~/.config/opencode/skills/ is opencode's primary scan path
+# ~/.agents/skills/ is auto-loaded by opencode as external skills
+skill_targets  = ["~/.config/opencode/skills/", "~/.agents/skills/"]
+
+# Prompts to install globally (names match prompts/<name>.md)
+prompts = [
+    "dev-implement",
+    "dev-simplify",
+    "dev-merge-main",
+    "learn-learnt",
+    "learn-pr-learnt",
+    "ops-improve-codebase-architecture",
+    "ops-triage",
+    "plan-bug",
+    "plan-grill-me",
+    "plan-to-prd",
+    "pr-fix",
+    "pr-review",
+    "pr-verify",
+    "quality-gate",
+    "release-github-release",
+    "todo",
+    "writing-seo-reviewer",
+]
+
+# Skills to install globally (names match skills/<name>/)
+skills = [
+    "standards-api",
+    "standards-laravel",
+    "standards-nextjs",
+    "standards-php",
+    "standards-typescript",
+    "writing-humanizer",
+]
+
+# Per-project installs
+# Prompts go to <project>/.agents/prompts/
+# Skills go to <project>/.agents/skills/
+# [[project]]
+# path    = "~/Documents/Code/my-app"
+# prompts = ["dev-implement"]
+# skills  = ["standards-laravel", "standards-php"]
