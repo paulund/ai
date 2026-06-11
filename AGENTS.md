@@ -86,29 +86,6 @@ bin/sync --dry-run    # preview changes only
 bin/sync --clean      # remove stale symlinks, skip install
 ```
 
-### Config format
-
-```toml
-[global]
-prompt_targets = ["~/.claude/prompts/"]
-skill_targets  = ["~/.claude/skills/", "~/.agents/skills/"]
-
-prompts = ["dev-implement", "plan-bug", ...]
-skills  = ["standards-api", "standards-laravel", ...]
-
-[[project]]
-path    = "~/Documents/Code/my-app"
-prompts = ["dev-implement"]
-skills  = ["standards-laravel"]
-```
-
-Global commands become file symlinks in each `prompt_target`.
-Global skills become directory symlinks in each `skill_target`.
-Per-project installs go to `<path>/.agents/prompts/` and `<path>/.agents/skills/`.
-
-The script auto-cleans stale symlinks — any symlink pointing to this repo
-that is no longer in the config is removed.
-
 ## Skill Authoring Rules
 
 **Frontmatter** — Skills require `name` and `description` only. The `description`
