@@ -1,6 +1,5 @@
 ---
 description: Implement a single AFK GitHub issue end-to-end with TDD and open a PR.
-global: true
 ---
 
 # Dev Implement
