@@ -37,7 +37,6 @@ bin/sync --dry-run    # preview
 | `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
 | `dev-merge-main` | Merge origin/main into the current branch |
 | `pr-review` | Two-phase code + security review with findings as commits |
-| `pr-fix` | Action external review feedback and CI failures |
 | `pr-verify` | Boot dev server and drive UI via DevTools for screenshot verification |
 
 ### Planning
@@ -53,7 +52,6 @@ bin/sync --dry-run    # preview
 | Command | Description |
 |---------|-------------|
 | `ops-triage` | GitHub issue state machine — triage, brief, close, block |
-| `ops-architecture-review` | Surface architectural friction as GitHub issues |
 | `ops-vercel-log-scan` | Scan Vercel runtime logs, triage errors to root cause |
 
 ### Learning
@@ -79,10 +77,10 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 
 | Skill | Description |
 |-------|-------------|
-| `content-editor` | Autonomous content pipeline: queue, ingest, write, quality gates, publish |
+| `content-editor` | Autonomous content pipeline: queue scan, source ingestion, readiness evaluation, writing via style guide, quality gates, PR publishing |
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
-| `ops-architecture-review` | Surface architectural friction as GitHub issues |
-| `quality-gate` | Run lint + typecheck + test + build, stop-the-line on failure, diagnose and fix |
+| `ops-architecture-review` | Identify architectural friction, produce GitHub issues with ops-triage labels |
+| `quality-gate` | Run lint → typecheck → test → build, stop on first failure |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
 | `standards-nextjs` | Next.js 15 App Router project conventions |
