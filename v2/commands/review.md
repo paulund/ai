@@ -9,7 +9,7 @@ Provide a PR number or URL. Fetch the PR metadata and diff via `gh pr view` and 
 ## Workflow
 
 1. **General review** — run the five-axis review (correctness, readability, architecture, security, performance). The `code-reviewer` agent provides the review lens.
-2. **Security audit** — run the `security-auditor` agent for a threat-model-focused review. Trace data flow from entry point to sensitive sink.
+2. **Security audit** — run the `security-auditor` agent for a threat-model-focused review. Trace data flow from entry point to sensitive sink. Apply the `security-and-hardening` skill checklist: STRIDE threat model, OWASP Top 10 patterns, LLM/AI feature security if applicable.
 3. **Classify findings** — Critical, High, Medium, Low per the severity matrix.
 4. **Fix Critical/High/Medium findings** — commit grouped by concern.
 5. **Defer Low findings** — create tracking GitHub issues.

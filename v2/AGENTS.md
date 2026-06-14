@@ -8,7 +8,7 @@ architecture: **commands** (human-invoked) → **agents** (role-specific persona
 
 ```
 v2/
-├── commands/     # 8 user-facing slash commands (thin orchestrators)
+├── commands/     # 9 user-facing slash commands (thin orchestrators)
 ├── skills/       # 19 skill directories (reusable workflows)
 ├── agents/       # 3 role-specific personas (code-reviewer, security-auditor, test-engineer)
 ├── hooks/        # session lifecycle hooks
@@ -30,13 +30,14 @@ v2/
 | Command | Primary Skill | Also invokes |
 |---------|---------------|-------------|
 | `spec` | spec-driven-development | — |
-| `plan` | planning-and-task-breakdown | — |
-| `build` | incremental-implementation | test-driven-development, quality-gate |
+| `plan` | planning-and-task-breakdown | interview-me, spec-driven-development (PRD mode) |
+| `build` | incremental-implementation | test-driven-development, quality-gate, frontend-ui-engineering (UI tasks) |
 | `test` | test-driven-development | quality-gate |
-| `review` | code-review-and-quality | code-reviewer agent, security-auditor agent |
+| `review` | code-review-and-quality | code-reviewer agent, security-auditor agent, security-and-hardening |
 | `code-simplify` | code-simplification | — |
-| `ship` | shipping-and-launch | code-reviewer agent, security-auditor agent, test-engineer agent, quality-gate |
+| `ship` | shipping-and-launch | code-reviewer agent, security-auditor agent, test-engineer agent, quality-gate, observability-and-instrumentation |
 | `learn` | learn-from-session | — |
+| `triage` | — (self-contained) | — |
 
 ## Skill Authoring Rules
 

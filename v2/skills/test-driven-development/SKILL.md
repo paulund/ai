@@ -76,3 +76,9 @@ description: Use when implementing any logic, fixing any bug, or changing any be
 - Test implementation details (private methods, internal state).
 - Skip tests to "save time" — the gate exists for a reason.
 - Write all tests first (horizontal testing) — test one behaviour at a time.
+
+## Reference Guide
+
+| Topic | Reference | Load When |
+|-------|-----------|----------|
+| Testing Patterns | [references/testing-patterns.md](references/testing-patterns.md) | Writing unit, integration, component, or E2E tests; looking up assertion syntax or mock patterns |

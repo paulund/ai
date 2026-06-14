@@ -1,5 +1,5 @@
 ---
-name: ops-architecture-review
+name: architecture-review
 description: Use when reviewing codebase architecture for refactoring opportunities, surfacing shallow modules, or proposing deepening refactors. Identifies architectural friction and produces GitHub issues with the ops-triage labeling scheme.
 ---
 

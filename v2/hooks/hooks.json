@@ -1,6 +1,0 @@
-{
-  "session-start": {
-    "command": "bash hooks/session-start.sh",
-    "description": "Load the meta-skill and operating behaviors on session start"
-  }
-}

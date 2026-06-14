@@ -11,4 +11,4 @@ Begin by understanding what the user wants to build. Ask clarifying questions ab
 
 Then explore the repo for existing context (CONTEXT.md, ADRs, architecture docs).
 
-Generate a structured spec covering all six areas (problem, solution, user stories, implementation decisions, testing decisions, out of scope). Save as `SPEC.md` and confirm with the user before proceeding.
+Generate a structured spec covering all six areas (problem, solution, user stories, implementation decisions, testing decisions, out of scope). GitHub issues are our project management system — create the spec as a GitHub issue using `gh issue create` and confirm with the user before proceeding. If the user prefers a file, save as `SPEC.md` instead.

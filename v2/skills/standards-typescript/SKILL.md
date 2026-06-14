@@ -33,12 +33,6 @@ type PostWithProject = Prisma.PostGetPayload<{ include: { project: true } }>
 import type { Project, Post } from '@prisma/client'
 ```
 
-## Non-Negotiables
-
-- Strict mode is on — never weaken `tsconfig.json`
-- Never use `any` — use `unknown` and narrow it
-- No `@ts-ignore` — use `@ts-expect-error` with a justifying comment if truly unavoidable
-
 ## DRY: Extract Shared Constants
 
 When the same constant appears in more than one file, extract it to `src/lib/` and import it. Client components can import shared constants directly without receiving them as props.
