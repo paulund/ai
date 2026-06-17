@@ -29,6 +29,10 @@ If the user arrives with a fleshed-out spec (detailed body, prior PRD, clear AC)
 
 Understand current architecture, domain language, and where the work will touch.
 
+- **Read every file in `docs/adr/` first.** ADRs encode accepted design decisions (queries/actions split, forbidden patterns, library choices). The PRD's Implementation Decisions section must conform — if a new pattern would contradict an ADR, flag it in Phase 3 and resolve with the user before drafting slices.
+- Read `CONTEXT.md` / `CONTEXT-MAP.md` if present for domain vocabulary.
+- Proceed silently if `docs/adr/` is missing (don't flag its absence in the PRD).
+
 ### Phase 2 — Draft the PRD
 
 Identify seams to test the feature. Prefer existing seams; use the highest possible (outermost public interface). If new seams are needed, propose them at the highest point you can.

@@ -7,7 +7,9 @@ description: Use when reviewing codebase architecture for refactoring opportunit
 
 ### 1. Explore
 
-If the project has `CONTEXT.md` or `docs/adr/`, read them first. Don't flag their absence.
+**Read every file in `docs/adr/` first.** ADRs encode accepted design decisions — the patterns documented there (data fetching layer, service interfaces, configuration-driven dispatch, etc.) are the baseline you measure friction against. Any candidate that contradicts an ADR must be flagged as such and linked to the ADR; don't silently re-litigate the decision.
+
+Read `CONTEXT.md` / `CONTEXT-MAP.md` if present for domain vocabulary. Don't flag the absence of these files.
 
 Walk the codebase and note friction:
 - Where understanding one concept requires bouncing between many small modules
@@ -101,7 +103,8 @@ After grilling, update the issue body with resolved sections. Flip `hitl` → `a
 
 **MUST DO**
 - Use vocabulary from `references/language.md` exactly. Treat drift as a bug.
-- Read `CONTEXT.md` and `docs/adr/` if they exist before exploring.
+- **Read every file in `docs/adr/` before exploring.** ADRs are the baseline; candidates that contradict them must be flagged and linked, not silently re-litigated.
+- Read `CONTEXT.md` / `CONTEXT-MAP.md` if present for domain vocabulary.
 - Apply the deletion test before flagging any module as shallow.
 - Check for existing GitHub issues before creating a new one for a candidate.
 - Label each issue with exactly one category (`chore`), one state (`planned`), one execution (`afk`/`hitl`).

@@ -47,8 +47,9 @@ Read the body fully. The acceptance criteria drive the TDD cycles. If acceptance
 Then discover the project's architecture context:
 
 - Search for `CONTEXT.md`, `CONTEXT-MAP.md`, and `docs/adr/` in the repo root.
-- Read them if they exist — understand domain vocabulary and prior decisions.
-- Proceed silently if none exist (don't flag their absence).
+- **Read every file in `docs/adr/` before writing any code.** ADRs encode accepted design decisions (data fetching layer, forbidden patterns, library choices) and the patterns documented there are non-negotiable — your implementation must conform. If a candidate implementation would contradict an ADR, stop and add the `hitl` label.
+- Read `CONTEXT.md` / `CONTEXT-MAP.md` if they exist for domain vocabulary.
+- Proceed silently if `docs/adr/` is missing (don't flag its absence).
 
 ### Step 3b — Module Design Check
 
@@ -133,7 +134,7 @@ Output a summary so the caller knows what happened:
 - Load the Reference: Architecture Rules section before creating any new abstraction or module boundary. Follow the AHA timing rule — do not abstract on first or second use.
 - Prefer type-enforced boundaries: use interfaces/types as module contracts rather than runtime validation.
 - When an issue number is provided, work on that specific issue — never re-pick.
-- Read project architecture docs (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) before starting implementation.
+- **Read every file in `docs/adr/` before starting implementation.** ADRs are non-negotiable design decisions; if your implementation would contradict one, stop and add the `hitl` label.
 - Run the Module Design Check (Step 3b) before writing any code — answer the deletion test, seam, adapter, and AHA questions upfront.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.

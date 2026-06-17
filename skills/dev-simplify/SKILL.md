@@ -22,8 +22,9 @@ description: Use when code feels over-engineered, before refactoring, or as a cl
 - [ ] Pass-through wrappers failing all "keep" checks
 - [ ] Comments explaining *what*, not *why*
 - [ ] Magic numbers/strings without constants
-
-Code-level cleanup only. Does not propose new seams, consolidate unrelated files, or touch anything passing a "keep" rule.
+- [ ] **Repeated string conditionals** — when `platform === 'x'` (or any string-literal discriminator) appears 3+ times across a file, replace with a per-key config object mapping to the varying behaviour. See [ADR 003 — Design Patterns](docs/adr/003-design-patterns.md#2-configuration-driven-dispatch).
+- [ ] **Unsafe interface casts** — `as unknown as X` is a code smell; fix the interface boundary (add an optional method, or a type guard) instead. See [ADR 003 — Design Patterns](docs/adr/003-design-patterns.md#3-strategy-via-optional-interface-methods).
+- [ ] **Logic in route handlers** — if a route handler exceeds ~50 lines, extract logic into `src/lib/services/<domain>/<verb>.ts`.
 
 ## Reference Guide
 
