@@ -6,7 +6,6 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CONFIG_FILE="$REPO_ROOT/sync.toml"
 
 DRY_RUN=false
-CLEAN_ONLY=false
 
 usage() {
     cat <<EOF
@@ -16,7 +15,6 @@ Sync commands and skills from this repo to global and project directories.
 
 Options:
   --dry-run    Print what would be done without making changes
-  --clean      Only remove stale symlinks, skip install
   --help       Show this message
 
 Config: $CONFIG_FILE (gitignored — copy from sync.example.toml)
@@ -27,7 +25,6 @@ EOF
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry-run) DRY_RUN=true; shift ;;
-        --clean) CLEAN_ONLY=true; shift ;;
         --help) usage ;;
         *) echo "Unknown option: $1"; usage ;;
     esac
@@ -143,7 +140,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 done < "$CONFIG_FILE"
 
-# ── Symlink helpers ──────────────────────────────────────────────────
+# ── Install helpers ─────────────────────────────────────────────────
 
 install_command() {
     local name="$1" target_dir="$2"
@@ -152,9 +149,9 @@ install_command() {
     [[ -f "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
-        echo "  symlink: $dst -> $src"
+        echo "  copy: $src -> $dst"
     else
-        ln -snf "$src" "$dst"
+        rm -f "$dst" && cp "$src" "$dst"
     fi
 }
 
@@ -165,32 +162,10 @@ install_skill() {
     [[ -d "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
-        echo "  symlink: $dst -> $src"
+        echo "  copy: $src -> $dst"
     else
-        ln -snf "$src" "$dst"
+        rm -rf "$dst" && cp -R "$src" "$dst"
     fi
-}
-
-clean_target() {
-    local target_dir="$1" active_set="$2"
-    [[ -d "$target_dir" ]] || return
-
-    while IFS= read -r link; do
-        local name check_name link_target
-        name="$(basename "$link")"
-        check_name="${name%.md}"
-        link_target="$(readlink "$link")"
-        if [[ "$link_target" == "$REPO_ROOT"* ]]; then
-            if [[ " $active_set " != *" $check_name "* ]]; then
-                if $DRY_RUN; then
-                    echo "  [CLEAN] would remove: $link"
-                else
-                    rm -f "$link"
-                    echo "  [CLEAN] removed: $link"
-                fi
-            fi
-        fi
-    done < <(find "$target_dir" -maxdepth 1 -type l 2>/dev/null || true)
 }
 
 # ── Main ─────────────────────────────────────────────────────────────
@@ -206,67 +181,61 @@ if (( all_empty )); then
 fi
 
 # Install phase
-if ! $CLEAN_ONLY; then
-    # Global commands
-    if [[ -n "$GLOBAL_COMMAND_TARGETS" && -n "$GLOBAL_COMMANDS" ]]; then
-        echo "Installing global commands..."
-        IFS=' ' read -ra targets <<< "$GLOBAL_COMMAND_TARGETS"
-        IFS=' ' read -ra names <<< "$GLOBAL_COMMANDS"
-        for t in "${targets[@]}"; do
-            eval "tdir=$t"
-            tdir="${tdir%/}"
+# Global commands
+if [[ -n "$GLOBAL_COMMAND_TARGETS" && -n "$GLOBAL_COMMANDS" ]]; then
+    echo "Installing global commands..."
+    IFS=' ' read -ra targets <<< "$GLOBAL_COMMAND_TARGETS"
+    IFS=' ' read -ra names <<< "$GLOBAL_COMMANDS"
+    for t in "${targets[@]}"; do
+        eval "tdir=$t"
+        tdir="${tdir%/}"
+        for n in "${names[@]}"; do
+            install_command "$n" "$tdir"
+        done
+    done
+fi
+
+# Global skills
+if [[ -n "$GLOBAL_SKILL_TARGETS" && -n "$GLOBAL_SKILLS" ]]; then
+    echo "Installing global skills..."
+    IFS=' ' read -ra targets <<< "$GLOBAL_SKILL_TARGETS"
+    IFS=' ' read -ra names <<< "$GLOBAL_SKILLS"
+    for t in "${targets[@]}"; do
+        eval "tdir=$t"
+        tdir="${tdir%/}"
+        for n in "${names[@]}"; do
+            install_skill "$n" "$tdir"
+        done
+    done
+fi
+
+# Per-project
+if (( ${#PROJECT_PATHS[@]} )); then
+    echo "Installing per-project..."
+    for ((i=0; i<${#PROJECT_PATHS[@]}; i++)); do
+        eval "pdir=${PROJECT_PATHS[$i]}"
+        pdir="${pdir%/}"
+        [[ -n "$pdir" ]] || continue
+        echo "  $pdir"
+
+        pc="${PROJECT_COMMANDS[$i]:-}"
+        ps="${PROJECT_SKILLS[$i]:-}"
+
+        if [[ -n "$pc" ]]; then
+            IFS=' ' read -ra names <<< "$pc"
+            td="$pdir/.agents/commands"
             for n in "${names[@]}"; do
-                install_command "$n" "$tdir"
+                install_command "$n" "$td"
             done
-            clean_target "$tdir" "$GLOBAL_COMMANDS"
-        done
-    fi
-
-    # Global skills
-    if [[ -n "$GLOBAL_SKILL_TARGETS" && -n "$GLOBAL_SKILLS" ]]; then
-        echo "Installing global skills..."
-        IFS=' ' read -ra targets <<< "$GLOBAL_SKILL_TARGETS"
-        IFS=' ' read -ra names <<< "$GLOBAL_SKILLS"
-        for t in "${targets[@]}"; do
-            eval "tdir=$t"
-            tdir="${tdir%/}"
+        fi
+        if [[ -n "$ps" ]]; then
+            IFS=' ' read -ra names <<< "$ps"
+            td="$pdir/.agents/skills"
             for n in "${names[@]}"; do
-                install_skill "$n" "$tdir"
+                install_skill "$n" "$td"
             done
-            clean_target "$tdir" "$GLOBAL_SKILLS"
-        done
-    fi
-
-    # Per-project
-    if (( ${#PROJECT_PATHS[@]} )); then
-        echo "Installing per-project..."
-        for ((i=0; i<${#PROJECT_PATHS[@]}; i++)); do
-            eval "pdir=${PROJECT_PATHS[$i]}"
-            pdir="${pdir%/}"
-            [[ -n "$pdir" ]] || continue
-            echo "  $pdir"
-
-            pc="${PROJECT_COMMANDS[$i]:-}"
-            ps="${PROJECT_SKILLS[$i]:-}"
-
-            if [[ -n "$pc" ]]; then
-                IFS=' ' read -ra names <<< "$pc"
-                td="$pdir/.agents/commands"
-                for n in "${names[@]}"; do
-                    install_command "$n" "$td"
-                done
-                clean_target "$td" "$pc"
-            fi
-            if [[ -n "$ps" ]]; then
-                IFS=' ' read -ra names <<< "$ps"
-                td="$pdir/.agents/skills"
-                for n in "${names[@]}"; do
-                    install_skill "$n" "$td"
-                done
-                clean_target "$td" "$ps"
-            fi
-        done
-    fi
+        fi
+    done
 fi
 
 if $DRY_RUN; then

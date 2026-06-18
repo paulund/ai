@@ -8,11 +8,22 @@ Implement one issue with TDD on a branch, push the result, and open a PR.
 
 ## Inputs
 
-Provide a GitHub issue URL or issue number. When omitted, the prompt picks the next ready issue (Step 1).
+Provide a GitHub issue URL or issue number. When omitted, the prompt picks the next ready issue (Step 2).
 
 ## Workflow
 
-### Step 1 — Pick the next issue (when no issue is provided)
+### Step 1 — Sync base branch (always)
+
+Run this first, before doing anything else. The new branch is cut from a fresh base.
+
+```bash
+git checkout main
+git pull origin main
+```
+
+If the repo uses a different default branch, substitute it for `main`.
+
+### Step 2 — Pick the next issue (when no issue is provided)
 
 ```bash
 gh issue list --label "planned" --state open --json number,title,labels,body
@@ -30,13 +41,12 @@ Rules:
 - Pick highest priority (`p1` > `p2` > `p3`).
 - If no issues match, stop cleanly and report the empty backlog.
 
-### Step 2 — Set up the branch
+### Step 3 — Set up the branch
 
-- Check out the base branch (usually `main`), pull latest.
-- Create a new branch: `agent/issue-<N>-<slug>`.
+- Create a new branch off the freshly-synced base: `agent/issue-<N>-<slug>`.
 - Transition the issue: remove `planned`, add `in-progress`.
 
-### Step 3 — Read the issue
+### Step 4 — Read the issue
 
 ```bash
 gh issue view <N> --json number,title,body,labels
@@ -51,12 +61,12 @@ Then discover the project's architecture context:
 - Read `CONTEXT.md` / `CONTEXT-MAP.md` if they exist for domain vocabulary.
 - Proceed silently if `docs/adr/` is missing (don't flag its absence).
 
-### Step 3b — Module Design Check
+### Step 4b — Module Design Check
 
 Before writing any code, answer each of these. They prevent the shallow-module and duplicate-path issues that the architecture review catches post-hoc.
 
 1. **Search for existing coverage.** `rg` for the key concepts in the issue — does this logic already exist somewhere? If yes, extend it; don't create a sibling.
-2. **New module or extension?** If new: apply steps 3-5. If extension: identify the existing module and stop here.
+2. **New module or extension?** If new: apply steps 4-6. If extension: identify the existing module and stop here.
 3. **Apply the deletion test.** If this module were deleted, would the complexity scatter into callers (keep/deepen) or vanish entirely (remove)? Consult the Architecture Rules reference below.
 4. **Identify the seam.** What's the public interface? A function, a class, a file with named exports? Document the expected contract in a sentence.
 5. **One adapter or two?** If only one concrete implementation exists or is planned, don't create a port/interface — call the implementation directly (Architecture Rules: single-adapter seams are hypothetical).
@@ -64,7 +74,7 @@ Before writing any code, answer each of these. They prevent the shallow-module a
 
 If these answers conflict with the issue's acceptance criteria or would produce a known shallow design, stop and add the `hitl` label — do not proceed.
 
-### Step 4 — Implement with TDD
+### Step 5 — Implement with TDD
 
 Tests verify behaviour through public interfaces, not implementation details — good tests describe _what_ the system does and survive refactors. Do not write all tests first (horizontal slicing); each test responds to what you learned from the previous cycle.
 
@@ -82,7 +92,7 @@ For each acceptance criterion:
 - [ ] Test would survive an internal refactor
 - [ ] Code is minimal for this test — no speculative features
 
-### Step 5 — Simplify
+### Step 6 — Simplify
 
 After all tests pass, review the implementation for unnecessary complexity:
 
@@ -94,7 +104,7 @@ After all tests pass, review the implementation for unnecessary complexity:
 
 Apply the Reference: Architecture Rules section to decide what to keep. Re-run the tests after simplifying and fix any breakage.
 
-### Step 6 — Commit, push, and open PR (mandatory clean-tree gate)
+### Step 7 — Commit, push, and open PR (mandatory clean-tree gate)
 
 Stage in logical groups. Commit messages should describe the why, not the what:
 
@@ -116,7 +126,7 @@ gh pr create \
   --body "Closes #<N>"
 ```
 
-### Step 7 — Report
+### Step 8 — Report
 
 Output a summary so the caller knows what happened:
 
@@ -135,7 +145,7 @@ Output a summary so the caller knows what happened:
 - Prefer type-enforced boundaries: use interfaces/types as module contracts rather than runtime validation.
 - When an issue number is provided, work on that specific issue — never re-pick.
 - **Read every file in `docs/adr/` before starting implementation.** ADRs are non-negotiable design decisions; if your implementation would contradict one, stop and add the `hitl` label.
-- Run the Module Design Check (Step 3b) before writing any code — answer the deletion test, seam, adapter, and AHA questions upfront.
+- Run the Module Design Check (Step 4b) before writing any code — answer the deletion test, seam, adapter, and AHA questions upfront.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.
 - **Run `git status --porcelain` before reporting and refuse to report success unless the output is empty.**
