@@ -108,7 +108,7 @@ Always this exact structure — `## Automated review`, `### Findings`, `### Acce
 
 ## Action findings
 
-Fix every `critical`/`high`/`medium` finding by editing code in this run. Commit grouped by concern:
+Fix every finding by editing code in this run. Commit grouped by concern:
 
 ```bash
 git add <files>
@@ -116,12 +116,7 @@ git commit -m "Address review: <one-line summary>"
 # For security: git commit -m "Security review: <one-line summary>"
 ```
 
-Deferred `low` findings get a tracking issue:
 
-```bash
-gh issue create --title "chore: <description>" --body "Deferred from PR #<N> review — accepted as-is because <reason>." --label "planned,hitl"
-gh pr edit --add-label review-deferred
-```
 
 ## Push + label workflow
 
@@ -173,7 +168,7 @@ gh pr edit <N> --add-label "risk-<low|medium|high>" || true
 
 - Fetch PR metadata from `PR_CONTEXT_FILE` if present (CI mode) or via `gh pr view` (human mode) — these are the source of truth.
 - Fetch linked issue details from `LINKED_ISSUES_FILE` if present (CI mode) or via `gh issue view <N>` (human mode) for each `Closes #N`.
-- Action every `critical` / `high` / `medium` finding in the same run — never defer them.
+- Action every finding in the same run — nothing is deferred.
 - Trace data flow from external input to sensitive sink before declaring exploitability.
 - **Post the review comment on every run, even with zero findings.** No comment means no signal.
 - Apply the `risk-<level>` label and transition `reviewing` → `reviewed` after the comment posts.

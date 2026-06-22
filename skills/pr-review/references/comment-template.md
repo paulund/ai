@@ -12,7 +12,6 @@ This is the contract: a human skimming 20 PR comments should be able to pattern-
 ### Findings
 
 - [severity | file:line | trace → impact] — fixed in commit <sha>
-- [severity | file:line | trace → impact] — deferred — tracked in #N
 
 ### Acceptance criteria coverage
 
@@ -61,7 +60,7 @@ No security-relevant changes.
 - File:line uses the project's `path:line_number` convention.
 - Trace is a short arrow-separated path (e.g., `route /api/v1/posts → action publishPost → db.post.create`).
 - Impact is one short clause (e.g., `unhandled error leaks stack trace`).
-- Disposition is one of: `fixed in commit <sha>`, `deferred — tracked in #N`.
+- Disposition is one of: `fixed in commit <sha>`.
 
 ### `### Acceptance criteria coverage`
 

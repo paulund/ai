@@ -118,12 +118,16 @@ Repeat per logical change. Anything you touched — including exploration edits 
 
 **Clean-tree gate:** run `git status --porcelain` and require empty output. If anything remains, decide per path: commit it or revert with `git checkout -- <path>` (drive-by edits don't belong in this issue's commits). Re-push and re-check until clean.
 
-Once the tree is clean, open a pull request:
+Once the tree is clean, open a pull request using the project's PR template:
+
+1. **Read the template** — check for `.github/PULL_REQUEST_TEMPLATE.md` (and fallback paths `.github/pull_request_template.md`, `PULL_REQUEST_TEMPLATE.md`).
+2. **Fill it in** — populate all sections: Description (what the change does), Motivation (link the issue with `Closes #<N>`), Type of change (check the relevant box; if none fit, add `x` to the closest and list others), Checklist (check all that apply).
+3. **Create the PR:**
 
 ```bash
 gh pr create \
   --title "$(gh issue view <N> --json title --jq .title)" \
-  --body "Closes #<N>"
+  --body "<filled template content>"
 ```
 
 ### Step 8 — Report
