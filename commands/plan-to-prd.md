@@ -1,5 +1,5 @@
 ---
-description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub issues ready for implementation, with marketing requirements captured alongside.
+description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub issues ready for implementation, with marketing requirements captured alongside. Includes a planning session gate (UX layout, features per surface, user flow) and a per-slice priority rubric before any issue is filed as planned+afk.
 ---
 
 # Plan → PRD
@@ -12,7 +12,7 @@ Given an idea, output:
 
 Every issue gets exactly one category, state, execution, and priority label.
 
-**Philosophy**: parent PRD is durable context, slices are disposable. Thin vertical slices cut end-to-end (schema → API → UI → tests). Prefer AFK over HITL. Marketing is part of shipping — capture at planning time. Issue bodies must survive refactors: no file paths, line numbers, or code snippets — describe behaviours in domain language, readable in 30 seconds.
+**Philosophy**: parent PRD is durable context, slices are disposable. Thin vertical slices cut end-to-end (schema → API → UI → tests). Prefer AFK over HITL. Marketing is part of shipping — capture at planning time. Issue bodies must survive refactors: no file paths, line numbers, or code snippets — describe behaviours in domain language, readable in 30 seconds. Default-p1 is forbidden — every priority label needs explicit reasoning and user approval, locked at the planning session gate. No issue is filed as `planned + afk` until that gate has produced the UX artifacts and the per-slice priority decisions and the user has signed off.
 
 ## Workflow
 
@@ -59,7 +59,26 @@ Propose blog posts (1–3), social threads, launch assets, SEO metadata, email/n
 
 ### Phase 6 — Draft vertical slices
 
-Break into tracer-bullet slices — thin end-to-end paths. Good: "User can create a task (schema + API + UI + test)". Bad: "All the database schema". Per slice: AFK/HITL, blocked by, priority (p1/p2/p3).
+Break into tracer-bullet slices — thin end-to-end paths. Good: "User can create a task (schema + API + UI + test)". Bad: "All the database schema". Per slice: AFK/HITL, blocked by, and a proposed priority from the Feature Priority Rubric with a one-line reason. The proposal is tentative — Phase 7a locks it with the user. Default the proposal to `p2`; promote to `p1` only when the rubric clearly fits.
+
+### Phase 7a — Planning Session Gate
+
+No issues are filed until this gate passes. Run a one-question-at-a-time interview (plan-grill-me style) over the user-facing surface(s) the slices introduce. The output is locked into the parent PRD body; per-slice priority decisions are locked into a `## Slice Priorities` table. If the gate produces new module/API/UX decisions, fold them back into the PRD draft and re-check the module and slice checkpoints (Phase 3, Phase 7) before filing.
+
+For each user-facing surface (page, modal, screen, response shape, CLI output — not just literal web pages):
+
+1. **Layout** — what is on it, where, in what hierarchy. Capture as an ASCII wireframe or a numbered component list. Detailed enough that a designer could mock it from the description alone.
+2. **Features on the surface** — every interactive element and what it does. Map each to one or more slices from Phase 6.
+3. **User experience flow** — entry, path through, exit. Include empty, loading, and error states. Include what happens on success and on the common edge cases.
+
+Coverage check: every slice from Phase 6 must trace to at least one surface. Any slice with no surface is flagged — either it is an internal refactor (re-categorise as `chore` and file outside this PRD) or the planning session missed the surface that exposes it.
+
+For each slice, walk through the Feature Priority Rubric. The agent proposes p1/p2/p3 with a one-line reason; the user confirms or overrides. If every slice ends up p1, the priorities carry no signal — re-cut the slices or re-scope the feature before proceeding. Aim for at most one or two p1 slices per feature.
+
+Output:
+- `## UX Plan` section appended to the parent PRD body (per surface: layout, features, flow).
+- `## Slice Priorities` table appended to the parent PRD body (slice → priority → reasoning).
+- Explicit user sign-off on both before Phase 8 runs.
 
 ### Phase 8 — Create the parent PRD issue (do this first)
 
@@ -77,9 +96,11 @@ Capture the returned issue number.
 ```bash
 gh issue create \
   --title "feat: <slice title>" \
-  --label "feature,planned,afk,p1,<scope-label>" \
+  --label "feature,planned,afk,<approved-priority>,<scope-label>" \
   --body "<slice body with Parent: #<PRD number>>"
 ```
+
+`<approved-priority>` is sourced from the `## Slice Priorities` table locked in Phase 7a — never default to p1. If the gate marked the slice as needing human judgement, use `hitl` instead of `afk`.
 
 Apply exactly one category, state, execution (`afk` or `hitl`), and priority. Use `hitl` only for genuine human input (design call, sensitive area, ambiguous acceptance).
 
@@ -90,9 +111,11 @@ One issue per substantive marketing deliverable. Minor items (X threads, OG imag
 ```bash
 gh issue create \
   --title "marketing: <what>" \
-  --label "feature,planned,hitl,marketing,<scope-label>" \
+  --label "feature,planned,hitl,marketing,<approved-priority>,<scope-label>" \
   --body "<marketing body with Parent: #<PRD number>>"
 ```
+
+Marketing issues carry the same `<approved-priority>` as the slice they support, picked up from the `## Slice Priorities` table in Phase 7a.
 
 Distinguish HITL from AFK marketing work:
 - **AFK**: changelog entries from known specs; SEO metadata + JSON-LD; landing pages for keywords; technical explainers derived from code with strong style guardrails.
@@ -132,5 +155,31 @@ Exception: if a prototype snippet encodes a decision more precisely than prose (
 ### Out of Scope
 Explicitly excluded items.
 
+### UX Plan
+Per surface, populated in Phase 7a:
+- **Surface:** <page/modal/screen/response shape name>
+- **Layout:** <ASCII wireframe or numbered component list>
+- **Features on this surface:** <each interactive element + behaviour, mapped to one or more slices>
+- **User flow:** <entry → path → exit; include empty/loading/error states>
+
+### Slice Priorities
+Populated in Phase 7a, locked at the gate.
+
+| # | Slice | Priority | Reasoning |
+|---|---|---|---|
+| 1 | <slice title> | p1/p2/p3 | <one-line reason from the rubric> |
+
 ### Further Notes
 Additional context for the implementer.
+
+## Reference: Feature Priority Rubric
+
+Each slice is labelled p1, p2, or p3. Default is **p2**, not p1. The agent proposes with reasoning; the user confirms or overrides in Phase 7 or 7a.
+
+| Priority | Meaning | Examples |
+|---|---|---|
+| `p1` | Launch-blocking. The feature cannot ship without this. The slice delivers the tracer-bullet that proves the end-to-end path works. | First vertical slice touching schema + API + UI; auth-gated flows; payment path; the happy path for the core feature. |
+| `p2` | Required for v1, but not on the critical path. The feature can launch in a degraded form without it. | Settings screens; secondary flows; additional input methods; analytics events; accessibility for non-critical paths. |
+| `p3` | Polish, stretch, edge cases. Ship without it. | Empty states beyond the basic; power-user shortcuts; secondary export formats; cosmetic refinements. |
+
+Guideline: at most one or two p1 slices per feature. If everything is p1, the priority labels carry no signal — re-cut the slices or re-scope the feature.

@@ -45,7 +45,7 @@ bin/sync --dry-run    # preview
 |---------|-------------|
 | `plan-bug` | Interview user about a bug, file as planned+AFK issue |
 | `plan-grill-me` | Relentless interview until reaching shared understanding |
-| `plan-to-prd` | Turn idea into PRD + vertical-sliced GitHub issues |
+| `plan-to-prd` | Turn idea into PRD + vertical-sliced GitHub issues, gated by a planning session (UX per surface) and a per-slice priority rubric |
 
 ### Ops
 
