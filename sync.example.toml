@@ -32,6 +32,7 @@ commands = [
 skills = [
     "dev-simplify",
     "ops-architecture-review",
+    "plan-prd",
     "quality-gate",
     "standards-api",
     "standards-laravel",

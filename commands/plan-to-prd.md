@@ -1,5 +1,5 @@
 ---
-description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub issues ready for implementation, with marketing requirements captured alongside. Includes a planning session gate (UX layout, features per surface, user flow) and a per-slice priority rubric before any issue is filed as planned+afk.
+description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub issues ready for implementation, with marketing requirements captured alongside. Includes a planning session gate (UX layout, features per surface, user flow) and a per-slice priority rubric. Slices are filed as `needs-planning` from this workflow and refined in a separate per-slice planning session before becoming shippable.
 ---
 
 # Plan → PRD
@@ -7,12 +7,12 @@ description: Turn an idea or spec into a parent PRD plus vertical-sliced GitHub 
 Given an idea, output:
 
 - **1 parent PRD issue** — durable product spec, labelled `prd,feature,planned,hitl`. HITL because it's the unfinished decomposition; child slices are where agents execute.
-- **N child slice issues** — thin end-to-end slices, each shippable in a single PR, labelled `feature,planned,afk,p{1,2,3}`. Use `hitl` instead of `afk` only when genuine human judgement is needed.
-- **M marketing issues** — labelled `feature,planned,hitl,marketing`.
+- **N child slice issues** — thin end-to-end slices, labelled `feature,needs-planning,p{1,2,3}`. **Not** `afk,planned` — each slice is refined in a separate per-slice planning session before becoming shippable. Add `hitl` to the label (`feature,needs-planning,hitl,p{1,2,3}`) when the per-slice planning itself needs human judgement (ambiguous UX, sensitive area, unclear acceptance). After the per-slice planning session, the slice transitions to `feature,planned,afk,p{1,2,3}` (default) or `feature,planned,hitl,p{1,2,3}` (if the implementation itself is human-judgement work).
+- **M marketing issues** — labelled `feature,blocked,hitl,marketing` (or `afk` for marketing work derived directly from the spec). Use `blocked` for launch-coupled items with no launch date; use `planned` only when a launch date is set.
 
 Every issue gets exactly one category, state, execution, and priority label.
 
-**Philosophy**: parent PRD is durable context, slices are disposable. Thin vertical slices cut end-to-end (schema → API → UI → tests). Prefer AFK over HITL. Marketing is part of shipping — capture at planning time. Issue bodies must survive refactors: no file paths, line numbers, or code snippets — describe behaviours in domain language, readable in 30 seconds. Default-p1 is forbidden — every priority label needs explicit reasoning and user approval, locked at the planning session gate. No issue is filed as `planned + afk` until that gate has produced the UX artifacts and the per-slice priority decisions and the user has signed off.
+**Philosophy**: parent PRD is durable context, slices are disposable. Thin vertical slices cut end-to-end (schema → API → UI → tests). Prefer AFK over HITL. Marketing is part of shipping — capture at planning time. Issue bodies must survive refactors: no file paths, line numbers, or code snippets — describe behaviours in domain language, readable in 30 seconds. Default-p1 is forbidden — every priority label needs explicit reasoning and user approval, locked at the planning session gate. No slice is filed as `planned` from this workflow; the strategic plan (UX, priorities) is locked into the parent PRD body, and the tactical plan (AC, dependencies, test plan) is added in a separate per-slice planning session.
 
 ## Workflow
 
@@ -96,13 +96,13 @@ Capture the returned issue number.
 ```bash
 gh issue create \
   --title "feat: <slice title>" \
-  --label "feature,planned,afk,<approved-priority>,<scope-label>" \
+  --label "feature,needs-planning,<approved-priority>,<scope-label>" \
   --body "<slice body with Parent: #<PRD number>>"
 ```
 
-`<approved-priority>` is sourced from the `## Slice Priorities` table locked in Phase 7a — never default to p1. If the gate marked the slice as needing human judgement, use `hitl` instead of `afk`.
+`<approved-priority>` is sourced from the `## Slice Priorities` table locked in Phase 7a — never default to p1. Add `hitl` to the label (`feature,needs-planning,hitl,<approved-priority>,<scope-label>`) when the per-slice planning itself needs human judgement.
 
-Apply exactly one category, state, execution (`afk` or `hitl`), and priority. Use `hitl` only for genuine human input (design call, sensitive area, ambiguous acceptance).
+Apply exactly one category, state (`needs-planning`), execution (default `afk`; flip to `hitl` only when the slice itself is human-judgement work or the planning step is), and priority.
 
 ### Phase 10 — Create marketing issues
 

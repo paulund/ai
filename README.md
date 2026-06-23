@@ -73,13 +73,14 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 
 ## Available Skills
 
-10 skills in `skills/`:
+11 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
 | `content-editor` | Autonomous content pipeline: queue scan, source ingestion, readiness evaluation, writing via style guide, quality gates, PR publishing |
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
 | `ops-architecture-review` | Identify architectural friction, produce GitHub issues with ops-triage labels |
+| `plan-prd` | Plan a new feature from idea to PRD with child issues; child slices are filed `needs-planning` and refined in a separate per-slice session |
 | `quality-gate` | Run lint → typecheck → test → build, stop on first failure |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
