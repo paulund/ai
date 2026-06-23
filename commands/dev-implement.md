@@ -12,14 +12,16 @@ Provide a GitHub issue URL or issue number. When omitted, the prompt picks the n
 
 ## Workflow
 
-### Step 1 — Sync base branch (always)
+### Step 1 — Sync base branch
 
-Run this first, before doing anything else. The new branch is cut from a fresh base.
+If you're on `main`, sync it first — the new branch is cut from a fresh base:
 
 ```bash
 git checkout main
 git pull origin main
 ```
+
+If you're already on a feature branch (e.g. `bot/issue-<N>-<run_id>` created by the `implement` workflow), skip this step — the workflow has already cut the branch from a fresh `origin/main`.
 
 If the repo uses a different default branch, substitute it for `main`.
 
@@ -43,8 +45,9 @@ Rules:
 
 ### Step 3 — Set up the branch
 
-- Create a new branch off the freshly-synced base: `agent/issue-<N>-<slug>`.
-- Transition the issue: remove `planned`, add `in-progress`.
+If you're on a freshly-synced `main`, create a new branch off it: `agent/issue-<N>-<slug>`. Transition the issue: remove `planned`, add `in-progress`.
+
+If you're already on a feature branch (created by the `implement` workflow), skip this step — the branch is already created and the issue is already locked (`planned` → `in-progress`).
 
 ### Step 4 — Read the issue
 
@@ -104,6 +107,17 @@ After all tests pass, review the implementation for unnecessary complexity:
 
 Apply the Reference: Architecture Rules section to decide what to keep. Re-run the tests after simplifying and fix any breakage.
 
+### Step 6b — Pre-push verification (mandatory)
+
+The husky pre-push hook runs `pnpm test && pnpm build`. Run the same checks yourself so the hook does not fail mid-push:
+
+```bash
+pnpm test
+pnpm build
+```
+
+If either fails, fix the root cause — it may be a test you wrote that doesn't match your implementation, or a pre-existing test/build broken by your changes. Do NOT skip or `.skip()` tests to make them pass. Iterate until both pass before proceeding to Step 7.
+
 ### Step 7 — Commit, push, and open PR (mandatory clean-tree gate)
 
 Stage in logical groups. Commit messages should describe the why, not the what:
@@ -118,7 +132,9 @@ Repeat per logical change. Anything you touched — including exploration edits 
 
 **Clean-tree gate:** run `git status --porcelain` and require empty output. If anything remains, decide per path: commit it or revert with `git checkout -- <path>` (drive-by edits don't belong in this issue's commits). Re-push and re-check until clean.
 
-Once the tree is clean, open a pull request using the project's PR template:
+**If `git push` fails** (e.g. the husky pre-push hook reports a failure you missed in Step 6b), read the output, fix the root cause, and retry. Do not bypass the hook with `--no-verify`.
+
+Once the tree is clean and the branch is pushed, open a pull request using the project's PR template:
 
 1. **Read the template** — check for `.github/PULL_REQUEST_TEMPLATE.md` (and fallback paths `.github/pull_request_template.md`, `PULL_REQUEST_TEMPLATE.md`).
 2. **Fill it in** — populate all sections: Description (what the change does), Motivation (link the issue with `Closes #<N>`), Type of change (check the relevant box; if none fit, add `x` to the closest and list others), Checklist (check all that apply).
@@ -152,6 +168,7 @@ Output a summary so the caller knows what happened:
 - Run the Module Design Check (Step 4b) before writing any code — answer the deletion test, seam, adapter, and AHA questions upfront.
 - Read the issue body fully before writing the first test.
 - Write tests through public interfaces.
+- **Run `pnpm test` and `pnpm build` in Step 6b before pushing** — these are the same checks the husky pre-push hook runs, and a failure here will block the push.
 - **Run `git status --porcelain` before reporting and refuse to report success unless the output is empty.**
 - Push before reporting completion.
 - Open a pull request after the clean-tree gate, linking the issue with `Closes #<N>`.
