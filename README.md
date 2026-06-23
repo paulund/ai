@@ -28,7 +28,7 @@ bin/sync --dry-run    # preview
 
 ## Available Commands
 
-12 commands in `commands/`, grouped by domain.
+11 commands in `commands/`, grouped by domain.
 
 ### Dev Loop
 
@@ -36,7 +36,6 @@ bin/sync --dry-run    # preview
 |---------|-------------|
 | `dev-implement` | Implement a single AFK GitHub issue end-to-end with TDD |
 | `dev-merge-main` | Merge origin/main into the current branch |
-| `pr-review` | Two-phase code + security review with findings as commits |
 | `pr-verify` | Boot dev server and drive UI via DevTools for screenshot verification |
 
 ### Planning
@@ -73,7 +72,7 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 
 ## Available Skills
 
-10 skills in `skills/`:
+12 skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
@@ -81,6 +80,8 @@ This is now a **skill** — see [skills/content-editor/](/skills/content-editor/
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
 | `ops-architecture-review` | Identify architectural friction, produce GitHub issues with ops-triage labels |
 | `quality-gate` | Run lint → typecheck → test → build, stop on first failure |
+| `pr-review` | Two-phase code + security review with findings as commits |
+| `git-worktree` | Create or delete isolated git worktrees for clean agent sessions |
 | `standards-api` | RESTful API design conventions and best practices |
 | `standards-laravel` | Laravel backend conventions: models, controllers, actions, resources, migrations |
 | `standards-nextjs` | Next.js 15 App Router project conventions |

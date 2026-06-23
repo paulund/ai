@@ -21,8 +21,6 @@ commands = [
     "plan-bug",
     "plan-grill-me",
     "plan-to-prd",
-    "pr-fix",
-    "pr-review",
     "pr-verify",
     "github-release",
 
@@ -33,6 +31,8 @@ skills = [
     "dev-simplify",
     "ops-architecture-review",
     "quality-gate",
+    "pr-review",
+    "git-worktree",
     "standards-api",
     "standards-laravel",
     "standards-nextjs",
