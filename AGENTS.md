@@ -55,14 +55,13 @@ grouped by domain. Each command has a `description` in its frontmatter.
 
 ## Available Skills
 
-12 skills are available in `skills/`:
+11 skills are available in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
 | `content-editor` | Autonomous content pipeline: queue, ingest, write, quality gates, publish |
 | `dev-simplify` | Identify and remove unnecessary complexity in the codebase |
 | `ops-architecture-review` | Surface architectural friction as GitHub issues |
-| `plan-prd` | Plan a new feature from idea to PRD with child issues; child slices are filed `needs-planning` and refined in a separate per-slice session |
 | `pr-review` | Automated PR review producing a `## Automated review` comment, applying risk label and `reviewed` on completion |
 | `quality-gate` | Run lint + typecheck + test + build, stop-the-line on failure |
 | `standards-api` | RESTful API design conventions and best practices |
