@@ -3,15 +3,16 @@
 # sync.toml is gitignored — your local paths stay local.
 
 [global]
-# Directories where commands are symlinked as files
+# Directories where commands are copied as files
 command_targets = ["~/.config/opencode/commands/"]
 
-# Directories where skills are symlinked as directories
+# Directories where skills are copied as directories
 # ~/.config/opencode/skills/ is opencode's primary scan path
 # ~/.agents/skills/ is auto-loaded by opencode as external skills
+# Skills are copied (not symlinked) so each consumer can edit freely.
 skill_targets = ["~/.config/opencode/skills/", "~/.agents/skills/"]
 
-# Directories where agents are symlinked as files
+# Directories where agents are copied as files
 agent_targets = ["~/.config/opencode/agents/"]
 
 # Commands to install globally (names match commands/<name>.md)

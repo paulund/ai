@@ -26,7 +26,7 @@ cp sync.example.toml sync.toml
 # 3. Run the sync script
 bin/sync              # install/update
 bin/sync --dry-run    # preview
-bin/sync --clean      # remove stale symlinks
+bin/sync --clean      # remove stale entries
 ```
 
 ## Command Workflow

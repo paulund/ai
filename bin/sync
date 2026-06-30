@@ -16,7 +16,7 @@ Sync commands, skills, and agents from this repo to global and project directori
 
 Options:
   --dry-run    Print what would be done without making changes
-  --clean      Only remove stale symlinks, skip install
+  --clean      Only remove stale entries, skip install
   --help       Show this message
 
 Config: $CONFIG_FILE (gitignored — copy from sync.example.toml)
@@ -154,7 +154,7 @@ done < "$CONFIG_FILE"
 # Source directory is the repo root
 SRC_DIR="$REPO_ROOT"
 
-# ── Symlink helpers ──────────────────────────────────────────────────
+# ── Copy helpers ──────────────────────────────────────────────────────
 
 install_command() {
     local name="$1" target_dir="$2"
@@ -163,9 +163,10 @@ install_command() {
     [[ -f "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
-        echo "  symlink: $dst -> $src"
+        echo "  copy: $dst <- $src"
     else
-        ln -snf "$src" "$dst"
+        rm -f "$dst"
+        cp "$src" "$dst"
     fi
 }
 
@@ -176,9 +177,10 @@ install_skill() {
     [[ -d "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
-        echo "  symlink: $dst -> $src"
+        echo "  copy: $dst <- $src"
     else
-        ln -snf "$src" "$dst"
+        rm -rf "$dst"
+        cp -R "$src" "$dst"
     fi
 }
 
@@ -189,32 +191,39 @@ install_agent() {
     [[ -f "$src" ]] || { echo "  [SKIP] $name: agent source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
-        echo "  symlink: $dst -> $src"
+        echo "  copy: $dst <- $src"
     else
-        ln -snf "$src" "$dst"
+        rm -f "$dst"
+        cp "$src" "$dst"
     fi
 }
 
+# Remove entries in target_dir that were not installed this run.
+# For copied commands/agents (files) and copied skills (directories), match
+# against the configured active set. Also handle legacy symlinks pointing back
+# into the repo so a one-time migration from the old symlink behaviour works.
 clean_target() {
     local target_dir="$1" active_set="$2"
     [[ -d "$target_dir" ]] || return
 
-    while IFS= read -r link; do
-        local name check_name link_target
-        name="$(basename "$link")"
-        check_name="${name%.md}"
-        link_target="$(readlink "$link")"
-        if [[ "$link_target" == "$SRC_DIR"* || "$link_target" == "$REPO_ROOT"* ]]; then
-            if [[ " $active_set " != *" $check_name "* ]]; then
-                if $DRY_RUN; then
-                    echo "  [CLEAN] would remove: $link"
-                else
-                    rm -f "$link"
-                    echo "  [CLEAN] removed: $link"
-                fi
+    local entry name check_name
+    while IFS= read -r entry; do
+        name="$(basename "$entry")"
+        if [[ "$name" == *".md" ]]; then
+            check_name="${name%.md}"
+        else
+            check_name="$name"
+        fi
+        if [[ " $active_set " != *" $check_name "* ]]; then
+            if $DRY_RUN; then
+                echo "  [CLEAN] would remove: $entry"
+            else
+                rm -rf "$entry"
+                echo "  [CLEAN] removed: $entry"
             fi
         fi
-    done < <(find "$target_dir" -maxdepth 1 -type l 2>/dev/null || true)
+    done < <(find "$target_dir" -maxdepth 1 -mindepth 1 \
+        \( -type f -o -type l -o -type d \) 2>/dev/null || true)
 }
 
 # ── Main ─────────────────────────────────────────────────────────────

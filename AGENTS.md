@@ -113,7 +113,7 @@ Skills in `skills/`:
 
 The `sync.toml` config (gitignored — copy from `sync.example.toml`) defines:
 
-- **Global targets** — directories for global command/skill/agent symlinks
+- **Global targets** — directories for global command/skill/agent installs (all copied, not symlinked)
 - **Global install lists** — which commands/skills/agents to install globally
 - **Projects** — per-project paths and their desired commands/skills/agents
 
@@ -131,9 +131,9 @@ General-purpose skills are installed globally.
 Usage:
 
 ```
-bin/sync              # install/update all symlinks
+bin/sync              # install/update all
 bin/sync --dry-run    # preview changes only
-bin/sync --clean      # remove stale symlinks, skip install
+bin/sync --clean      # remove stale entries, skip install
 ```
 
 ## Command → Skill Mapping
