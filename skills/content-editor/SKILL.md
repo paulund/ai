@@ -1,14 +1,11 @@
 ---
 name: content-editor
 description: |
-  Use when running the autonomous content pipeline: scanning a content queue
-  (e.g. GitHub issues with labels), extracting source material from URLs and
-  topics, evaluating article ideas against the Definition of Ready, checking
-  for related existing content, loading the project's writing style guide,
-  writing the article, running SEO and humanizer quality passes, verifying the
-  build, and publishing through pull requests. Also handles self-learning
-  (extracting patterns from reviewer feedback) and periodic content pruning
-  (flagging stale articles).
+  Use when running the autonomous content pipeline — scanning a content queue,
+  ingesting sources, evaluating readiness, writing articles, running quality
+  passes, and publishing via PRs. Also handles self-learning from reviewer
+  feedback and periodic content pruning. Requires a project writing style guide
+  at docs/writing-style-guide.md.
 category: content
 allowed-tools:
   - Read
@@ -195,6 +192,16 @@ Report summary:
 - Modify code outside the content scope
 - Skip the format decision step (always apply a format label)
 - Bundle multiple articles into a single PR
+
+## Red Flags
+
+- [ ] Writing without loading the project's writing style guide
+- [ ] Skipping the source extraction step before writing
+- [ ] Publishing without running the build and SEO checks
+- [ ] Not checking for related existing content (duplicates)
+- [ ] Ignoring self-learning feedback from previous runs
+- [ ] Writing multiple articles in a single PR
+- [ ] Skipping the humanizer pass on finished articles
 
 ## Reference Guide
 
