@@ -3,10 +3,6 @@
 # sync.toml is gitignored — your local paths stay local.
 
 [global]
-# Source directory for commands/skills/agents (relative to repo root or absolute)
-# Set to "v2" to use the v2 directory; remove or set to "" to use repo root
-source_dir = "v2"
-
 # Directories where commands are symlinked as files
 command_targets = ["~/.config/opencode/commands/"]
 
@@ -21,14 +17,17 @@ agent_targets = ["~/.config/opencode/agents/"]
 # Commands to install globally (names match commands/<name>.md)
 commands = [
     "build",
+    "github-release",
     "learn",
     "plan",
+    "resolve-conflicts",
     "review",
     "ship",
     "simplify",
     "spec",
     "test",
     "triage",
+    "verify",
 ]
 
 # Skills to install globally (names match skills/<name>/)

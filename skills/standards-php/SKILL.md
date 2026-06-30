@@ -25,15 +25,9 @@ public: true
 
 ### MUST DO
 
-- PHP 8.3+ only — use readonly classes, enums, named arguments, match expressions, union types
-- `declare(strict_types=1)` in every file
-- Type hint all parameters, properties, and return types including `void` and nullable
 - `final readonly` for DTOs and Value Objects
-- PSR-12 coding standards
 - Write Pest tests for all new functionality
 
 ### MUST NOT DO
 
-- Suppress errors with `@`
-- Use global variables
-- Use deprecated syntax or dynamic variable names (`$$var`)
+- Use dynamic variable names (`$$var`)

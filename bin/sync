@@ -43,7 +43,6 @@ fi
 # State machine that populates:
 #   GLOBAL_COMMAND_TARGETS GLOBAL_SKILL_TARGETS GLOBAL_AGENT_TARGETS
 #   GLOBAL_COMMANDS GLOBAL_SKILLS GLOBAL_AGENTS
-#   GLOBAL_SOURCE_DIR
 #     (space-separated strings)
 #   PROJECT_PATHS PROJECT_COMMANDS PROJECT_SKILLS PROJECT_AGENTS (indexed arrays)
 
@@ -53,7 +52,6 @@ GLOBAL_AGENT_TARGETS=""
 GLOBAL_COMMANDS=""
 GLOBAL_SKILLS=""
 GLOBAL_AGENTS=""
-GLOBAL_SOURCE_DIR=""
 
 PROJECT_PATHS=()
 PROJECT_COMMANDS=()
@@ -94,7 +92,6 @@ commit_array() {
             commands)        GLOBAL_COMMANDS="$packed" ;;
             skills)         GLOBAL_SKILLS="$packed" ;;
             agents)         GLOBAL_AGENTS="$packed" ;;
-            source_dir)     GLOBAL_SOURCE_DIR="$packed" ;;
         esac
     elif [[ "$current_section" == "project" ]]; then
         case "$key" in
@@ -154,16 +151,8 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 done < "$CONFIG_FILE"
 
-# Resolve source directory (defaults to repo root if not set)
-if [[ -z "$GLOBAL_SOURCE_DIR" ]]; then
-    SRC_DIR="$REPO_ROOT"
-else
-    eval "SRC_DIR=$GLOBAL_SOURCE_DIR"
-    # Handle relative paths
-    if [[ "$SRC_DIR" != /* ]]; then
-        SRC_DIR="$REPO_ROOT/$SRC_DIR"
-    fi
-fi
+# Source directory is the repo root
+SRC_DIR="$REPO_ROOT"
 
 # ── Symlink helpers ──────────────────────────────────────────────────
 

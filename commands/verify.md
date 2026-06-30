@@ -2,9 +2,11 @@
 description: Runtime-verify a PR's feature by booting the dev server, driving the UI via Chrome DevTools MCP, and proving each acceptance criterion from the linked issue actually works. Posts per-criterion verdict with screenshots.
 ---
 
-# PR Verify
+# Verify
 
 Boot the project's dev server, drive the affected UI via Chrome DevTools MCP, and prove each acceptance criterion from the linked issue holds in the running app. Post a per-criterion verdict with screenshots. Adds `verified` on all-pass, `verify-failed` on any fail.
+
+This command leans on the `browser-testing-with-devtools` skill for the Chrome DevTools workflow itself.
 
 ## Prerequisites
 

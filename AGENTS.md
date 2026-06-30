@@ -33,13 +33,11 @@ agent knows when to activate them automatically.
 
 ```
 repo root/
-├── v2/
-│   ├── commands/     # 9 slash commands (thin orchestrators)
-│   ├── skills/       # 30 skill directories (reusable workflows)
-│   ├── agents/       # 3 role-specific personas + README.md
-│   └── AGENTS.md     # v2 authoring rules and conventions
+├── commands/     # slash commands (thin orchestrators)
+├── skills/       # skill directories (reusable workflows)
+├── agents/       # role-specific personas + README.md
 ├── bin/
-│   └── sync          # distribution script (supports commands, skills, agents)
+│   └── sync      # distribution script (supports commands, skills, agents)
 ├── sync.example.toml # config template (tracked in git)
 ├── sync.toml         # local config (gitignored)
 ├── AGENTS.md         # this file
@@ -48,23 +46,25 @@ repo root/
 
 ## Available Commands
 
-9 commands in `v2/commands/`:
+Commands in `commands/`:
 
 | Command | Description |
 |---------|-------------|
 | `build` | Implement tasks incrementally — build one thin slice at a time with TDD |
+| `learn` | Extract non-obvious lessons from the current session |
 | `plan` | Break work into small, atomic, verifiable tasks; or produce a full PRD |
-| `spec` | Start spec-driven development — write a structured specification before code |
+| `resolve-conflicts` | Merge origin/main into the current branch and resolve all conflicts |
 | `review` | Two-lens PR review — code review then security audit |
 | `ship` | Ship to production — pre-launch checklist, parallel persona fan-out, staged rollout |
-| `test` | Run TDD workflow — write tests to prove behaviour |
 | `simplify` | Simplify code — remove unnecessary complexity while preserving behaviour |
-| `learn` | Extract non-obvious lessons from the current session |
+| `spec` | Start spec-driven development — write a structured specification before code |
+| `test` | Run TDD workflow — write tests to prove behaviour |
 | `triage` | Triage GitHub issues via an autonomous label-based state machine |
+| `verify` | Runtime-verify a PR by booting the dev server and driving the UI via Chrome DevTools MCP |
 
 ## Available Agents
 
-3 agents in `v2/agents/`:
+Agents in `agents/`:
 
 | Agent | Description |
 |-------|-------------|
@@ -74,7 +74,7 @@ repo root/
 
 ## Available Skills
 
-30 skills in `v2/skills/`:
+Skills in `skills/`:
 
 | Skill | Description |
 |-------|-------------|
@@ -94,7 +94,7 @@ repo root/
 | `interview-me` | One-question-at-a-time interviewing to clarify underspecified asks |
 | `learn-from-session` | Extract non-obvious lessons to AGENTS.md or skill files |
 | `observability-and-instrumentation` | Structured logs, RED metrics, alert on symptoms |
-| `performance-optimimization` | Measure-first performance optimization |
+| `performance-optimization` | Measure-first performance optimization |
 | `planning-and-task-breakdown` | Decompose specs into thin vertical slices |
 | `quality-gate` | Run lint + typecheck + test + build, stop-the-line on failure |
 | `security-and-hardening` | Threat-model-first security controls |
@@ -113,7 +113,6 @@ repo root/
 
 The `sync.toml` config (gitignored — copy from `sync.example.toml`) defines:
 
-- **source_dir** — source directory (set to `v2`)
 - **Global targets** — directories for global command/skill/agent symlinks
 - **Global install lists** — which commands/skills/agents to install globally
 - **Projects** — per-project paths and their desired commands/skills/agents
@@ -136,3 +135,64 @@ bin/sync              # install/update all symlinks
 bin/sync --dry-run    # preview changes only
 bin/sync --clean      # remove stale symlinks, skip install
 ```
+
+## Command → Skill Mapping
+
+| Command | Primary Skill | Also invokes |
+|---------|---------------|-------------|
+| `spec` | spec-driven-development | — |
+| `plan` | planning-and-task-breakdown | interview-me, spec-driven-development (PRD mode) |
+| `build` | incremental-implementation | test-driven-development, quality-gate, frontend-ui-engineering (UI tasks) |
+| `test` | test-driven-development | quality-gate |
+| `review` | code-review-and-quality | code-reviewer agent, security-auditor agent, security-and-hardening |
+| `simplify` | code-simplification | — |
+| `ship` | shipping-and-launch | code-reviewer agent, security-auditor agent, test-engineer agent, quality-gate, observability-and-instrumentation |
+| `learn` | learn-from-session | — |
+| `triage` | — (self-contained) | — |
+
+## Authoring Rules
+
+### Skill Authoring Rules
+
+**Frontmatter** — `name` (kebab-case, matches directory) and `description`
+(must start with "Use when...", no workflow steps).
+
+**Body sections** (in order):
+1. Core Workflow — numbered steps with exit conditions
+2. Common Rationalizations — table of excuses vs reality
+3. Red Flags — behavioral warning signs
+4. Verification — evidence-based checklist
+5. Constraints — MUST DO / MUST NOT DO
+6. Reference Guide — table of reference files with load conditions
+
+**Progressive disclosure** — keep SKILL.md focused (under 300 lines). Push
+detailed guidance to `references/` files loaded on demand. No empty reference
+directories. Reference files must be co-located inside the skill's own `references/`
+directory — do not reference files outside the skill.
+
+### Agent Authoring Rules
+
+**Frontmatter** — `name`, `description`, `mode: subagent`, and `permission` settings.
+Agents should be `mode: subagent` (invoked by commands, not Tab-switchable as primary
+agents). Review/audit agents should have `edit: deny` and `bash: deny` since fixes
+are applied in the main context, not in the persona.
+
+**Body sections:**
+- Role description (one paragraph)
+- Review framework / approach (domain-specific)
+- Output format (structured template)
+- Rules (behavioral constraints)
+- Composition section (invocation rules — see `agents/README.md`)
+
+**Composition rule** — agents do not invoke other agents. Orchestration belongs to
+slash commands. If an agent finds something warranting a different perspective, it
+surfaces that as a recommendation in its report.
+
+## Operating Behaviors
+
+1. **Surface assumptions** — state them explicitly before implementing
+2. **Manage confusion actively** — STOP, name it, present tradeoffs
+3. **Push back when warranted** — not a yes-machine; sycophancy is a failure mode
+4. **Enforce simplicity** — "If you build 1000 lines and 100 would suffice, you have failed"
+5. **Maintain scope discipline** — touch only what you're asked to touch
+6. **Verify, don't assume** — evidence required, not "seems right"
