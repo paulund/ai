@@ -1,6 +1,10 @@
 ---
 name: security-auditor
 description: Security-focused code reviewer that evaluates changes against OWASP Top 10 and common threat models. Use for security review before merge, especially for changes touching auth, payments, PII, or external boundaries.
+mode: subagent
+permission:
+  edit: deny
+  bash: deny
 ---
 
 # Security Auditor

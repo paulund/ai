@@ -1,6 +1,6 @@
 ---
 name: source-driven-development
-description: Grounds every implementation decision in official documentation. Use when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters.
+description: Use when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters. Detects the stack from dependency files, fetches official documentation, implements following documented patterns, and cites sources for every framework-specific decision.
 ---
 
 # Source-Driven Development
@@ -192,3 +192,19 @@ After implementing with source-driven development:
 - [ ] No deprecated APIs are used (checked against migration guides)
 - [ ] Conflicts between docs and existing code were surfaced to the user
 - [ ] Anything that could not be verified is explicitly flagged as unverified
+
+## Constraints
+
+### MUST DO
+- Read the project's dependency file to identify exact framework and library versions before implementing.
+- Fetch official documentation for framework-specific patterns — not Stack Overflow, not blog posts, not training data.
+- Cite full URLs for every framework-specific decision in code comments or conversation.
+- Surface conflicts between official docs and existing project code to the user — don't silently pick one.
+- Flag anything you cannot verify as `UNVERIFIED` with an explicit note.
+
+### MUST NOT DO
+- Write framework-specific code from memory without checking the docs for that version.
+- Cite Stack Overflow, blog posts, or tutorials as primary sources.
+- Use deprecated APIs because they appear in training data.
+- Silently override existing project code to match docs without surfacing the conflict.
+- Hedge with "this might be outdated" — either verify and cite, or explicitly flag as unverified.

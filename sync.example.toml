@@ -1,50 +1,79 @@
-# sync.toml — command & skill distribution config
+# sync.toml — command, skill & agent distribution config
 # Copy this to sync.toml and edit for your machine.
 # sync.toml is gitignored — your local paths stay local.
 
 [global]
+# Source directory for commands/skills/agents (relative to repo root or absolute)
+# Set to "v2" to use the v2 directory; remove or set to "" to use repo root
+source_dir = "v2"
+
 # Directories where commands are symlinked as files
-command_targets = ["~/.config/opencode/agents/"]
+command_targets = ["~/.config/opencode/commands/"]
 
 # Directories where skills are symlinked as directories
 # ~/.config/opencode/skills/ is opencode's primary scan path
 # ~/.agents/skills/ is auto-loaded by opencode as external skills
-skill_targets  = ["~/.config/opencode/skills/", "~/.agents/skills/"]
+skill_targets = ["~/.config/opencode/skills/", "~/.agents/skills/"]
+
+# Directories where agents are symlinked as files
+agent_targets = ["~/.config/opencode/agents/"]
 
 # Commands to install globally (names match commands/<name>.md)
 commands = [
-    "dev-implement",
-    "dev-merge-main",
+    "build",
     "learn",
-    "learn-prs",
-    "ops-triage",
-    "plan-bug",
-    "plan-grill-me",
-    "plan-to-prd",
-    "pr-fix",
-    "pr-review",
-    "pr-verify",
-    "github-release",
-
+    "plan",
+    "review",
+    "ship",
+    "simplify",
+    "spec",
+    "test",
+    "triage",
 ]
 
 # Skills to install globally (names match skills/<name>/)
+# General-purpose skills needed across all projects.
+# standards-* skills are project-specific — install them per-project below.
 skills = [
-    "dev-simplify",
-    "ops-architecture-review",
+    "architecture-review",
+    "code-review-and-quality",
+    "code-simplification",
+    "context-engineering",
+    "debugging-and-error-recovery",
+    "deprecation-and-migration",
+    "doubt-driven-development",
+    "documentation-and-adrs",
+    "frontend-ui-engineering",
+    "git-workflow-and-versioning",
+    "incremental-implementation",
+    "interview-me",
+    "learn-from-session",
+    "observability-and-instrumentation",
+    "performance-optimization",
+    "planning-and-task-breakdown",
     "quality-gate",
-    "standards-api",
-    "standards-laravel",
-    "standards-nextjs",
-    "standards-php",
-    "standards-typescript",
+    "security-and-hardening",
+    "shipping-and-launch",
+    "source-driven-development",
+    "spec-driven-development",
+    "test-driven-development",
     "writing-humanizer",
 ]
 
+# Agents to install globally (names match agents/<name>.md)
+agents = [
+    "code-reviewer",
+    "security-auditor",
+    "test-engineer",
+]
+
 # Per-project installs
-# Commands go to <project>/.agents/commands/
+# Commands go to <project>/.opencode/commands/
 # Skills go to <project>/.agents/skills/
+# Agents go to <project>/.opencode/agents/
+
 # [[project]]
 # path    = "~/Documents/Code/my-app"
-# commands = ["dev-implement"]
-# skills  = ["standards-laravel", "standards-php"]
+# commands = ["build", "plan", "test", "review", "ship"]
+# skills  = ["standards-api", "standards-nextjs", "standards-typescript"]
+# agents  = ["code-reviewer", "security-auditor", "test-engineer"]

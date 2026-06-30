@@ -1,6 +1,6 @@
 ---
 name: learn-from-session
-description: Use at the end of a session, when the user asks to save lessons, or when you notice a correction or preference worth remembering. Captures non-obvious lessons to AGENTS.md or skill files so the agent gets smarter over time. Do NOT use for trivial facts derivable from reading code.
+description: Use when ending a session, when the user asks to save lessons, or when you notice a correction or preference worth remembering. Captures non-obvious lessons to AGENTS.md or skill files so the agent gets smarter over time. Do NOT use for trivial facts derivable from reading code.
 ---
 
 ## Core Workflow

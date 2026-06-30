@@ -1,6 +1,6 @@
 ---
 name: standards-nextjs
-description: Next.js 15 App Router project conventions. Auto-load when working in app/, src/app/, components/, server actions, or route handlers.
+description: Use when working in a Next.js 15 App Router project — editing app/, src/app/, components/, server actions, or route handlers. Enforces project conventions for queries, mutations, and data fetching.
 category: standards
 global: false
 public: true

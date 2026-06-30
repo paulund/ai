@@ -1,6 +1,6 @@
 ---
 name: standards-typescript
-description: TypeScript project conventions. Auto-load when editing *.ts or *.tsx files.
+description: Use when editing *.ts or *.tsx files in this project. Enforces TypeScript conventions including Zod-derived types, Prisma type patterns, type-only imports, and shared constant extraction.
 category: standards
 global: false
 public: true

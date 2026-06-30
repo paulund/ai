@@ -12,7 +12,7 @@ usage() {
     cat <<EOF
 Usage: $(basename "$0") [OPTIONS]
 
-Sync commands and skills from this repo to global and project directories.
+Sync commands, skills, and agents from this repo to global and project directories.
 
 Options:
   --dry-run    Print what would be done without making changes
@@ -41,18 +41,24 @@ fi
 
 # ── TOML Parser ──────────────────────────────────────────────────────
 # State machine that populates:
-#   GLOBAL_COMMAND_TARGETS GLOBAL_SKILL_TARGETS GLOBAL_COMMANDS GLOBAL_SKILLS
+#   GLOBAL_COMMAND_TARGETS GLOBAL_SKILL_TARGETS GLOBAL_AGENT_TARGETS
+#   GLOBAL_COMMANDS GLOBAL_SKILLS GLOBAL_AGENTS
+#   GLOBAL_SOURCE_DIR
 #     (space-separated strings)
-#   PROJECT_PATHS PROJECT_COMMANDS PROJECT_SKILLS (indexed arrays)
+#   PROJECT_PATHS PROJECT_COMMANDS PROJECT_SKILLS PROJECT_AGENTS (indexed arrays)
 
 GLOBAL_COMMAND_TARGETS=""
 GLOBAL_SKILL_TARGETS=""
+GLOBAL_AGENT_TARGETS=""
 GLOBAL_COMMANDS=""
 GLOBAL_SKILLS=""
+GLOBAL_AGENTS=""
+GLOBAL_SOURCE_DIR=""
 
 PROJECT_PATHS=()
 PROJECT_COMMANDS=()
 PROJECT_SKILLS=()
+PROJECT_AGENTS=()
 
 current_section=""
 current_key=""
@@ -84,14 +90,18 @@ commit_array() {
         case "$key" in
             command_targets) GLOBAL_COMMAND_TARGETS="$packed" ;;
             skill_targets)  GLOBAL_SKILL_TARGETS="$packed" ;;
+            agent_targets)  GLOBAL_AGENT_TARGETS="$packed" ;;
             commands)        GLOBAL_COMMANDS="$packed" ;;
             skills)         GLOBAL_SKILLS="$packed" ;;
+            agents)         GLOBAL_AGENTS="$packed" ;;
+            source_dir)     GLOBAL_SOURCE_DIR="$packed" ;;
         esac
     elif [[ "$current_section" == "project" ]]; then
         case "$key" in
             path)   PROJECT_PATHS[proj_idx]="$packed" ;;
             commands) PROJECT_COMMANDS[proj_idx]="$packed" ;;
             skills)  PROJECT_SKILLS[proj_idx]="$packed" ;;
+            agents)  PROJECT_AGENTS[proj_idx]="$packed" ;;
         esac
     fi
 }
@@ -110,6 +120,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         PROJECT_PATHS[proj_idx]=""
         PROJECT_COMMANDS[proj_idx]=""
         PROJECT_SKILLS[proj_idx]=""
+        PROJECT_AGENTS[proj_idx]=""
         continue
     fi
 
@@ -143,11 +154,22 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     fi
 done < "$CONFIG_FILE"
 
+# Resolve source directory (defaults to repo root if not set)
+if [[ -z "$GLOBAL_SOURCE_DIR" ]]; then
+    SRC_DIR="$REPO_ROOT"
+else
+    eval "SRC_DIR=$GLOBAL_SOURCE_DIR"
+    # Handle relative paths
+    if [[ "$SRC_DIR" != /* ]]; then
+        SRC_DIR="$REPO_ROOT/$SRC_DIR"
+    fi
+fi
+
 # ── Symlink helpers ──────────────────────────────────────────────────
 
 install_command() {
     local name="$1" target_dir="$2"
-    local src="$REPO_ROOT/commands/$name.md"
+    local src="$SRC_DIR/commands/$name.md"
     local dst="$target_dir/$name.md"
     [[ -f "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
     mkdir -p "$target_dir"
@@ -160,9 +182,22 @@ install_command() {
 
 install_skill() {
     local name="$1" target_dir="$2"
-    local src="$REPO_ROOT/skills/$name"
+    local src="$SRC_DIR/skills/$name"
     local dst="$target_dir/$name"
     [[ -d "$src" ]] || { echo "  [SKIP] $name: source not found"; return 1; }
+    mkdir -p "$target_dir"
+    if $DRY_RUN; then
+        echo "  symlink: $dst -> $src"
+    else
+        ln -snf "$src" "$dst"
+    fi
+}
+
+install_agent() {
+    local name="$1" target_dir="$2"
+    local src="$SRC_DIR/agents/$name.md"
+    local dst="$target_dir/$name.md"
+    [[ -f "$src" ]] || { echo "  [SKIP] $name: agent source not found"; return 1; }
     mkdir -p "$target_dir"
     if $DRY_RUN; then
         echo "  symlink: $dst -> $src"
@@ -180,7 +215,7 @@ clean_target() {
         name="$(basename "$link")"
         check_name="${name%.md}"
         link_target="$(readlink "$link")"
-        if [[ "$link_target" == "$REPO_ROOT"* ]]; then
+        if [[ "$link_target" == "$SRC_DIR"* || "$link_target" == "$REPO_ROOT"* ]]; then
             if [[ " $active_set " != *" $check_name "* ]]; then
                 if $DRY_RUN; then
                     echo "  [CLEAN] would remove: $link"
@@ -198,6 +233,7 @@ clean_target() {
 all_empty=1
 [[ -n "$GLOBAL_COMMAND_TARGETS" ]] && all_empty=0
 [[ -n "$GLOBAL_SKILL_TARGETS" ]] && all_empty=0
+[[ -n "$GLOBAL_AGENT_TARGETS" ]] && all_empty=0
 [[ -n "${PROJECT_PATHS[*]-}" ]] && all_empty=0
 
 if (( all_empty )); then
@@ -237,6 +273,21 @@ if ! $CLEAN_ONLY; then
         done
     fi
 
+    # Global agents
+    if [[ -n "$GLOBAL_AGENT_TARGETS" && -n "$GLOBAL_AGENTS" ]]; then
+        echo "Installing global agents..."
+        IFS=' ' read -ra targets <<< "$GLOBAL_AGENT_TARGETS"
+        IFS=' ' read -ra names <<< "$GLOBAL_AGENTS"
+        for t in "${targets[@]}"; do
+            eval "tdir=$t"
+            tdir="${tdir%/}"
+            for n in "${names[@]}"; do
+                install_agent "$n" "$tdir"
+            done
+            clean_target "$tdir" "$GLOBAL_AGENTS"
+        done
+    fi
+
     # Per-project
     if (( ${#PROJECT_PATHS[@]} )); then
         echo "Installing per-project..."
@@ -248,10 +299,11 @@ if ! $CLEAN_ONLY; then
 
             pc="${PROJECT_COMMANDS[$i]:-}"
             ps="${PROJECT_SKILLS[$i]:-}"
+            pa="${PROJECT_AGENTS[$i]:-}"
 
             if [[ -n "$pc" ]]; then
                 IFS=' ' read -ra names <<< "$pc"
-                td="$pdir/.agents/commands"
+                td="$pdir/.opencode/commands"
                 for n in "${names[@]}"; do
                     install_command "$n" "$td"
                 done
@@ -264,6 +316,14 @@ if ! $CLEAN_ONLY; then
                     install_skill "$n" "$td"
                 done
                 clean_target "$td" "$ps"
+            fi
+            if [[ -n "$pa" ]]; then
+                IFS=' ' read -ra names <<< "$pa"
+                td="$pdir/.opencode/agents"
+                for n in "${names[@]}"; do
+                    install_agent "$n" "$td"
+                done
+                clean_target "$td" "$pa"
             fi
         done
     fi
