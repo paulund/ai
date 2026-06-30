@@ -21,13 +21,36 @@ For each changed file, evaluate:
 
 **Axis 1 — Correctness.** Wrong logic, wrong type, off-by-one, dropped error handling. Broken invariants, unhandled edge cases. All acceptance criteria visibly addressed.
 
-**Axis 2 — Readability.** Dead code, redundant branches, premature abstraction. Unhelpful comments vs. missing why-comments. Naming clarity — does the name reveal intent?
+**Axis 2 — Readability.** Dead code, redundant branches, premature abstraction. Unhelpful comments vs. missing why-comments. Naming clarity — does the name reveal intent? Match the diff against the **smell baseline** below.
 
 **Axis 3 — Architecture.** Module boundaries — are they justified? Deletion test applies. AHA violations — abstracted before the third occurrence. Single-adapter seams with unnecessary interfaces.
 
 **Axis 4 — Security.** Apply the four data-flow questions from `references/security-data-flow.md` — sources, sinks, trust boundaries, secret handling.
 
 **Axis 5 — Performance.** N+1 queries, sync work in hot paths. Unnecessary allocations, unbounded loops. Bundle impact for new UI imports.
+
+### Smell baseline (always on)
+
+A fixed set of Fowler code smells (Refactoring, ch. 3) the Readability axis always carries, on top of whatever the repo documents. Binding rules:
+
+- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation — and, like any standard here, skip anything tooling already enforces.
+- **Capped at Medium severity.** Smell findings never produce Critical or High in the exposure × impact matrix — only Medium, Low, or drop.
+
+Each smell reads *what it is* → *how to fix*; match it against the diff:
+
+- **Mysterious Name** — a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
+- **Duplicated Code** — the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
+- **Feature Envy** — a method that reaches into another object's data more than its own. → move the method onto the data it envies.
+- **Data Clumps** — the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
+- **Primitive Obsession** — a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
+- **Repeated Switches** — the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
+- **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
+- **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
+- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
+- **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
+- **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
 ### 3. Trace data flow
 
@@ -65,6 +88,8 @@ Drop findings that are neither reachable nor significant.
 Every reported finding must include: **file:line** + **trace** (entry → sink) + **concrete failure or exploit path**. Findings that don't meet this bar get dropped. No exceptions.
 
 This is the discipline that kills checklist-mimicry. If you can't write the trace, you don't have a finding.
+
+**Smell-finding carve-out.** Smell findings cite **file:line + smell name + quoted code**; the data-flow trace is not required. The severity cap and judgement-call framing are what make this safe.
 
 ## Risk label (CI mode)
 
@@ -126,6 +151,7 @@ Low findings may be deferred to GitHub issues. Critical/High/Medium are fixed in
 | "This is an edge case, no one will hit it" | Edge cases in production are crashes. Fix them. |
 | "I'm not 80% confident this is exploitable" | If you can't write a trace, drop it. Don't file a hedge. |
 | "I'll let the security audit catch it" | Trace data flow now. Security findings are the highest-impact and easiest to miss. |
+| "I can't write a trace for this smell, so I'll skip it" | Smell findings don't need a trace — cite file:line + smell name + quote. |
 
 ## Red flags
 
@@ -136,6 +162,7 @@ Low findings may be deferred to GitHub issues. Critical/High/Medium are fixed in
 - [ ] No comment posted on PR with zero findings ("no news is good news" is insufficient)
 - [ ] Findings reported without file:line + trace + impact
 - [ ] Security axis answered with category checklist instead of data-flow questions
+- [ ] Smell baseline ignored — Readability review did not consult the 12-smell list
 
 ## Verification
 
@@ -145,6 +172,7 @@ Low findings may be deferred to GitHub issues. Critical/High/Medium are fixed in
 - [ ] Every acceptance criterion from linked issues is covered or has a tracking issue
 - [ ] No security-relevant findings are deferred
 - [ ] Risk label applied with one-sentence justification
+- [ ] Each smell finding carries file:line + smell name + quoted code; no Critical/High severity assigned
 
 ## Reference guide
 
