@@ -109,7 +109,7 @@ Agents are `mode: subagent` — invoked by commands or `@`-mentions, not Tab-swi
 |-------|-------------|
 | `architecture-review` | Surface architectural friction as GitHub issues |
 | `browser-testing-with-devtools` | Debug browser UI via chrome-devtools MCP |
-| `code-review-and-quality` | Five-axis PR review before merge |
+| `code-review-and-quality` | Five-axis PR review, exposure × impact severity, AC coverage, `## Automated review` comment (used by /review in human and CI mode) |
 | `code-simplification` | Remove unnecessary complexity in the codebase |
 | `context-engineering` | Discover and hierarchically load project context |
 | `debugging-and-error-recovery` | Systematic root-cause debugging |
